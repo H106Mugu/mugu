@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.ant-tabs-content-holder {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.ant-tabs-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
