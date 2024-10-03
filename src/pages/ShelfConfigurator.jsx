@@ -7,6 +7,7 @@ import { observer } from "mobx-react-lite";
 import CustomCheckbox from "../components/CustomCheckbox";
 import { RxRulerHorizontal } from "react-icons/rx";
 import { TbCube3dSphere } from "react-icons/tb";
+import Canvas_3d from "../Canvas-3d/Canvas_3d";
 
 const ShelfConfigurator = observer(() => {
   const { modalStore } = useStores();
@@ -27,7 +28,7 @@ const ShelfConfigurator = observer(() => {
     <>
       <div className="flex flex-col md:flex-row h-screen relative">
         <div className="bg-gray-100 w-full md:w-[75%] h-[75%] md:h-full flex justify-center items-center">
-          <div className="absolute top-16 md:top-4 left-4 flex items-center gap-3">
+          <div className="absolute top-16 md:top-4 left-4 flex items-center gap-3 z-10">
             <CustomCheckbox
               checked={checked}
               onChange={handleCheckboxChange}
@@ -39,7 +40,7 @@ const ShelfConfigurator = observer(() => {
               Reset cam
             </Button>
           </div>
-          3d canvas
+          <Canvas_3d />
         </div>
         <div className="w-full md:w-[25%] h-[25%] md:h-full md:min-w-[400px] p-6">
           <ShelfSidebar />
