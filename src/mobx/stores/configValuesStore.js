@@ -1,6 +1,8 @@
 import { makeAutoObservable } from "mobx";
 
 class ConfigValuesStore {
+  currentConfigType = "structure"; // Initialize currentConfigType with a default value
+
   // Define your observable state as an object
   configValues = {
     shelfType: "",
@@ -14,6 +16,22 @@ class ConfigValuesStore {
   constructor() {
     // Automatically make properties observable
     makeAutoObservable(this);
+  }
+
+  // Setter for currentConfigType
+  setCurrentConfigType(value) {
+    if (value === "structure" || value === "color") {
+      this.currentConfigType = value;
+    } else {
+      console.warn(
+        "Invalid value for currentConfigType. Must be 'structure' or 'color'."
+      );
+    }
+  }
+
+  // Getter for currentConfigType
+  get getCurrentConfigType() {
+    return this.currentConfigType;
   }
 
   // Define a single action to set values based on key

@@ -5,12 +5,16 @@ import { useStores } from "../mobx/context/StoreContext";
 const SubmitFormModal = ({ open, onClose }) => {
   const [form] = Form.useForm();
   const { submitFormStore } = useStores();
+  const [loading, setLoading] = React.useState(false);
 
   const onFinish = (values) => {
     console.log("Received values from form: ", values);
-    // Handle form submission logic here
-    // For example, send data to server or API
     submitFormStore.setFields(values);
+    setLoading(true);
+    setTimeout(() => {
+      submitFormStore.setModalOpen(false);
+      setLoading(false);
+    }, 1800);
   };
 
   return (
@@ -66,7 +70,12 @@ const SubmitFormModal = ({ open, onClose }) => {
         </Form.Item>
 
         <Form.Item className="w-full">
-          <Button type="primary" htmlType="submit" className="w-full">
+          <Button
+            loading={loading}
+            type="primary"
+            htmlType="submit"
+            className="w-full"
+          >
             Submit
           </Button>
         </Form.Item>

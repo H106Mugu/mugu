@@ -11,7 +11,7 @@ import { IoArrowBackOutline } from "react-icons/io5";
 import SubmitFormModal from "../components/SubmitFormModal";
 
 const ShelfConfigurator = observer(() => {
-  const { modalStore, submitFormStore } = useStores();
+  const { modalStore, submitFormStore, configValuesStore } = useStores();
   const breakpoint = useBreakpoints();
   const [isMobile, setIsMobile] = useState(false);
 
@@ -25,10 +25,10 @@ const ShelfConfigurator = observer(() => {
     setChecked((prevChecked) => !prevChecked); // Toggle the checked state
   };
 
-  console.log(
-    "ShelfConfigurator -> submitFormStore",
-    submitFormStore.getFormFields
-  );
+  const onConfigTypeChange = (e) => {
+    configValuesStore.setCurrentConfigType(e.target.value);
+  };
+
   return (
     <>
       <div className="flex flex-col md:flex-row h-screen relative">
@@ -62,7 +62,7 @@ const ShelfConfigurator = observer(() => {
           </div>
           3d canvas
         </div>
-        <div className="w-full md:w-[25%] min-h-[260px] h-[25%] md:h-full md:min-w-[400px] p-6">
+        <div className="w-full md:w-[25%] min-h-[260px] h-[25%] md:h-full md:min-w-[400px] p-6 bg-[#fbfbfc]">
           <ShelfSidebar />
         </div>
         <div
@@ -70,7 +70,10 @@ const ShelfConfigurator = observer(() => {
             isMobile ? "opacity-100 right-3" : "right-0 opacity-0"
           } `}
         >
-          <StructureOrColorRadioGroup />
+          <StructureOrColorRadioGroup
+            value={configValuesStore.currentConfigType}
+            onChange={onConfigTypeChange}
+          />
         </div>
       </div>
       <Modal
@@ -100,10 +103,10 @@ const ShelfConfigurator = observer(() => {
 
 export default ShelfConfigurator;
 
-const StructureOrColorRadioGroup = ({ onChange }) => {
+const StructureOrColorRadioGroup = ({ value, onChange }) => {
   return (
     <Radio.Group
-      defaultValue={"structure"}
+      value={value}
       onChange={onChange}
       buttonStyle="solid"
       className="flex gap-4"
