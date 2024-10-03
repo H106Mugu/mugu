@@ -42,10 +42,7 @@ const MobileShelfBottombar = observer(({ sidebarOptionsData, changedKey }) => {
     key: (index + 1).toString(), // Assign a unique key for each tab
     label: option.title, // Tab label
     children: option.component, // Tab content
-    disabled:
-      index === sidebarOptionsData.length - 1
-        ? false
-        : parseInt(changedKey) < index, // Disable tabs if they are not unlocked yet
+    disabled: parseInt(changedKey) < index, // Disable tabs if they are not unlocked yet
   }));
 
   useEffect(() => {

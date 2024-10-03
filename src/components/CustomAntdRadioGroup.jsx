@@ -51,7 +51,7 @@ const CustomAntdRadioGroup = ({
                 disabled: option.disabled,
                 className: `${option.label.props.className || ""} ${
                   option.value === selectedValue
-                    ? "border-2 border-theme-primary shadow-xl text-theme-primary"
+                    ? "border-2 border-theme-primary text-theme-primary"
                     : "border-2 border-transparent"
                 } hover:border-theme-primary transition-all duration-300 ease-in-out ${
                   option.disabled ? "opacity-50 pointer-events-none" : ""

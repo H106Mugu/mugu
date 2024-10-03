@@ -62,7 +62,7 @@ const ShelfConfigurator = observer(() => {
           </div>
           3d canvas
         </div>
-        <div className="w-full md:w-[25%] min-h-[260px] h-[25%] md:h-full md:min-w-[400px] p-6 bg-[#fbfbfc]">
+        <div className="w-full md:w-[25%] min-h-[260px] h-[25%] md:h-full md:min-w-[400px] p-6 bg-[#fbfbfc] overflow-auto">
           <ShelfSidebar />
         </div>
         <div
