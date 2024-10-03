@@ -7,7 +7,7 @@ import structure5 from "../assets/images/structure/structure5.png";
 export const shelfTypeOption = [
   {
     label: (
-      <div className="flex flex-col items-center justify-center h-full max-h-24 w-32 text-center bg-gray-100">
+      <div className="flex flex-col items-center justify-center min-h-24 h-full max-h-24 w-32 text-center bg-gray-100">
         <img
           src={structure3}
           alt="All (no front)"
@@ -21,7 +21,7 @@ export const shelfTypeOption = [
   },
   {
     label: (
-      <div className="flex flex-col items-center justify-center h-full max-h-24 w-32 text-center bg-gray-100">
+      <div className="flex flex-col items-center justify-center min-h-24 h-full max-h-24 w-32 text-center bg-gray-100">
         <img
           src={structure1}
           alt="All (no front)"
@@ -94,51 +94,61 @@ export const structureElements = [
 export const colorOptions = [
   {
     label: (
-      <div
-        style={{ backgroundColor: "black" }}
-        className="w-8 h-8 rounded-full border"
-      />
+      <div className="w-16 h-[70px] flex flex-col justify-start items-center">
+        <div
+          style={{ backgroundColor: "black" }}
+          className="w-8 h-8 rounded-full border mt-1"
+        />
+        <div className="text-[10px] text-center font-normal leading-3 mt-1">
+          Transparent Black
+        </div>
+      </div>
     ),
-    value: "black",
+    value: "transparentBlack",
   },
 
   {
     label: (
-      <div
-        style={{ backgroundColor: "purple" }}
-        className="w-8 h-8 rounded-full border"
-      />
+      <div className="w-16 h-[70px] flex flex-col justify-start items-center">
+        <div
+          style={{ backgroundColor: "white" }}
+          className="w-8 h-8 rounded-full border mt-1"
+        />
+        <div className="text-[10px] text-center font-normal leading-3 mt-1">
+          White
+        </div>
+      </div>
     ),
-    value: "purple",
+    value: "white",
   },
   {
     label: (
-      <div
-        style={{ backgroundColor: "orange" }}
-        className="w-8 h-8 rounded-full border"
-      />
+      <div className="w-16 h-[70px] flex flex-col justify-start items-center">
+        <div
+          style={{ backgroundColor: "orange" }}
+          className="w-8 h-8 rounded-full border mt-1"
+        />
+        <div className="text-[10px] text-center font-normal leading-3 mt-1">
+          Transparent Orange
+        </div>
+      </div>
     ),
-    value: "orange",
+    value: "transparentOrange",
   },
 
   {
     label: (
-      <div
-        style={{ backgroundColor: "brown" }}
-        className="w-8 h-8 rounded-full border"
-      />
+      <div className="w-16 h-[70px] flex flex-col justify-start items-center">
+        <div
+          style={{ backgroundColor: "transparent" }}
+          className="w-8 h-8 rounded-full border mt-1"
+        />
+        <div className="text-[10px] text-center font-normal leading-3 mt-1">
+          Clear
+        </div>
+      </div>
     ),
-    value: "brown",
-  },
-
-  {
-    label: (
-      <div
-        style={{ backgroundColor: "silver" }}
-        className="w-8 h-8 rounded-full border"
-      />
-    ),
-    value: "silver",
+    value: "clear",
   },
 ];
 

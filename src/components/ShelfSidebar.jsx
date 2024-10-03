@@ -253,10 +253,12 @@ const ShelfSidebar = observer(() => {
   const [structureOptions, setStructureOptions] = useState(
     defaultStructureElements
   );
-  const { configValuesStore } = useStores();
+  const [changedKey, setChangedKey] = useState("0");
+  const { configValuesStore, submitFormStore } = useStores();
 
-  const handleSidebarOptionsChange = (value, type) => {
+  const handleSidebarOptionsChange = (value, type, key) => {
     configValuesStore.setConfigValue(type, value);
+    setChangedKey(key);
     switch (type) {
       case "shelfType":
         resetSelections();
@@ -318,8 +320,9 @@ const ShelfSidebar = observer(() => {
       component: (
         <CustomAntdRadioGroup
           options={shelfTypeOption}
+          disabled={false}
           onChange={(ev) =>
-            handleSidebarOptionsChange(ev.target.value, "shelfType")
+            handleSidebarOptionsChange(ev.target.value, "shelfType", "1")
           }
         />
       ),
@@ -329,8 +332,13 @@ const ShelfSidebar = observer(() => {
       component: (
         <CustomAntdRadioGroup
           options={structureOptions}
+          disabled={parseInt(changedKey) < 1}
           onChange={(ev) =>
-            handleSidebarOptionsChange(ev.target.value, "structureElements")
+            handleSidebarOptionsChange(
+              ev.target.value,
+              "structureElements",
+              "2"
+            )
           }
         />
       ),
@@ -340,8 +348,9 @@ const ShelfSidebar = observer(() => {
       component: (
         <CustomAntdRadioGroup
           options={widthOptions}
+          disabled={parseInt(changedKey) < 2}
           onChange={(ev) =>
-            handleSidebarOptionsChange(ev.target.value, "width")
+            handleSidebarOptionsChange(ev.target.value, "width", "3")
           }
         />
       ),
@@ -351,8 +360,9 @@ const ShelfSidebar = observer(() => {
       component: (
         <CustomAntdRadioGroup
           options={depthOptions}
+          disabled={parseInt(changedKey) < 3}
           onChange={(ev) =>
-            handleSidebarOptionsChange(ev.target.value, "depth")
+            handleSidebarOptionsChange(ev.target.value, "depth", "4")
           }
         />
       ),
@@ -362,8 +372,9 @@ const ShelfSidebar = observer(() => {
       component: (
         <CustomAntdRadioGroup
           options={heightOptions}
+          disabled={parseInt(changedKey) < 4}
           onChange={(ev) =>
-            handleSidebarOptionsChange(ev.target.value, "height")
+            handleSidebarOptionsChange(ev.target.value, "height", "5")
           }
         />
       ),
@@ -373,8 +384,9 @@ const ShelfSidebar = observer(() => {
       component: (
         <CustomAntdRadioGroup
           options={colorOptions}
+          disabled={parseInt(changedKey) < 5}
           onChange={(ev) =>
-            handleSidebarOptionsChange(ev.target.value, "color")
+            handleSidebarOptionsChange(ev.target.value, "color", "6")
           }
         />
       ),
@@ -384,7 +396,10 @@ const ShelfSidebar = observer(() => {
   return (
     <>
       {breakpoint === "xs" || breakpoint === "sm" ? (
-        <MobileShelfBottombar sidebarOptionsData={sidebarOptionsData} />
+        <MobileShelfBottombar
+          sidebarOptionsData={sidebarOptionsData}
+          changedKey={changedKey}
+        />
       ) : (
         <div className="flex flex-col gap-6 w-full">
           {sidebarOptionsData.map((option, index) => (
@@ -402,7 +417,13 @@ const ShelfSidebar = observer(() => {
             incididunt ut labore et dolore magna aliqua. Ut enim ad minim
             veniam, quis nostrud exercitation.
           </div>
-          <Button size="large" type="primary" className="w-full py-6">
+          <Button
+            disabled={parseInt(changedKey) < sidebarOptionsData.length}
+            size="large"
+            type="primary"
+            className="w-full py-6"
+            onClick={() => submitFormStore.setModalOpen(true)}
+          >
             Get a quote on this!
           </Button>
         </div>

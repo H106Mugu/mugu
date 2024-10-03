@@ -7,9 +7,11 @@ import { observer } from "mobx-react-lite";
 import CustomCheckbox from "../components/CustomCheckbox";
 import { RxRulerHorizontal } from "react-icons/rx";
 import { TbCube3dSphere } from "react-icons/tb";
+import { IoArrowBackOutline } from "react-icons/io5";
+import SubmitFormModal from "../components/SubmitFormModal";
 
 const ShelfConfigurator = observer(() => {
-  const { modalStore } = useStores();
+  const { modalStore, submitFormStore } = useStores();
   const breakpoint = useBreakpoints();
   const [isMobile, setIsMobile] = useState(false);
 
@@ -23,11 +25,23 @@ const ShelfConfigurator = observer(() => {
     setChecked((prevChecked) => !prevChecked); // Toggle the checked state
   };
 
+  console.log(
+    "ShelfConfigurator -> submitFormStore",
+    submitFormStore.getFormFields
+  );
   return (
     <>
       <div className="flex flex-col md:flex-row h-screen relative">
         <div className="bg-gray-100 w-full md:w-[75%] h-[75%] md:h-full flex justify-center items-center">
-          <div className="absolute top-16 md:top-4 left-4 flex items-center gap-3">
+          <div className="absolute top-3 left-4 flex items-center">
+            <Button type="link" className="gap-1 !px-0 !py-0">
+              <IoArrowBackOutline className="text-xl text-theme-primary font-semibold" />
+              <span className="text-md text-theme-primary font-semibold">
+                Back
+              </span>
+            </Button>
+          </div>
+          <div className="absolute top-[55px] left-4 flex items-center gap-3">
             <CustomCheckbox
               checked={checked}
               onChange={handleCheckboxChange}
@@ -39,24 +53,25 @@ const ShelfConfigurator = observer(() => {
               Reset cam
             </Button>
           </div>
+          <div
+            className={`absolute top-[95px] left-4 flex items-center gap-3 transition-all duration-500 ease-in-out
+            ${checked ? "opacity-100" : "opacity-0"}
+            `}
+          >
+            W: 400/H:450/D:400
+          </div>
           3d canvas
         </div>
-        <div className="w-full md:w-[25%] h-[25%] md:h-full md:min-w-[400px] p-6">
+        <div className="w-full md:w-[25%] min-h-[260px] h-[25%] md:h-full md:min-w-[400px] p-6">
           <ShelfSidebar />
         </div>
-        {isMobile && (
-          <>
-            <div className="absolute right-3 top-3">
-              <StructureOrColorRadioGroup />
-            </div>
-            <div className="absolute right-0 left-0 bottom-0 flex py-3 px-4">
-              <div className="font-medium">Submit the design for a quote</div>
-              <Button size="small" type="primary" className="ms-auto">
-                Submit
-              </Button>
-            </div>
-          </>
-        )}
+        <div
+          className={`absolute top-3 ${
+            isMobile ? "opacity-100 right-3" : "right-0 opacity-0"
+          } `}
+        >
+          <StructureOrColorRadioGroup />
+        </div>
       </div>
       <Modal
         centered
@@ -75,6 +90,10 @@ const ShelfConfigurator = observer(() => {
       >
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
       </Modal>
+      <SubmitFormModal
+        open={submitFormStore.isModalOpen}
+        onClose={() => submitFormStore.setModalOpen(false)}
+      />
     </>
   );
 });
@@ -83,7 +102,12 @@ export default ShelfConfigurator;
 
 const StructureOrColorRadioGroup = ({ onChange }) => {
   return (
-    <Radio.Group onChange={onChange} buttonStyle="solid" className="flex gap-4">
+    <Radio.Group
+      defaultValue={"structure"}
+      onChange={onChange}
+      buttonStyle="solid"
+      className="flex gap-4"
+    >
       <Radio.Button value="structure">Structure</Radio.Button>
       <Radio.Button value="color">Color</Radio.Button>
     </Radio.Group>

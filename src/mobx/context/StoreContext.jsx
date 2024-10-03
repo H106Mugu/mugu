@@ -2,6 +2,8 @@ import React, { createContext, useContext } from "react";
 import modalStore from "../stores/modalStore";
 import userStore from "../stores/userStore";
 import configValuesStore from "../stores/configValuesStore";
+import submitFormStore from "../stores/submitFormStore";
+
 // Create a context
 const StoreContext = createContext();
 
@@ -11,6 +13,7 @@ export const StoreProvider = ({ children }) => {
     modalStore,
     userStore,
     configValuesStore,
+    submitFormStore,
   };
 
   return (
