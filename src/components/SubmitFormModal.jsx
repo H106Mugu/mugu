@@ -19,19 +19,18 @@ const SubmitFormModal = ({ open, onClose }) => {
 
   return (
     <Modal
-      title={
-        <div className="text-lg font-semibold">Submit your custom design</div>
-      }
+      width={325}
+      title="Submit your custom design"
       open={open}
       onCancel={onClose}
       footer={null} // No default footer buttons
     >
-      <p className="my-4">
+      <div className="font-thin text-sm leading-4">
         Thank you for customising your shelf design! Please provide your
         information below, and one of our friendly team members will reach out
         to you shortly with the quote.
-      </p>
-      <p className="mb-2 font-semibold">Your info:</p>
+      </div>
+      <p className="my-4 font-semibold">Your info</p>
       <Form
         form={form}
         layout="vertical"
@@ -42,7 +41,10 @@ const SubmitFormModal = ({ open, onClose }) => {
           name="name"
           rules={[{ required: true, message: "Please enter your name!" }]}
         >
-          <Input placeholder="Enter your name" />
+          <Input
+            placeholder="Name*"
+            className="!p-[8px] rounded-none border-[#BCBCBC]"
+          />
         </Form.Item>
 
         <Form.Item
@@ -55,24 +57,34 @@ const SubmitFormModal = ({ open, onClose }) => {
             },
           ]}
         >
-          <Input placeholder="Enter your email" />
+          <Input
+            placeholder="Enter your email"
+            className="!p-[8px] rounded-none border-[#BCBCBC]"
+          />
         </Form.Item>
 
         <Form.Item
           name="postcode"
           rules={[{ required: true, message: "Please enter your postcode!" }]}
         >
-          <Input placeholder="Enter your postcode" />
+          <Input
+            placeholder="Enter your postcode"
+            className="!p-[8px] rounded-none border-[#BCBCBC]"
+          />
         </Form.Item>
 
-        <Form.Item name="requireShipping" valuePropName="checked">
+        <Form.Item
+          name="requireShipping"
+          valuePropName="checked"
+          className="-mt-1"
+        >
           <Checkbox>Require Shipping</Checkbox>
         </Form.Item>
 
-        <Form.Item className="w-full">
+        <Form.Item className="w-full pb-[32px]">
           <Button
             loading={loading}
-            type="primary"
+            type="default"
             htmlType="submit"
             className="w-full"
           >

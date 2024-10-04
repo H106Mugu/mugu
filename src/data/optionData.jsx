@@ -1,34 +1,38 @@
-import structure1 from "../assets/images/structure/structure1.png";
-import structure2 from "../assets/images/structure/structure2.png";
-import structure3 from "../assets/images/structure/structure3.png";
-import structure4 from "../assets/images/structure/structure4.png";
-import structure5 from "../assets/images/structure/structure5.png";
+import all from "../assets/images/structure/all.svg";
+import withoutBack from "../assets/images/structure/withoutBack.svg";
+import withoutShelves from "../assets/images/structure/withoutShelves.svg";
+import withoutShelvesAndWalls from "../assets/images/structure/withoutShelvesAndWalls.svg";
+import withTopAndBottomOnly from "../assets/images/structure/withTopAndBottomOnly.svg";
 
 export const shelfTypeOption = [
   {
     label: (
-      <div className="flex flex-col items-center justify-center min-h-24 h-full max-h-24 w-32 text-center bg-gray-100">
+      <div className="flex flex-col items-center justify-center min-h-[111px] h-full w-full text-center">
         <img
-          src={structure3}
+          src={withTopAndBottomOnly}
           alt="All (no front)"
-          className="w-10 h-10 mix-blend-multiply"
+          className="w-[53px] h-[53px] mix-blend-multiply"
         />
-        <p className="text-[12px] leading-4">Acrylic Panel Shelf</p>
-        <p className="text-[10px] leading-3">*Open shelves only</p>
+        <div className="text-[12px] leading-4">Acrylic Panel Shelf</div>
+        <div className="text-[12px] font-thin leading-3">
+          *Open shelves only
+        </div>
       </div>
     ),
     value: "acrylic",
   },
   {
     label: (
-      <div className="flex flex-col items-center justify-center min-h-24 h-full max-h-24 w-32 text-center bg-gray-100">
+      <div className="flex flex-col items-center justify-center min-h-[111px] h-full w-full text-center">
         <img
-          src={structure1}
+          src={all}
           alt="All (no front)"
-          className="w-10 h-10 mix-blend-multiply"
+          className="w-[53px] h-[53px] mix-blend-multiply"
         />
-        <p className="text-[12px] leading-4">Stainless Panel Shelf</p>
-        <p className="text-[10px] leading-3">*Open & closed shelves</p>
+        <div className="text-[12px] leading-4">Stainless Panel Shelf</div>
+        <div className="text-[12px] !font-thin leading-3">
+          *Open & closed shelves
+        </div>
       </div>
     ),
     value: "stainless",
@@ -38,8 +42,8 @@ export const shelfTypeOption = [
 export const structureElements = [
   {
     label: (
-      <div className="flex flex-col items-center justify-start h-[72px] w-16 text-center">
-        <img src={structure1} alt="All (no front)" className="w-8 h-8" />
+      <div className="flex flex-col items-center justify-start pt-5 h-full min-h-[111px] w-full">
+        <img src={all} alt="All (no front)" className="w-[53px] h-[53px]" />
         <p className="text-[11px] leading-3">All (no front)</p>
       </div>
     ),
@@ -47,8 +51,12 @@ export const structureElements = [
   },
   {
     label: (
-      <div className="flex flex-col items-center justify-start h-[72px] w-16 text-center">
-        <img src={structure2} alt="Without Back" className="w-8 h-8" />
+      <div className="flex flex-col items-center justify-start pt-5 h-full min-h-[111px] w-full">
+        <img
+          src={withoutBack}
+          alt="Without Back"
+          className="w-[53px] h-[53px]"
+        />
         <p className="text-[11px] leading-3">Without Back</p>
       </div>
     ),
@@ -56,11 +64,11 @@ export const structureElements = [
   },
   {
     label: (
-      <div className="flex flex-col items-center justify-start h-[72px] w-16 text-center">
+      <div className="flex flex-col items-center justify-start pt-5 h-full min-h-[111px] w-full">
         <img
-          src={structure3}
+          src={withTopAndBottomOnly}
           alt="With top and bottom only"
-          className="w-8 h-8"
+          className="w-[53px] h-[53px]"
         />
         <p className="text-[11px] leading-3">With top and bottom only</p>
       </div>
@@ -69,8 +77,12 @@ export const structureElements = [
   },
   {
     label: (
-      <div className="flex flex-col items-center justify-start h-[72px] w-16 text-center">
-        <img src={structure4} alt="Without Shelves" className="w-8 h-8" />
+      <div className="flex flex-col items-center justify-start pt-5 h-full min-h-[111px] w-full">
+        <img
+          src={withoutShelves}
+          alt="Without Shelves"
+          className="w-[53px] h-[53px]"
+        />
         <p className="text-[11px] leading-3">Without Shelves</p>
       </div>
     ),
@@ -78,11 +90,11 @@ export const structureElements = [
   },
   {
     label: (
-      <div className="flex flex-col items-center justify-start h-[72px] w-16 text-center">
+      <div className="flex flex-col items-center justify-start pt-5 h-full min-h-[111px] w-full">
         <img
-          src={structure5}
+          src={withoutShelvesAndWalls}
           alt="Without Shelves and walls"
-          className="w-8 h-8"
+          className="w-[53px] h-[53px]"
         />
         <p className="text-[11px] leading-3">Without Shelves and walls</p>
       </div>
@@ -94,12 +106,12 @@ export const structureElements = [
 export const colorOptions = [
   {
     label: (
-      <div className="w-16 h-[70px] flex flex-col justify-start items-center">
+      <div className="w-full h-[70px] flex flex-col justify-start items-center">
         <div
           style={{ backgroundColor: "black" }}
           className="w-8 h-8 rounded-full border mt-1"
         />
-        <div className="text-[10px] text-center font-normal leading-3 mt-1">
+        <div className="text-[12px] text-center font-normal leading-3 mt-1">
           Transparent Black
         </div>
       </div>
@@ -109,12 +121,12 @@ export const colorOptions = [
 
   {
     label: (
-      <div className="w-16 h-[70px] flex flex-col justify-start items-center">
+      <div className="w-full h-[70px] flex flex-col justify-start items-center">
         <div
           style={{ backgroundColor: "white" }}
           className="w-8 h-8 rounded-full border mt-1"
         />
-        <div className="text-[10px] text-center font-normal leading-3 mt-1">
+        <div className="text-[12px] text-center font-normal leading-3 mt-1">
           White
         </div>
       </div>
@@ -123,12 +135,12 @@ export const colorOptions = [
   },
   {
     label: (
-      <div className="w-16 h-[70px] flex flex-col justify-start items-center">
+      <div className="w-full h-[70px] flex flex-col justify-start items-center">
         <div
           style={{ backgroundColor: "orange" }}
           className="w-8 h-8 rounded-full border mt-1"
         />
-        <div className="text-[10px] text-center font-normal leading-3 mt-1">
+        <div className="text-[12px] text-center font-normal leading-3 mt-1">
           Transparent Orange
         </div>
       </div>
@@ -138,12 +150,12 @@ export const colorOptions = [
 
   {
     label: (
-      <div className="w-16 h-[70px] flex flex-col justify-start items-center">
+      <div className="w-full h-[70px] flex flex-col justify-start items-center">
         <div
           style={{ backgroundColor: "transparent" }}
           className="w-8 h-8 rounded-full border mt-1"
         />
-        <div className="text-[10px] text-center font-normal leading-3 mt-1">
+        <div className="text-[12px] text-center font-normal leading-3 mt-1">
           Clear
         </div>
       </div>

@@ -2,7 +2,7 @@ import React from "react";
 
 const CustomCheckbox = ({ checked, onChange, label, icon }) => {
   return (
-    <label className="inline-flex items-center cursor-pointer">
+    <label className="inline-flex items-center cursor-pointer rounded-[1920px] overflow-hidden">
       <input
         type="checkbox"
         checked={checked}
@@ -10,7 +10,7 @@ const CustomCheckbox = ({ checked, onChange, label, icon }) => {
         className="hidden" // Hide the default checkbox
       />
       <span
-        className={`flex items-center justify-center px-4 h-8 border transition-colors duration-300 text-sm
+        className={`border-theme-primary flex items-center justify-center px-2 !text-[0.75rem] font-[500] h-8 border rounded-[1920px] transition-colors duration-300 
           ${
             checked
               ? "bg-theme-primary text-white border-theme-primary hover:bg-opacity-80" // Styles when checked
@@ -19,7 +19,15 @@ const CustomCheckbox = ({ checked, onChange, label, icon }) => {
           focus:outline-none focus:ring-2 focus:ring-theme-primary focus:ring-opacity-50`}
       >
         {/* Render icon if provided */}
-        {icon && <span className="mr-2">{icon}</span>}
+        {icon && (
+          <span
+            className={`pt-[2px] me-[8px] ${
+              checked ? "hover:border-white" : "hover:border-theme-primary"
+            }`}
+          >
+            {icon}
+          </span>
+        )}
         {label}
       </span>
     </label>

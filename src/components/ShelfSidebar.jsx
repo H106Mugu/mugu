@@ -304,7 +304,9 @@ const ShelfSidebar = observer(() => {
         <div className="flex flex-col gap-6 w-full">
           {sidebarOptionsData.map((option, index) => (
             <div key={index}>
-              <div className="mb-2 font-medium w-full">{option.title}</div>
+              <div className="mb-2 text-sm font-medium w-full">
+                {option.title}
+              </div>
               <div className="mb-2 font-medium w-full overflow-x-auto overflow-y-hidden">
                 {option.component}
               </div>
