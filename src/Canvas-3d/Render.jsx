@@ -47,49 +47,48 @@ const Render = () => {
                                 StartHeight={StartHeight} // Pass starting Y position
                                 EndHeight={EndHeight} // Pass ending Y position
                             />
-                            {/* Render 3D Button for Adding a Column (right of cuboid) */}
-                            {!configValuesStore.hasCuboidAt(raw_index, parseInt(col_index) + 1) && (
+                            {/* {!configValuesStore.hasCuboidAt(raw_index, parseInt(col_index) + 1) && (
                                 <>
-                                {/* <mesh
-                                    position={[EndWidth + 2, StartHeight + (height / 20), depth / 20]} // Position near the cuboid's right edge
+                                <mesh
+                                    position={[EndWidth - (width / 20) + 2, StartHeight, 0]} // Position near the cuboid's right edge
                                     onClick={() => configValuesStore.addCuboidAtPosition(raw_index, parseInt(col_index) + 1)}
                                 >
                                     <sphereGeometry args={[2, 32, 32]} />
                                     <meshStandardMaterial color="white" />
-                                </mesh> */}
-                                {/* <Text
-                                    position={[EndWidth + 2, StartHeight + (height / 20) + 1, depth / 20]} // Position text on the sphere
+                                </mesh>
+                                <Text
+                                    position={[EndWidth - (width / 20) + 2, StartHeight + 1, 0]} // Position text on the sphere
                                     fontSize={20} // Adjust text size
                                     color="black" // Text color
                                     anchorX="center" // Align text to center
                                     anchorY="middle"
                                 >
                                     +
-                                </Text> */}
+                                </Text>
                             </>
-                            )}
+                            )} */}
 
                             {/* Render 3D Button for Adding a Row (top of cuboid) */}
-                            {!configValuesStore.hasCuboidAt(parseInt(raw_index) + 1, col_index) && (
+                            {/* {!configValuesStore.hasCuboidAt(parseInt(raw_index) + 1, col_index) && (
                                 <>
-                                {/* <mesh
-                                    position={[StartWidth + (width / 20), EndHeight + 2, depth / 20]} // Position near the cuboid's top edge
+                                <mesh
+                                    position={[StartWidth, EndHeight - (height / 20) + 2, 0]} // Position near the cuboid's top edge
                                     onClick={() => configValuesStore.addCuboidAtPosition(parseInt(raw_index) + 1, col_index)}
                                 >
                                     <sphereGeometry args={[2, 32, 32]} />
                                     <meshStandardMaterial color="white" />
-                                </mesh> */}
-                                {/* <Text
-                                    position={[StartWidth + (width / 20), EndHeight + 3, depth / 20]} // Position text on the sphere
+                                </mesh>
+                                <Text
+                                    position={[StartWidth, EndHeight - (height / 20) + 3, 0]} // Position text on the sphere
                                     fontSize={20} // Adjust text size
                                     color="black" // Text color
                                     anchorX="center" // Align text to center
                                     anchorY="middle"
                                 >
                                     +
-                                </Text> */}
+                                </Text>
                                 </>
-                            )}
+                            )} */}
                         </React.Fragment>
                     );
                 });
