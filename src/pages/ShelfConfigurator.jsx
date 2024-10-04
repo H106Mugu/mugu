@@ -31,7 +31,7 @@ const ShelfConfigurator = observer(() => {
 
   return (
     <>
-      <div className="flex flex-col md:flex-row h-screen relative">
+      <div className="flex flex-col md:flex-row h-[100dvh] relative">
         <div className="bg-gray-100 w-full md:w-[75%] h-[75%] md:h-full flex justify-center items-center">
           <div className="absolute top-3 left-4 flex items-center">
             <Button type="link" className="gap-1 !px-0 !py-0">
