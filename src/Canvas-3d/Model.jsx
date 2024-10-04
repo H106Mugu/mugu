@@ -48,7 +48,9 @@ const Connector = ({ position }) => {
   );
 };
 
-const Model = ({ width, height, depth, color, StartWidth, EndWidth, StartHeight, EndHeight, materialType }) => {
+const Model = ({ width, height, depth, StartWidth, StartHeight }) => {
+
+  console.log(width, height, depth, StartWidth, StartHeight);
 
   const corners = [
     [StartWidth, StartHeight, 0], // Bottom-left-back
@@ -61,7 +63,7 @@ const Model = ({ width, height, depth, color, StartWidth, EndWidth, StartHeight,
     [StartWidth, StartHeight + height, depth], // Top-left-front
   ].map((corner) => new THREE.Vector3(...corner));
 
-  console.log(corners);
+  // console.log(corners);
 
   return (
     <>

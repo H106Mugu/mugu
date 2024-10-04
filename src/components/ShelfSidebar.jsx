@@ -262,18 +262,23 @@ const ShelfSidebar = observer(() => {
         resetSelections();
         setShelfType(value);
         setStructureElement(null); // Reset structure element
+        // console.log(configValuesStore.getAllConfigValues());
         break;
       case "structureElements":
         setStructureElement(value); // Set structure element
+        // console.log(configValuesStore.getAllConfigValues());
         break;
       case "width":
         setWidth(value);
+        // console.log(configValuesStore.getAllConfigValues());
         break;
       case "depth":
         setDepth(value);
+        // console.log(configValuesStore.getAllConfigValues());
         break;
       case "height":
         setHeight(value);
+        // console.log(configValuesStore.getAllConfigValues());
         break;
       default:
         break;

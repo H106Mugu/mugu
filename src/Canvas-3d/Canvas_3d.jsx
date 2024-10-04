@@ -1,101 +1,98 @@
-import { useState } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { CameraControls, OrbitControls } from '@react-three/drei';
+import { CameraControls } from '@react-three/drei';
+import { useState } from 'react';
 import Render from './Render';
-import TextBox from './TextBox';
-import { store as initialStore } from './store';
+// import configValuesStore from '../mobx/stores/configValuesStore';
+import { useStores } from "../mobx/context/StoreContext";
+
 
 export default function Canvas_3d() {
 
-    const [store, setStore] = useState(initialStore); // Use state for the store
-    const firstRow = store[0] || {};
-    const firstRowColumns = Object.keys(firstRow);
+    const { configValuesStore } = useStores();
 
-    // Function to handle width changes
-    const handleWidthChange = (index, newWidth) => {
-        const widthValue = parseInt(newWidth, 10);
-        if (!isNaN(widthValue)) {
-            setStore(prevStore => {
-                const updatedStore = { ...prevStore };
-                // Update the width in each row at the specified column index
-                Object.keys(updatedStore).forEach(rowKey => {
-                    if (updatedStore[rowKey][index]) {
-                        updatedStore[rowKey][index].width = widthValue;
-                    }
-                });
-                return updatedStore; // Return the updated store
-            });
-        }
-    };
+    // State for row and column input fields
+    const [rowInput, setRowInput] = useState('');
+    const [colInput, setColInput] = useState('');
 
-    // Function to handle height changes
-    const handleHeightChange = (rowKey, newHeight) => {
-        const heightValue = parseInt(newHeight, 10);
-        if (!isNaN(heightValue)) {
-            setStore(prevStore => {
-                const updatedStore = { ...prevStore };
-                // Update the height for each column in the specified row
-                Object.keys(updatedStore[rowKey]).forEach(columnKey => {
-                    updatedStore[rowKey][columnKey].height = heightValue;
-                });
-                return updatedStore; // Return the updated store
-            });
+    // Use useCallback to memoize the add column function
+    // const handleAddColumn = useCallback(() => {
+    //     configValuesStore.addColumnToRow(0); // Call the function to add a new column to row 0
+    // }, []);
+
+    // const handleAddRow = () => {
+    //     configValuesStore.addRow(); // Call addRow method from store
+    // };
+
+      // Handler to add a cuboid at specified row and column
+      const handleAddCuboid = () => {
+        const row = parseInt(rowInput);
+        const col = parseInt(colInput);
+        
+        if (!isNaN(row) && !isNaN(col)) {
+            configValuesStore.addCuboidAtPosition(row, col);
+        } else {
+            alert("Please enter valid numeric values for row and column.");
         }
     };
 
     return (
         <>
-            <Canvas camera={{ position: [0, 50, 100] }}>
+            <Canvas camera={{ position: [50, 50, 100] }}>
+                {/* eslint-disable-next-line react/no-unknown-property */}
                 <ambientLight intensity={1} />
-
+                {/* eslint-disable-next-line react/no-unknown-property */}
                 <color attach="background" args={['#f0f0f0']} />
-
                 <CameraControls />
-
-                <OrbitControls
-                    enableRotate={true} // Rotate enabled (default)
-                    enableZoom={true}   // Zoom enabled (default)
-                    enablePan={true}    // Pan enabled (move camera in 2D)
-                    panSpeed={1.0}      // Adjust the panning speed
-                />
-
                 <Render />
             </Canvas>
+            {/* <button 
+                onClick={handleAddColumn} 
+                style={{
+                    position: 'absolute', 
+                    bottom: '20px', 
+                    left: '20px', 
+                    padding: '10px 20px', 
+                    backgroundColor: '#007bff', 
+                    color: '#fff', 
+                    border: 'none', 
+                    borderRadius: '5px', 
+                    cursor: 'pointer'
+                }}>
+                Add Column
+            </button>
+            <button 
+                onClick={handleAddRow} 
+                style={{
+                    position: 'absolute', 
+                    bottom: '80px', 
+                    left: '20px', 
+                    padding: '10px 20px', 
+                    backgroundColor: '#007bff', 
+                    color: '#fff', 
+                    border: 'none', 
+                    borderRadius: '5px', 
+                    cursor: 'pointer'
+                }}>
+                Add Raw
+            </button> */}
+            {/* <div style={{ position: 'absolute', bottom: '20px', left: '20px', zIndex: 1 }}>
+                <input
+                    type="number"
+                    placeholder="Row"
+                    value={rowInput}
+                    onChange={(e) => setRowInput(e.target.value)}
+                    style={{ marginRight: '10px' }}
+                />
+                <input
+                    type="number"
+                    placeholder="Column"
+                    value={colInput}
+                    onChange={(e) => setColInput(e.target.value)}
+                    style={{ marginRight: '10px' }}
+                />
+                <button onClick={handleAddCuboid}>Add Block</button>
+            </div> */}
 
-            {/* Display widths of all elements in the first row */}
-            {firstRowColumns.map((columnKey, index) => {
-                const width = firstRow[columnKey].width; // Get the width of the current column
-                return (
-                    <TextBox 
-                        key={index} 
-                        text={`Column ${parseInt(columnKey) + 1} Width:`} 
-                        value={width} // Pass the width value
-                        onChange={handleWidthChange} // Pass the change handler
-                        columnIndex={columnKey} // Pass the column index for identification
-                        top_offset={`${110 + index * 50}px`} // Position below the previous textboxes
-                    />
-                );
-            })}
-
-            {/* Display heights of all rows only if they have columns */}
-            {Object.keys(store).map((rowKey, rowIndex) => {
-                const row = store[rowKey];
-                // Only show height textbox if there are columns in the row
-                if (Object.keys(row).length > 0) {
-                    const height = row[0] ? row[0].height : 0; // Get the height of the first column in the row
-                    return (
-                        <TextBox 
-                            key={`row-${rowIndex}`} 
-                            text={`Row ${parseInt(rowKey) + 1} Height:`} 
-                            value={height} // Pass the height value
-                            onChange={handleHeightChange} // Pass the change handler
-                            columnIndex={rowKey} // Pass the row index for identification
-                            top_offset={`${200 + firstRowColumns.length * 30 + rowIndex * 50}px`} // Position below previous textboxes
-                        />
-                    );
-                }
-                return null; // Don't render anything if there are no columns
-            })}
         </>
     );
 }
