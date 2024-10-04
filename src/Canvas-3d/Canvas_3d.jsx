@@ -1,14 +1,41 @@
-import { Canvas } from '@react-three/fiber';
-import { CameraControls } from '@react-three/drei';
-import { useState } from 'react';
+import { Canvas, useLoader, useThree } from '@react-three/fiber';
+import { CameraControls, Environment } from '@react-three/drei';
+import { useEffect, useRef, useState } from 'react';
 import Render from './Render';
 // import configValuesStore from '../mobx/stores/configValuesStore';
 import { useStores } from "../mobx/context/StoreContext";
+import { GLTFLoader } from 'three/examples/jsm/Addons.js';
+import * as THREE from 'three'; // Import THREE here
 
 
 export default function Canvas_3d() {
 
+    const cameraRef = useRef();
+
+    useEffect(() => {
+        if (cameraRef.current) {
+            cameraRef.current.lookAt((25, 25, 0)); // Look at the center of the cube (adjust height as necessary)
+        }
+    }, [cameraRef]);
+
+    const controlsRef = useRef();
+
+    useEffect(() => {
+        if (controlsRef.current) {
+            controlsRef.current.target.set(25, 25, 0); // Set the target to (25, 25, 0)
+            controlsRef.current.update(); // Update the controls to reflect the new target
+        }
+    }, [controlsRef]);
+
     const { configValuesStore } = useStores();
+
+    const { scene } = useLoader(GLTFLoader, '/Models/Material.glb')
+
+
+    const material = scene.getObjectByName('Plane').material
+
+
+    console.log(material)
 
     // State for row and column input fields
     const [rowInput, setRowInput] = useState('');
@@ -37,13 +64,18 @@ export default function Canvas_3d() {
 
     return (
         <>
-            <Canvas camera={{ position: [50, 50, 100] }}>
+            <Canvas camera={{ position: [0, 0, 150], fov: 50 }}>
                 {/* eslint-disable-next-line react/no-unknown-property */}
                 <ambientLight intensity={1} />
                 {/* eslint-disable-next-line react/no-unknown-property */}
                 <color attach="background" args={['#f0f0f0']} />
-                <CameraControls />
+                <CameraControls 
+                    minDistance={100}  // Minimum zoom distance
+                    maxDistance={200}  // Maximum zoom distance
+                    dollyToCursor={true}  // Zoom to cursor
+                />
                 <Render />
+                <Environment preset='sunset' />
             </Canvas>
             {/* <button 
                 onClick={handleAddColumn} 
