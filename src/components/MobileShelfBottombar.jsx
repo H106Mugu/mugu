@@ -61,7 +61,7 @@ const MobileShelfBottombar = observer(({ sidebarOptionsData, changedKey }) => {
             : "-bottom-3 opacity-0"
         } `}
       >
-        <div className="font-[500]">Submit the design for a quote</div>
+        <div className="font-[500] text-sm">Submit the design for a quote</div>
         <Button
           // disabled={parseInt(changedKey) < sidebarOptionsData.length}
           size="small"
@@ -69,7 +69,7 @@ const MobileShelfBottombar = observer(({ sidebarOptionsData, changedKey }) => {
           className="ms-auto rounded-full border-theme-primary hover:!bg-[#d9d9d9]"
           onClick={() => submitFormStore.setModalOpen(true)}
         >
-          Submit
+          <span className="text-sm">Submit</span>
         </Button>
       </div>
     </div>
