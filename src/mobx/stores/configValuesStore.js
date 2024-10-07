@@ -1,10 +1,10 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, observable } from "mobx";
 
 class ConfigValuesStore {
   currentConfigType = "structure"; // Initialize currentConfigType with a default value
 
   // Define your observable state as an object
-  configValues = {
+  configValues = observable({
     shelfType: "",
     structureElements: "",
     color: "",
@@ -12,18 +12,20 @@ class ConfigValuesStore {
       0: { // Column 0
         width: 500, // Width of the cuboid
         height: 500, // Height of the cuboid
-        depth : 400,
-        StartWidth : 0,
-        StartHeight : 0,
+        depth: 400,
+        StartWidth: 0,
+        StartHeight: 0,
         materialType: 'metal', // Material type of the cuboid
         color: '#ff0000' // Color of the cuboid
       },
     },
-  };
+  }, { deep: true });
 
   constructor() {
     // Automatically make properties observable
-    makeAutoObservable(this);
+    makeAutoObservable(this, {
+      configValues: observable, // Mark configValues explicitly as observable
+    });
   }
 
   // Setter for currentConfigType
@@ -48,7 +50,8 @@ class ConfigValuesStore {
     Object.keys(this.configValues[raw_index]).forEach(colIndex => {
         this.configValues[raw_index][colIndex][key] = value;
     });
-}
+  }
+  
 
   // Getter to retrieve a value based on a key
   getConfigValue(key, raw_index, col_index) {
@@ -109,6 +112,7 @@ class ConfigValuesStore {
       StartHeight: startHeight // Calculated StartHeight based on the previous cuboid in the same row
     };
     console.log(this.configValues[raw_index][col_index], raw_index, col_index);
+    this.configValues = { ...this.configValues }; // Create a shallow copy to trigger reactivity
   }
   
 }
