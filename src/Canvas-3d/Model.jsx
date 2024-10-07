@@ -1,22 +1,19 @@
+/* eslint-disable react/no-unknown-property */
 import { useLoader } from "@react-three/fiber";
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/Addons.js";
 
-// eslint-disable-next-line react/prop-types
 const Pipe = ({ start, end, radius = 1, material }) => {
  
   const pipeRef = useRef();
 
   useEffect(() => {
     const direction = new THREE.Vector3().subVectors(end, start);
-    const distance = direction.length(); // Calculate the distance
-
-    // Position the pipe
+    const distance = direction.length();
     const midpoint = start.clone().lerp(end, 0.5);
     pipeRef.current.position.set(midpoint.x, midpoint.y, midpoint.z);
 
-    // Set the rotation of the pipe
     direction.normalize();
     const axis = new THREE.Vector3(0, 1, 0); // Default to align along Y-axis
     const quaternion = new THREE.Quaternion().setFromUnitVectors(
@@ -41,22 +38,18 @@ const Pipe = ({ start, end, radius = 1, material }) => {
       // Horizontal pipe (same y and x, sides)
       pipeRef.current.scale.set(radius, distance, radius); // Using distance
     }
-    // console.log(pipeRef)
   }, [start, end, radius]);
 
   return (
     <mesh ref={pipeRef}>
       <cylinderGeometry args={[radius, radius, 1, 16]} />
       <meshStandardMaterial {...material} />
-      {/* Use distance here */}
-      {/* <meshStandardMaterial color="silver" /> */}
     </mesh>
   );
 };
 
 const Connector = ({ position, material }) => {
   return (
-    // eslint-disable-next-line react/no-unknown-property
     <mesh position={position}>
       <sphereGeometry args={[1, 16, 16]} />
       <meshStandardMaterial {...material} />
@@ -70,14 +63,15 @@ const Model = ({keyCuboid, width, height, depth, StartWidth, StartHeight }) => {
 
   const material = scene.getObjectByName("Plane").material;
 
-  const texture = useLoader(THREE.TextureLoader, "public/Models/images.jpg");
+  const texture = useLoader(THREE.TextureLoader, "/Models/images.jpg");
+
+  console.log("model called")
 
   if (texture) {
     material.roughnessMap = texture;
     material.needsUpdate = true; // Ensure the material updates with the new texture
   }
 
-  // console.log(material);
 
   console.log(keyCuboid, width, StartWidth);
 
@@ -96,7 +90,6 @@ const Model = ({keyCuboid, width, height, depth, StartWidth, StartHeight }) => {
 
   return (
     <>
-      {/* Bottom frame */}
       <Pipe start={corners[0]} end={corners[1]} material={material} />
       <Pipe start={corners[1]} end={corners[2]} material={material}/> 
       <Pipe start={corners[2]} end={corners[3]} material={material}/> 
@@ -109,7 +102,7 @@ const Model = ({keyCuboid, width, height, depth, StartWidth, StartHeight }) => {
       <Pipe start={corners[1]} end={corners[5]} material={material}/> 
       <Pipe start={corners[2]} end={corners[6]} material={material}/> 
       <Pipe start={corners[3]} end={corners[7]} material={material}/> 
-      {/* Connectors at corners */}
+
       <Connector position={corners[0]}  material={material}/>
       <Connector position={corners[1]}  material={material}/>
       <Connector position={corners[2]}  material={material}/>

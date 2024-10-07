@@ -1,218 +1,149 @@
-// import React from 'react';
-import { observer } from 'mobx-react-lite'; // Import observer from mobx-react-lite
-import Model from './Model'; // Assuming Model.jsx is in the same directory
+import { observer } from "mobx-react-lite";
 import { useStores } from "../mobx/context/StoreContext";
-import { Html, Text } from '@react-three/drei'; // Use Sphere from drei for 3D clickable buttons
-import React, { useState } from 'react'; // Import useState to manage local state
-import * as THREE from "three"
-import './Three.css';
+import Model from './Model';
+import CreateButton from './CreateButton';
+import './css/Three.css';
+import React from "react";
 
-const Render = () => {
-    let StartWidth = 0;
-    let EndWidth = 0;
-    let StartHeight = 0;
-    let EndHeight = 0;
-    let column = 0;
-    let width = 0;
-    let height = 0;
-    let depth = 0;
-    const { configValuesStore } = useStores();
-    const rows = Object.keys(configValuesStore.configValues).filter(key => !isNaN(key)); // Get all rows (numeric keys)
-    
-    
-    return (
-        <>
-            {rows.map(raw_index => {
-                const columns = Object.keys(configValuesStore.configValues[raw_index]);
+const Render = observer(() => {
+  const { configValuesStore } = useStores();
+  const rows = Object.keys(configValuesStore.configValues).filter(key => !isNaN(key));
 
-                StartHeight = EndHeight;
-                StartWidth = 0;
-                EndWidth = 0;
-                column = 0; 
+  return (
+    <>
+      {rows.map(raw_index => {
+        const columns = Object.keys(configValuesStore.configValues[raw_index]);
+        raw_index = parseInt(raw_index);
 
-                return columns.map((col_index) => {
-                    col_index = parseInt(col_index);
-                    // console.log("col_index", col_index)
-                    // console.log("column", column)
-                    // console.log(col_index == column)
-                    if (col_index == column) {
-                        width = configValuesStore.getConfigValue("width", raw_index, col_index);
+        return columns.map(col_index => {
+          col_index = parseInt(col_index);
 
-                        // Update StartWidth, EndWidth, and EndHeight before rendering each column
-                        StartWidth = EndWidth;
-                        EndWidth = StartWidth + (width / 10); 
-                        
-                    }
-                    else {
-                        for (let i = column; i < col_index + 1; i++) {
-                            // console.log("i", i)
-                            width = configValuesStore.getConfigValue("width", 0, i);
-                            // console.log("width", width)
-                            StartWidth = EndWidth;
-                            EndWidth = StartWidth + (width / 10); 
-                        }
-                    }
+          const cuboid = configValuesStore.configValues[raw_index][col_index];
 
-                    height = configValuesStore.getConfigValue("height", raw_index, col_index);
-                    depth = configValuesStore.getConfigValue("depth", raw_index, col_index);
+          const width = cuboid?.width || 0;
+          const height = cuboid?.height || 0;
+          const depth = cuboid?.depth || 0;
+          const StartWidth = cuboid?.StartWidth || 0;
+          const StartHeight = cuboid?.StartHeight || 0;
 
-                    EndHeight = StartHeight + (height / 10);
+          return (
+            <React.Fragment key={`${raw_index}-${col_index}`}>
+              <Model
+                keyCuboid={`${raw_index}-${col_index}`}
+                width={width / 10}
+                height={height / 10}
+                depth={depth / 10} 
+                StartWidth={StartWidth}
+                StartHeight={StartHeight}
+              />
+              {(((raw_index === 0 && !configValuesStore.hasCuboidAt(raw_index, col_index + 1)) ||
+                (raw_index > 0 && configValuesStore.hasCuboidAt(raw_index - 1, col_index + 1) && !configValuesStore.hasCuboidAt(raw_index, col_index + 1))) && (
+                <CreateButton
+                  position={[StartWidth + width / 20 + 2, StartHeight, 0]}
+                  raw_index={raw_index}
+                  col_index={col_index}
+                  isRight={true}
+                />
+              ))}
+              {!configValuesStore.hasCuboidAt(raw_index + 1, col_index) && (
+                <CreateButton
+                  position={[StartWidth, StartHeight + height / 20 + 2, 0]}
+                  raw_index={raw_index}
+                  col_index={col_index}
+                  isRight={false}
+                />
+              )}
+            </React.Fragment>
+          );
+        });
+      })}
+    </>
+  );
+});
 
-                    column = col_index + 1;
-                    console.log(!configValuesStore.hasCuboidAt(raw_index, parseInt(col_index) + 1))
-                    
-                    return (
-                        <React.Fragment key={`${raw_index}-${col_index}`}>
-                            <Model
-                                keyCuboid={`${raw_index}-${col_index}`}
-                                width={width / 10} // Scale down for display purposes
-                                height={height / 10} // Scale down for display purposes
-                                depth={depth / 10} // Common depth
-                                StartWidth={StartWidth}
-                                EndWidth={EndWidth}
-                                StartHeight={StartHeight} // Pass starting Y position
-                                EndHeight={EndHeight} // Pass ending Y position
-                            />
-                            {
-                                (
-                                    (parseInt(raw_index) === 0 && !configValuesStore.hasCuboidAt(raw_index, parseInt(col_index) + 1)) || 
-                                    (parseInt(raw_index) > 0 && configValuesStore.hasCuboidAt(parseInt(raw_index) - 1, col_index + 1) && !configValuesStore.hasCuboidAt(raw_index, parseInt(col_index) + 1))
-                                ) && (
-                                    <>
-                                        {/* <mesh
-                                            position={[EndWidth - (width / 20) + 2, StartHeight, 0]} // Position near the cuboid's right edge
-                                            onClick={() => configValuesStore.addCuboidAtPosition(raw_index, parseInt(col_index) + 1)}
-                                        >
-                                            <sphereGeometry args={[2, 32, 32]} />
-                                            <meshStandardMaterial color="white" />
-                                        </mesh>
-                                        <Text
-                                            position={[EndWidth - (width / 20) + 2, StartHeight + 1, 0]} // Position text on the sphere
-                                            fontSize={20} // Adjust text size
-                                            color="black" // Text color
-                                            anchorX="center" // Align text to center
-                                            anchorY="middle"
-                                        >
-                                            +
-                                        </Text> */}
+export default Render;
 
-                                        <Html
-                                            position={[EndWidth - (width / 20) + 2, StartHeight, 0]} // Position relative to 3D model
-                                            scale={5} // Adjust the size
-                                            center
-                                            zIndexRange={[0, 0]}
-                                            >
-                                            <div
-                                                className="add-icon-container"
-                                                onClick={() => configValuesStore.addCuboidAtPosition(raw_index, parseInt(col_index) + 1)}
-                                                style={{ cursor: 'pointer' }}
-                                            >
-                                                <img
-                                                    src='public/plus-icon.svg'
-                                                    alt=""
-                                                    style={{
-                                                        width: '30px',
-                                                        height: '30px',
-                                                    }}
-                                                    onMouseEnter={() => {
-                                                        document.body.style.cursor = 'pointer';
-                                                    }}
-                                                    onMouseLeave={() => {
-                                                        document.body.style.cursor = 'auto';
-                                                    }}
-                                                />
-                                            </div>
-                                        </Html>
-                                    </>
-                                )
-                            }
+// import { observer } from "mobx-react-lite";
+// import { useEffect, useState } from "react";
+// import { useStores } from "../mobx/context/StoreContext";
+// import Model from './Model';
+// import CreateButton from './CreateButton';
+// import './css/Three.css';
+// import React from "react";
 
+// const Render = observer(() => {
+//   const { configValuesStore } = useStores();
+//   const [cuboids, setCuboids] = useState([]);
 
+//   // Effect to update cuboids when configValuesStore changes
+//   useEffect(() => {
+//     const initializeCuboids = () => {
+//       const allCuboids = [];
 
-                            {/* Render 3D Button for Adding a Row (top of cuboid) */}
-                            {!configValuesStore.hasCuboidAt(parseInt(raw_index) + 1, col_index) && (
-                                <>
-                                {/* <mesh
-                                    position={[StartWidth, EndHeight - (height / 20) + 2, 0]} // Position near the cuboid's top edge
-                                    onClick={() => configValuesStore.addCuboidAtPosition(parseInt(raw_index) + 1, col_index)}
-                                >
-                                    <sphereGeometry args={[2, 32, 32]} />
-                                    <meshStandardMaterial color="white" />
-                                </mesh>
-                                <Text
-                                    position={[StartWidth, EndHeight - (height / 20) + 3, 0]} // Position text on the sphere
-                                    fontSize={20} // Adjust text size
-                                    color="black" // Text color
-                                    anchorX="center" // Align text to center
-                                    anchorY="middle"
-                                >
-                                    +
-                                </Text> */}
-                                <Html
-                                    position={[StartWidth, EndHeight - (height / 20) + 2, 0]} // Position relative to 3D model
-                                    scale={5} // Adjust the size
-                                    center
-                                    zIndexRange={[0, 0]}
-                                    >
-                                    <div
-                                        className="add-icon-container"
-                                        onClick={() => configValuesStore.addCuboidAtPosition(parseInt(raw_index) + 1, col_index)}
-                                        style={{ cursor: 'pointer' }}
-                                    >
-                                        <img
-                                            src='public/plus-icon.svg'
-                                            alt=""
-                                            style={{
-                                                width: '30px',
-                                                height: '30px',
-                                            }}
-                                            onMouseEnter={() => {
-                                                document.body.style.cursor = 'pointer';
-                                            }}
-                                            onMouseLeave={() => {
-                                                document.body.style.cursor = 'auto';
-                                            }}
-                                        />
-                                    </div>
-                                </Html>
-                                </>
-                            )}
-                        </React.Fragment>
-                    );
-                });
-            })}
-          {/* {Object.keys(configValuesStore.configValues[0]).map((colIndex) => {
-                const column = configValuesStore.configValues[0][colIndex];
+//       // Flattening the configValuesStore
+//       Object.entries(configValuesStore.configValues).forEach(([raw_index, columns]) => {
+//         Object.entries(columns).forEach(([col_index, cuboid]) => {
+//           allCuboids.push({
+//             key: `${raw_index}-${col_index}`,
+//             width: cuboid?.width || 0,
+//             height: cuboid?.height || 0,
+//             depth: cuboid?.depth || 0,
+//             StartWidth: cuboid?.StartWidth || 0,
+//             StartHeight: cuboid?.StartHeight || 0,
+//             raw_index: parseInt(raw_index),
+//             col_index: parseInt(col_index)
+//           });
+//         });
+//       });
 
-                StartWidth = EndWidth; 
-                EndWidth = StartWidth + (column.width / 10); 
-                
-                return (
-                    <Model
-                        key={colIndex} // Use colIndex as the key for each Model component
-                        width={column.width / 10} // Scale down for display purposes
-                        height={column.height / 10} // Scale down for display purposes
-                        depth={column.depth / 10} // Common depth
-                        StartWidth={colIndex * (column.width / 10)} // Position each cuboid based on its column index
-                        EndWidth={(colIndex + 1) * (column.width / 10)} // Calculate the end width for each cuboid
-                        StartHeight={0} // You can adjust this if you want to position differently
-                        EndHeight={column.height / 10} // Position based on the height
-                    />
-                );
-            })} */}
-          {/* Render the 3D model with the updated values from configValuesStore */}
-          {/* <Model
-              width={configValuesStore.getConfigValue("width", 0, 0) / 10} // Scale down for display purposes
-              height={configValuesStore.getConfigValue("height", 0, 0) / 10} // Scale down for display purposes
-              depth={configValuesStore.getConfigValue("depth", 0, 0) / 10} // Common depth
-              StartWidth={StartWidth}
-              EndWidth={EndWidth}
-              StartHeight={StartHeight} // Pass starting Y position
-              EndHeight={EndHeight} // Pass ending Y position
-          /> */}
-        </>
-    );
-};
+//       setCuboids(allCuboids);
+//       console.log("allCuboids", allCuboids);
+//     };
 
-// Wrap the component in observer to respond to MobX store changes
-export default observer(Render);
+//     initializeCuboids(); // Call to initialize cuboids
+//   }, [configValuesStore.configValues]); // Depend on the store's observable object
+
+//   const handleAddCuboid = (raw_index, col_index) => {
+//     configValuesStore.addCuboidAtPosition(raw_index, col_index); // Add cuboid
+//   };
+
+//   // Render the models and buttons
+//   return (
+//     <>
+//       {cuboids.map(({ key, width, height, depth, StartWidth, StartHeight, raw_index, col_index }) => (
+//         <React.Fragment key={key}>
+//           <Model
+//             keyCuboid={key}
+//             width={width / 10}
+//             height={height / 10}
+//             depth={depth / 10}
+//             StartWidth={StartWidth}
+//             StartHeight={StartHeight}
+//           />
+//           {(((raw_index === 0 && !configValuesStore.hasCuboidAt(raw_index, col_index + 1)) ||
+//             (raw_index > 0 && configValuesStore.hasCuboidAt(raw_index - 1, col_index + 1) && !configValuesStore.hasCuboidAt(raw_index, col_index + 1))) && (
+//             <CreateButton
+//               position={[StartWidth + width / 20 + 2, StartHeight, 0]}
+//               raw_index={raw_index}
+//               col_index={col_index}
+//               onClick={() => handleAddCuboid(raw_index, col_index + 1)} // Add click handler
+//               isRight={true}
+//             />
+//           ))}
+//           {!configValuesStore.hasCuboidAt(raw_index + 1, col_index) && (
+//             <CreateButton
+//               position={[StartWidth, StartHeight + height / 20 + 2, 0]}
+//               raw_index={raw_index}
+//               col_index={col_index}
+//               onClick={() => handleAddCuboid(raw_index + 1, col_index)} // Add click handler
+//               isRight={false}
+//             />
+//           )}
+//         </React.Fragment>
+//       ))}
+//     </>
+//   );
+// });
+
+// export default Render;
+

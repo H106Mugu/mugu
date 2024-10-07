@@ -13,6 +13,8 @@ class ConfigValuesStore {
         width: 500, // Width of the cuboid
         height: 500, // Height of the cuboid
         depth : 400,
+        StartWidth : 0,
+        StartHeight : 0,
         materialType: 'metal', // Material type of the cuboid
         color: '#ff0000' // Color of the cuboid
       },
@@ -63,33 +65,52 @@ class ConfigValuesStore {
     return this.configValues[rowIndex] && this.configValues[rowIndex][colIndex];
   }
 
-  addColumnToRow(rowIndex = 0) {
-    const existingColumns = this.configValues[rowIndex];
-    const newColumnIndex = Object.keys(existingColumns).length; // Determine the new column index
-
-    // Create a new column with the same data as column 0
-    this.configValues[rowIndex][newColumnIndex] = { ...existingColumns[0] };
-    console.log("add column called");
-  }
-
-  addRow() {
-    const rows = Object.keys(this.configValues).filter(key => !isNaN(key)); // Get numeric rows
-    const lastRowIndex = rows.length > 0 ? Math.max(...rows) : 0;
-    const newRowIndex = lastRowIndex + 1;
-    const previousRow = this.configValues[lastRowIndex];
-    
-    // Add new row with the same data as the previous row
-    this.configValues[newRowIndex] = { ...previousRow };
-  }
-
-   // Add cuboid at specified row and column with data from [0, 0]
-   addCuboidAtPosition(raw_index, col_index) {
+  addCuboidAtPosition(raw_index, col_index) {
+    const defaultCuboid = this.configValues[0][0]; // Default cuboid at [0,0]
+  
+    // Check if the row exists, if not, initialize it
     if (!this.configValues[raw_index]) {
       this.configValues[raw_index] = {};
     }
-
-    this.configValues[raw_index][col_index] = { ...this.configValues[0][0] };
+  
+    let width, height, startWidth, startHeight;
+  
+    // Calculate width from the same column (if exists), otherwise use default
+    if (raw_index > 0) {
+      width = this.configValues[raw_index - 1][col_index].width;
+      startHeight = this.configValues[raw_index - 1][col_index].StartHeight + (this.configValues[raw_index - 1][col_index].height / 10);
+    } else {
+      width = defaultCuboid.width;
+      startHeight = defaultCuboid.StartHeight;
+    }
+  
+    // Calculate height from the same row (if exists), otherwise use default
+    if (col_index > 0) {
+      if (this.configValues[raw_index][col_index - 1]) {
+        height = this.configValues[raw_index][col_index - 1].height;
+        startWidth = this.configValues[raw_index][col_index - 1].StartWidth + (this.configValues[raw_index][col_index - 1].width / 10);
+      } else {
+        height = this.configValues[0][col_index - 1].height;
+        startWidth = this.configValues[0][col_index - 1].StartWidth + (this.configValues[0][col_index - 1].width / 10);
+      }     
+    } else {
+      height = defaultCuboid.height;
+      startWidth = defaultCuboid.StartWidth;
+    }
+  
+    // Insert the new cuboid into the configValues store
+    this.configValues[raw_index][col_index] = {
+      width: width, // Calculated width from the same column
+      height: height, // Calculated height from the same row
+      depth: defaultCuboid.depth, // Use depth from [0,0]
+      materialType: defaultCuboid.materialType, // Use materialType from [0,0]
+      color: defaultCuboid.color, // Use color from [0,0]
+      StartWidth: startWidth, // Calculated StartWidth based on the previous cuboid in the same column
+      StartHeight: startHeight // Calculated StartHeight based on the previous cuboid in the same row
+    };
+    console.log(this.configValues[raw_index][col_index], raw_index, col_index);
   }
+  
 }
 
 // Export a singleton instance
