@@ -42,14 +42,14 @@ const MobileShelfBottombar = observer(({ sidebarOptionsData, changedKey }) => {
     key: (index + 1).toString(), // Assign a unique key for each tab
     label: option.title, // Tab label
     children: option.component, // Tab content
-    disabled: parseInt(changedKey) < index, // Disable tabs if they are not unlocked yet
+    // disabled: parseInt(changedKey) < index, // Disable tabs if they are not unlocked yet
   }));
 
-  useEffect(() => {
-    if (parseInt(changedKey) === sidebarOptionsData.length - 1) {
-      configValuesStore.setCurrentConfigType("color");
-    }
-  }, [changedKey]);
+  // useEffect(() => {
+  //   if (parseInt(changedKey) === sidebarOptionsData.length - 1) {
+  //     configValuesStore.setCurrentConfigType("color");
+  //   }
+  // }, [changedKey]);
 
   return (
     <div>
@@ -63,10 +63,10 @@ const MobileShelfBottombar = observer(({ sidebarOptionsData, changedKey }) => {
       >
         <div className="font-[500]">Submit the design for a quote</div>
         <Button
-          disabled={parseInt(changedKey) < sidebarOptionsData.length}
+          // disabled={parseInt(changedKey) < sidebarOptionsData.length}
           size="small"
-          type="primary"
-          className="ms-auto rounded-full"
+          type="default"
+          className="ms-auto rounded-full border-theme-primary hover:!bg-[#d9d9d9]"
           onClick={() => submitFormStore.setModalOpen(true)}
         >
           Submit

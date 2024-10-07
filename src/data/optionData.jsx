@@ -42,7 +42,7 @@ export const shelfTypeOption = [
 export const structureElements = [
   {
     label: (
-      <div className="flex flex-col items-center justify-start pt-5 h-full min-h-[111px] w-full">
+      <div className="flex flex-col items-center justify-start pt-5 h-full min-h-[111px] w-full px-1">
         <img src={all} alt="All (no front)" className="w-[53px] h-[53px]" />
         <p className="text-[11px] leading-3">All (no front)</p>
       </div>
@@ -51,7 +51,7 @@ export const structureElements = [
   },
   {
     label: (
-      <div className="flex flex-col items-center justify-start pt-5 h-full min-h-[111px] w-full">
+      <div className="flex flex-col items-center justify-start pt-5 h-full min-h-[111px] w-full px-1">
         <img
           src={withoutBack}
           alt="Without Back"
@@ -64,7 +64,7 @@ export const structureElements = [
   },
   {
     label: (
-      <div className="flex flex-col items-center justify-start pt-5 h-full min-h-[111px] w-full">
+      <div className="flex flex-col items-center justify-start pt-5 h-full min-h-[111px] w-full px-1">
         <img
           src={withTopAndBottomOnly}
           alt="With top and bottom only"
@@ -77,7 +77,7 @@ export const structureElements = [
   },
   {
     label: (
-      <div className="flex flex-col items-center justify-start pt-5 h-full min-h-[111px] w-full">
+      <div className="flex flex-col items-center justify-start pt-5 h-full min-h-[111px] w-full px-1">
         <img
           src={withoutShelves}
           alt="Without Shelves"
@@ -90,7 +90,7 @@ export const structureElements = [
   },
   {
     label: (
-      <div className="flex flex-col items-center justify-start pt-5 h-full min-h-[111px] w-full">
+      <div className="flex flex-col items-center justify-start pt-5 h-full min-h-[111px] w-full px-1">
         <img
           src={withoutShelvesAndWalls}
           alt="Without Shelves and walls"
@@ -109,7 +109,7 @@ export const colorOptions = [
       <div className="w-full h-[70px] flex flex-col justify-start items-center">
         <div
           style={{ backgroundColor: "black" }}
-          className="w-8 h-8 rounded-full border mt-1"
+          className="w-8 h-8 rounded-full border mt-1 hover:border-theme-primary transition-all duration-300 ease-in-out"
         />
         <div className="text-[12px] text-center font-normal leading-3 mt-1">
           Transparent Black
@@ -124,7 +124,7 @@ export const colorOptions = [
       <div className="w-full h-[70px] flex flex-col justify-start items-center">
         <div
           style={{ backgroundColor: "white" }}
-          className="w-8 h-8 rounded-full border mt-1"
+          className="w-8 h-8 rounded-full border mt-1 hover:border-theme-primary transition-all duration-300 ease-in-out"
         />
         <div className="text-[12px] text-center font-normal leading-3 mt-1">
           White
@@ -138,7 +138,7 @@ export const colorOptions = [
       <div className="w-full h-[70px] flex flex-col justify-start items-center">
         <div
           style={{ backgroundColor: "orange" }}
-          className="w-8 h-8 rounded-full border mt-1"
+          className="w-8 h-8 rounded-full border mt-1 hover:border-theme-primary transition-all duration-300 ease-in-out"
         />
         <div className="text-[12px] text-center font-normal leading-3 mt-1">
           Transparent Orange
@@ -153,7 +153,7 @@ export const colorOptions = [
       <div className="w-full h-[70px] flex flex-col justify-start items-center">
         <div
           style={{ backgroundColor: "transparent" }}
-          className="w-8 h-8 rounded-full border mt-1"
+          className="w-8 h-8 rounded-full border mt-1 hover:border-theme-primary transition-all duration-300 ease-in-out"
         />
         <div className="text-[12px] text-center font-normal leading-3 mt-1">
           Clear
@@ -165,21 +165,22 @@ export const colorOptions = [
 ];
 
 export const widthOptions = [
-  { label: "150", value: "150" },
-  { label: "313", value: "313" },
-  { label: "550", value: "550" },
-  { label: "750", value: "750" },
-  { label: "1000", value: "1000" },
+  { label: "270", value: "270" },
+  { label: "370", value: "370" },
 ];
 
 export const heightOptions = [
-  { label: "330", value: "330" },
-  { label: "550", value: "550" },
-  { label: "750", value: "750" },
-  { label: "1000", value: "1000" },
+  { label: "121", value: "121" },
+  { label: "180", value: "180" },
+  { label: "200", value: "200" },
+  { label: "270", value: "270" },
+  { label: "313", value: "313" },
+  { label: "370", value: "370" },
+  { label: "483", value: "483" },
+  { label: "603", value: "603" },
 ];
 
 export const depthOptions = [
-  { label: "330", value: "330" },
-  { label: "550", value: "550" },
+  { label: "270", value: "270" },
+  { label: "370", value: "370" },
 ];

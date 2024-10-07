@@ -35,11 +35,12 @@ const ShelfConfigurator = observer(() => {
       <div className="flex flex-col md:flex-row h-[100dvh] relative">
         <div className="bg-gray-100 w-full md:w-[66%] h-[75%] md:h-full flex justify-center items-center">
           <div className="absolute top-3 left-2 flex items-center z-30">
-            <Button type="link" className="gap-1 !px-0 !py-0">
-              <IoArrowBackOutline className="text-lg text-theme-primary font-semibold" />
-              <span className="text-md text-theme-primary font-semibold">
-                Back
-              </span>
+            <Button
+              type="link"
+              className="gap-1 !px-0 !py-0 text-theme-primary/70 hover:!text-theme-primary"
+            >
+              <IoArrowBackOutline className="text-lg" />
+              <span className="text-md">Back</span>
             </Button>
           </div>
           <div className="absolute top-[53px] left-0 right-0 flex items-center z-30 w-full md:w-[75%] md:hidden h-px bg-theme-primary" />
@@ -65,7 +66,7 @@ const ShelfConfigurator = observer(() => {
           </div>
           <Canvas_3d />
         </div>
-        <div className="w-full md:w-[34%] h-[201px] md:h-full md:min-w-[450px] p-0 md:p-6 bg-[#fbfbfc] overflow-auto">
+        <div className="w-full md:w-[34%] h-[220px] md:h-full md:min-w-[450px] p-0 md:p-6 bg-[#fbfbfc] overflow-auto">
           <ShelfSidebar />
         </div>
         <div
@@ -82,7 +83,7 @@ const ShelfConfigurator = observer(() => {
       <Modal
         width={325}
         centered
-        title="[Modal Heading]"
+        title="Welcome to the 3D Configurator"
         open={!modalStore.getModalState}
         onCancel={() => modalStore.setModalState(true)}
         footer={[
@@ -97,13 +98,12 @@ const ShelfConfigurator = observer(() => {
         ]}
       >
         <div className="font-[700] text-sm mb-[6px]">
-          Lorem ipsum dolor sit amet
+          Start customizing your shelf with a few simple steps.
         </div>
         <div className="font-[500] text-sm">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat.{" "}
+          Choose your materials, adjust dimensions, and select colors to design
+          your perfect shelf. When you're done, request a quote, and our team
+          will follow up with pricing.
         </div>
       </Modal>
       <SubmitFormModal

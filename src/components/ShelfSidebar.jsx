@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import CustomAntdRadioGroup from "./CustomAntdRadioGroup";
 import {
   heightOptions as defaultHeightOptions,
@@ -153,6 +153,7 @@ const ShelfSidebar = observer(() => {
 
   const handleSidebarOptionsChange = (value, type, key) => {
     configValuesStore.setConfigValue(type, value);
+    console.log("Changed key qdaereae:", key, value, type);
     setChangedKey(key);
     switch (type) {
       case "shelfType":
@@ -181,6 +182,14 @@ const ShelfSidebar = observer(() => {
         break;
     }
   };
+
+  useLayoutEffect(() => {
+    handleSidebarOptionsChange(
+      configValuesStore.getAllConfigValues.shelfType,
+      "shelfType",
+      "1"
+    );
+  }, [configValuesStore]);
 
   // useEffect to update options based on shelfType
   useEffect(() => {
@@ -214,11 +223,17 @@ const ShelfSidebar = observer(() => {
     setHeight(null);
   };
 
+  console.log(
+    "Changed key:",
+    configValuesStore.getAllConfigValues[0][0]["width"]
+  );
+
   const sidebarOptionsData = [
     {
       title: "Choose Your Shelf Type",
       component: (
         <CustomAntdRadioGroup
+          value={configValuesStore.getAllConfigValues.shelfType}
           options={shelfTypeOption}
           disabled={false}
           onChange={(ev) =>
@@ -231,8 +246,9 @@ const ShelfSidebar = observer(() => {
       title: "Structure Elements",
       component: (
         <CustomAntdRadioGroup
+          value={configValuesStore.getAllConfigValues.structureElements}
           options={structureOptions}
-          disabled={parseInt(changedKey) < 1}
+          // disabled={parseInt(changedKey) < 1}
           onChange={(ev) =>
             handleSidebarOptionsChange(
               ev.target.value,
@@ -247,8 +263,9 @@ const ShelfSidebar = observer(() => {
       title: "Width (mm)",
       component: (
         <CustomAntdRadioGroup
+          value={configValuesStore.getAllConfigValues[0][0]["width"]}
           options={widthOptions}
-          disabled={parseInt(changedKey) < 2}
+          // disabled={parseInt(changedKey) < 2}
           onChange={(ev) =>
             handleSidebarOptionsChange(ev.target.value, "width", "3")
           }
@@ -259,8 +276,9 @@ const ShelfSidebar = observer(() => {
       title: "Depth (mm)",
       component: (
         <CustomAntdRadioGroup
+          value={configValuesStore.getAllConfigValues[0][0]["depth"]}
           options={depthOptions}
-          disabled={parseInt(changedKey) < 3}
+          // disabled={parseInt(changedKey) < 3}
           onChange={(ev) =>
             handleSidebarOptionsChange(ev.target.value, "depth", "4")
           }
@@ -271,8 +289,9 @@ const ShelfSidebar = observer(() => {
       title: "Height (mm)",
       component: (
         <CustomAntdRadioGroup
+          value={configValuesStore.getAllConfigValues[0][0].height}
           options={heightOptions}
-          disabled={parseInt(changedKey) < 4}
+          // disabled={parseInt(changedKey) < 4}
           onChange={(ev) =>
             handleSidebarOptionsChange(ev.target.value, "height", "5")
           }
@@ -283,8 +302,9 @@ const ShelfSidebar = observer(() => {
       title: "Color",
       component: (
         <CustomAntdRadioGroup
+          value={configValuesStore.getAllConfigValues.color}
           options={colorOptions}
-          disabled={parseInt(changedKey) < 5}
+          // disabled={parseInt(changedKey) < 5}
           onChange={(ev) =>
             handleSidebarOptionsChange(ev.target.value, "color", "6")
           }
@@ -313,20 +333,15 @@ const ShelfSidebar = observer(() => {
             </div>
           ))}
 
-          <div className="text-sm">
-            <span className="font-semibold">Next step:</span> Lorem ipsum dolor
-            sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-            veniam, quis nostrud exercitation.
-          </div>
+          <div className="text-sm">Submit the design for a quote</div>
           <Button
-            disabled={parseInt(changedKey) < sidebarOptionsData.length}
+            // disabled={parseInt(changedKey) < sidebarOptionsData.length}
             size="large"
-            type="primary"
-            className="w-full py-6"
+            type="default"
+            className="w-full py-6 rounded-full"
             onClick={() => submitFormStore.setModalOpen(true)}
           >
-            Get a quote on this!
+            Submit
           </Button>
         </div>
       )}

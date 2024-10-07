@@ -10,7 +10,7 @@ const CustomCheckbox = ({ checked, onChange, label, icon }) => {
         className="hidden" // Hide the default checkbox
       />
       <span
-        className={`border-theme-primary flex items-center justify-center px-2 !text-[0.75rem] font-[500] h-8 border rounded-[1920px] transition-colors duration-300 
+        className={`border-theme-[#d9d9d9] hover:border-theme-primary flex items-center justify-center px-2 !text-[0.75rem] font-[500] h-8 border rounded-[1920px] transition-colors duration-300 
           ${
             checked
               ? "bg-theme-primary text-white border-theme-primary hover:bg-opacity-80" // Styles when checked

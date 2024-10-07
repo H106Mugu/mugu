@@ -7,6 +7,9 @@ import { StoreProvider } from "./mobx/context/StoreContext";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ConfigProvider
+      wave={{
+        disabled: true,
+      }}
       theme={{
         token: {
           // Seed Token

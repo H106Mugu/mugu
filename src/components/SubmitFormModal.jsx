@@ -1,19 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { Modal, Form, Input, Checkbox, Button } from "antd";
 import { useStores } from "../mobx/context/StoreContext";
 
 const SubmitFormModal = ({ open, onClose }) => {
   const [form] = Form.useForm();
   const { submitFormStore } = useStores();
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const onFinish = (values) => {
     console.log("Received values from form: ", values);
     submitFormStore.setFields(values);
     setLoading(true);
     setTimeout(() => {
-      submitFormStore.setModalOpen(false);
       setLoading(false);
+      setIsSubmitted(true);
+      form.resetFields();
     }, 1800);
   };
 
@@ -32,6 +34,7 @@ const SubmitFormModal = ({ open, onClose }) => {
       </div>
       <p className="my-4 font-semibold">Your info</p>
       <Form
+        disabled={isSubmitted}
         form={form}
         layout="vertical"
         onFinish={onFinish}
@@ -58,7 +61,7 @@ const SubmitFormModal = ({ open, onClose }) => {
           ]}
         >
           <Input
-            placeholder="Enter your email"
+            placeholder="Email*"
             className="!p-[8px] rounded-none border-[#BCBCBC]"
           />
         </Form.Item>
@@ -81,16 +84,23 @@ const SubmitFormModal = ({ open, onClose }) => {
           <Checkbox>Require Shipping</Checkbox>
         </Form.Item>
 
-        <Form.Item className="w-full pb-[32px]">
-          <Button
-            loading={loading}
-            type="default"
-            htmlType="submit"
-            className="w-full"
-          >
-            Submit
-          </Button>
-        </Form.Item>
+        {isSubmitted ? (
+          <div className="leading-5 pb-7">
+            <div className="text-green-600">Submission Successful!</div>
+            <div>Thank you! We'll in touch soon with your quote.</div>
+          </div>
+        ) : (
+          <Form.Item className="w-full pb-[32px]">
+            <Button
+              loading={loading}
+              type="default"
+              htmlType="submit"
+              className="w-full"
+            >
+              Submit
+            </Button>
+          </Form.Item>
+        )}
       </Form>
     </Modal>
   );
