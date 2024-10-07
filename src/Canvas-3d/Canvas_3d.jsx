@@ -10,36 +10,29 @@ import * as THREE from 'three'; // Import THREE here
 
 export default function Canvas_3d() {
 
-    const cameraRef = useRef();
+    // const cameraRef = useRef();
 
-    useEffect(() => {
-        if (cameraRef.current) {
-            cameraRef.current.lookAt((25, 25, 0)); // Look at the center of the cube (adjust height as necessary)
-        }
-    }, [cameraRef]);
+    // useEffect(() => {
+    //     if (cameraRef.current) {
+    //         cameraRef.current.lookAt((25, 25, 0)); // Look at the center of the cube (adjust height as necessary)
+    //     }
+    // }, [cameraRef]);
 
-    const controlsRef = useRef();
+    // const controlsRef = useRef();
 
-    useEffect(() => {
-        if (controlsRef.current) {
-            controlsRef.current.target.set(25, 25, 0); // Set the target to (25, 25, 0)
-            controlsRef.current.update(); // Update the controls to reflect the new target
-        }
-    }, [controlsRef]);
+    // useEffect(() => {
+    //     if (controlsRef.current) {
+    //         controlsRef.current.target.set(25, 25, 0); // Set the target to (25, 25, 0)
+    //         controlsRef.current.update(); // Update the controls to reflect the new target
+    //     }
+    // }, [controlsRef]);
 
-    const { configValuesStore } = useStores();
-
-    const { scene } = useLoader(GLTFLoader, '/Models/Material.glb')
+    // const { configValuesStore } = useStores();
 
 
-    const material = scene.getObjectByName('Plane').material
-
-
-    console.log(material)
-
-    // State for row and column input fields
-    const [rowInput, setRowInput] = useState('');
-    const [colInput, setColInput] = useState('');
+    // // State for row and column input fields
+    // const [rowInput, setRowInput] = useState('');
+    // const [colInput, setColInput] = useState('');
 
     // Use useCallback to memoize the add column function
     // const handleAddColumn = useCallback(() => {
@@ -50,17 +43,17 @@ export default function Canvas_3d() {
     //     configValuesStore.addRow(); // Call addRow method from store
     // };
 
-      // Handler to add a cuboid at specified row and column
-      const handleAddCuboid = () => {
-        const row = parseInt(rowInput);
-        const col = parseInt(colInput);
+    //   // Handler to add a cuboid at specified row and column
+    //   const handleAddCuboid = () => {
+    //     const row = parseInt(rowInput);
+    //     const col = parseInt(colInput);
         
-        if (!isNaN(row) && !isNaN(col)) {
-            configValuesStore.addCuboidAtPosition(row, col);
-        } else {
-            alert("Please enter valid numeric values for row and column.");
-        }
-    };
+    //     if (!isNaN(row) && !isNaN(col)) {
+    //         configValuesStore.addCuboidAtPosition(row, col);
+    //     } else {
+    //         alert("Please enter valid numeric values for row and column.");
+    //     }
+    // };
 
     return (
         <>
@@ -71,7 +64,7 @@ export default function Canvas_3d() {
                 <color attach="background" args={['#f0f0f0']} />
                 <CameraControls 
                     minDistance={100}  // Minimum zoom distance
-                    maxDistance={200}  // Maximum zoom distance
+                    maxDistance={400}  // Maximum zoom distance
                     dollyToCursor={true}  // Zoom to cursor
                 />
                 <Render />

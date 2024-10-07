@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/Addons.js";
 
+// eslint-disable-next-line react/prop-types
 const Pipe = ({ start, end, radius = 1, material }) => {
  
   const pipeRef = useRef();
@@ -40,7 +41,7 @@ const Pipe = ({ start, end, radius = 1, material }) => {
       // Horizontal pipe (same y and x, sides)
       pipeRef.current.scale.set(radius, distance, radius); // Using distance
     }
-    console.log(pipeRef)
+    // console.log(pipeRef)
   }, [start, end, radius]);
 
   return (
@@ -63,7 +64,7 @@ const Connector = ({ position, material }) => {
   );
 };
 
-const Model = ({ width, height, depth, StartWidth, StartHeight }) => {
+const Model = ({keyCuboid, width, height, depth, StartWidth, StartHeight }) => {
 
   const { scene } = useLoader(GLTFLoader, "/Models/Material.glb");
 
@@ -76,9 +77,9 @@ const Model = ({ width, height, depth, StartWidth, StartHeight }) => {
     material.needsUpdate = true; // Ensure the material updates with the new texture
   }
 
-  console.log(material);
+  // console.log(material);
 
-  console.log(width, height, depth, StartWidth, StartHeight);
+  console.log(keyCuboid, width, StartWidth);
 
   const corners = [
     [StartWidth - ( width / 2), StartHeight - (height / 2), 0 - (depth / 2)], // Bottom-left-back
