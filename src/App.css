@@ -3,15 +3,28 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: "helvetica-Neue-regular";
-  src: url("../src//assets//fonts//helvetica-neue/HelveticaNeueMedium.otf");
+  font-family: "Helvetica-Neue-regular";
+  src: url("../src//assets//fonts//helvetica-neue/helvetica-neue-medium.woff2")
+      format("woff2"),
+    url("../src//assets//fonts//helvetica-neue/helvetica-neue-medium.woff")
+      format("woff");
+  font-weight: normal;
+  font-style: normal;
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "helvetica-Neue-regular";
+  font-family: "Helvetica-Neue-regular";
+}
+
+body {
+  /* Enable anti-aliasing */
+  -webkit-font-smoothing: antialiased; /* For WebKit-based browsers (Chrome, Safari) */
+  -moz-osx-font-smoothing: grayscale; /* For Firefox on macOS */
+  /* font-smoothing: antialiased; General for older browsers */
+  text-rendering: optimizeLegibility; /* Improve legibility */
 }
 
 /* Custom scrollbar */

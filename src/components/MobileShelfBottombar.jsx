@@ -29,10 +29,15 @@ const MobileShelfBottombar = observer(({ sidebarOptionsData, changedKey }) => {
   const filteredOptionsData = sidebarOptionsData.filter((option) => {
     if (configValuesStore.currentConfigType === "structure") {
       // When currentConfigType is 'structure', show all except the "Color" tab
-      return option.title !== "Color";
+      return (
+        option.title !== "Color" && option.title !== "Choose Your Shelf Type"
+      );
     } else if (configValuesStore.currentConfigType === "color") {
       // When currentConfigType is 'color', only show the "Color" tab
       return option.title === "Color";
+    } else if (configValuesStore.currentConfigType === "type") {
+      // When currentConfigType is 'shelfType', only show the "Shelf Type" tab
+      return option.title === "Choose Your Shelf Type";
     }
     return true; // Fallback for any other state (optional)
   });
@@ -42,7 +47,7 @@ const MobileShelfBottombar = observer(({ sidebarOptionsData, changedKey }) => {
     key: (index + 1).toString(), // Assign a unique key for each tab
     label: option.title, // Tab label
     children: option.component, // Tab content
-    // disabled: parseInt(changedKey) < index, // Disable tabs if they are not unlocked yet
+    disabled: parseInt(changedKey) < index, // Disable tabs if they are not unlocked yet
   }));
 
   // useEffect(() => {
@@ -63,7 +68,7 @@ const MobileShelfBottombar = observer(({ sidebarOptionsData, changedKey }) => {
       >
         <div className="font-[500] text-sm">Submit the design for a quote</div>
         <Button
-          // disabled={parseInt(changedKey) < sidebarOptionsData.length}
+          disabled={parseInt(changedKey) !== sidebarOptionsData.length}
           size="small"
           type="default"
           className="ms-auto rounded-full border-theme-primary hover:!bg-[#d9d9d9]"

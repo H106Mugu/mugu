@@ -21,6 +21,7 @@ const SubmitFormModal = ({ open, onClose }) => {
 
   return (
     <Modal
+      centered
       width={325}
       title="Submit your custom design"
       open={open}

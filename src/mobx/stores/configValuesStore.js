@@ -1,7 +1,7 @@
 import { makeAutoObservable } from "mobx";
 
 class ConfigValuesStore {
-  currentConfigType = "structure"; // Initialize currentConfigType with a default value
+  currentConfigType = "type"; // Initialize currentConfigType with a default value
 
   // Define your observable state as an object
   configValues = {
@@ -28,7 +28,7 @@ class ConfigValuesStore {
 
   // Setter for currentConfigType
   setCurrentConfigType(value) {
-    if (value === "structure" || value === "color") {
+    if (value === "structure" || value === "color" || value === "type") {
       this.currentConfigType = value;
     } else {
       console.warn(

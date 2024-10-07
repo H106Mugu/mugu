@@ -341,7 +341,7 @@ const ShelfSidebar = observer(() => {
             className="w-full py-6 rounded-full"
             onClick={() => submitFormStore.setModalOpen(true)}
           >
-            Submit
+            <span className="text-[16px]">Submit</span>
           </Button>
         </div>
       )}
