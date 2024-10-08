@@ -21,7 +21,7 @@ const CustomCheckbox = ({ checked, onChange, label, icon }) => {
         {/* Render icon if provided */}
         {icon && (
           <span
-            className={`pt-[2px] me-[8px] ${
+            className={`pt-[0px] me-[8px] ${
               checked ? "hover:border-white" : "hover:border-theme-primary"
             }`}
           >

@@ -143,8 +143,6 @@ const CustomAntdRadioGroup = ({
     return `${100 / options.length}%`;
   };
 
-  console.log("Vasluesssssss", value);
-
   return (
     <Radio.Group
       value={value}

@@ -124,17 +124,23 @@ const StructureOrColorRadioGroup = ({ value, onChange }) => {
       buttonStyle="solid"
       className="flex items-center gap-4 relative"
     >
-      <Radio.Button value="type">Type</Radio.Button>
+      <Radio.Button className="z-10" value="type">
+        Type
+      </Radio.Button>
 
       {/* Line between the radio buttons */}
-      <div className="absolute left-[44px] w-16 h-px bg-black" />
+      <div className="absolute left-0 right-0 h-px bg-black" />
 
-      <Radio.Button value="structure">Structure</Radio.Button>
+      <Radio.Button className="z-10" value="structure">
+        Structure
+      </Radio.Button>
 
       {/* Line between the radio buttons */}
-      <div className="absolute left-[128px] w-16 h-px bg-black" />
+      {/* <div className="absolute left-[128px] w-16 h-px bg-black" /> */}
 
-      <Radio.Button value="color">Colour</Radio.Button>
+      <Radio.Button className="z-10" value="color">
+        Colour
+      </Radio.Button>
     </Radio.Group>
   );
 };

@@ -1,21 +1,4 @@
-// import React from "react";
-// import { Tabs } from "antd";
-// // import { sidebarOptionsData } from "../components/ShelfSidebar";
-
-// const MobileShelfBottombar = ({ sidebarOptionsData }) => {
-//   // Map sidebar options data to items for Tabs
-//   const tabItems = sidebarOptionsData.map((option, index) => ({
-//     key: index + 1, // Assign a unique key for each tab
-//     label: option.title, // Tab label
-//     children: option.component,
-//   }));
-
-//   return <Tabs defaultActiveKey="1" items={tabItems} />;
-// };
-
-// export default MobileShelfBottombar;
-
-import React, { useEffect } from "react";
+import React from "react";
 import { Button, Tabs } from "antd";
 import useBreakpoints from "../hooks/useBreakpoints";
 import { useStores } from "../mobx/context/StoreContext";
@@ -29,15 +12,13 @@ const MobileShelfBottombar = observer(({ sidebarOptionsData, changedKey }) => {
   const filteredOptionsData = sidebarOptionsData.filter((option) => {
     if (configValuesStore.currentConfigType === "structure") {
       // When currentConfigType is 'structure', show all except the "Color" tab
-      return (
-        option.title !== "Color" && option.title !== "Choose Your Shelf Type"
-      );
+      return option.category !== "color" && option.category !== "type";
     } else if (configValuesStore.currentConfigType === "color") {
       // When currentConfigType is 'color', only show the "Color" tab
-      return option.title === "Color";
+      return option.category === "color";
     } else if (configValuesStore.currentConfigType === "type") {
       // When currentConfigType is 'shelfType', only show the "Shelf Type" tab
-      return option.title === "Choose Your Shelf Type";
+      return option.category === "type";
     }
     return true; // Fallback for any other state (optional)
   });
@@ -47,14 +28,8 @@ const MobileShelfBottombar = observer(({ sidebarOptionsData, changedKey }) => {
     key: (index + 1).toString(), // Assign a unique key for each tab
     label: option.title, // Tab label
     children: option.component, // Tab content
-    disabled: parseInt(changedKey) < index, // Disable tabs if they are not unlocked yet
+    // disabled: parseInt(changedKey) < index, // Disable tabs if they are not unlocked yet
   }));
-
-  // useEffect(() => {
-  //   if (parseInt(changedKey) === sidebarOptionsData.length - 1) {
-  //     configValuesStore.setCurrentConfigType("color");
-  //   }
-  // }, [changedKey]);
 
   return (
     <div>

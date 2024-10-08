@@ -2,28 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: "Helvetica-Neue-regular";
-  src: url("../src//assets//fonts//helvetica-neue/helvetica-neue-medium.woff2")
-      format("woff2"),
-    url("../src//assets//fonts//helvetica-neue/helvetica-neue-medium.woff")
-      format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
-
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Helvetica-Neue-regular";
-}
-
-body {
+  font-family: Helvetica, sans-serif;
   /* Enable anti-aliasing */
   -webkit-font-smoothing: antialiased; /* For WebKit-based browsers (Chrome, Safari) */
   -moz-osx-font-smoothing: grayscale; /* For Firefox on macOS */
-  /* font-smoothing: antialiased; General for older browsers */
   text-rendering: optimizeLegibility; /* Improve legibility */
 }
 
@@ -91,6 +77,7 @@ body {
 
 .ant-btn-variant-outlined {
   /* border: 1px solid black !important; */
+  line-height: 20px !important; /* or adjust according to your font size */
 }
 
 .ant-modal-content {
