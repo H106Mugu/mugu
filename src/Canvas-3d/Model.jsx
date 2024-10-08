@@ -2,9 +2,9 @@
 import { useLoader } from "@react-three/fiber";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/Addons.js";
-import { Connector } from "./Connector";
-import { Pipe } from "./Pipe";
-import { pipeConnections, cornerOffsets } from "../Utils/ModelUtils";
+import { Connector } from "./Models/Connector";
+import { Pipe } from "./Models/Pipe";
+import { pipeConnections, cornerOffsets } from "./Utils/ModelUtils";
 
 const Model = ({width, height, depth, startWidth, startHeight }) => {
   

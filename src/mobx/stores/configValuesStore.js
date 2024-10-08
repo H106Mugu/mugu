@@ -4,6 +4,11 @@ import { getCuboidParameters } from "../../Canvas-3d/Utils/CuboidUtils";
 class ConfigValuesStore {
   currentConfigType = "structure"; // Initialize currentConfigType with a default value
 
+  selectedCuboid = {
+    rawIndex: null,
+    colIndex: null,
+  };
+
   // Define your observable state as an object
   configValues = observable({
     shelfType: "",
@@ -14,8 +19,8 @@ class ConfigValuesStore {
         width: 500, // Width of the cuboid
         height: 500, // Height of the cuboid
         depth: 400,
-        StartWidth: 0,
-        StartHeight: 0,
+        startWidth: 0,
+        startHeight: 0,
         materialType: 'metal', // Material type of the cuboid
         color: '#ff0000' // Color of the cuboid
       },
@@ -53,6 +58,16 @@ class ConfigValuesStore {
     });
   }
   
+   // Setter for selected cuboid's indices
+   setSelectedCuboid(rawIndex, colIndex) {
+    this.selectedCuboid.rawIndex = rawIndex;
+    this.selectedCuboid.colIndex = colIndex;
+  }
+
+  // Getter for selected cuboid's indices
+  get getSelectedCuboid() {
+    return this.selectedCuboid;
+  }
 
   // Getter to retrieve a value based on a key
   getConfigValue(key, raw_index, col_index) {
@@ -79,8 +94,8 @@ class ConfigValuesStore {
       depth: this.configValues[0][0].depth,
       materialType: this.configValues[0][0].materialType,
       color: this.configValues[0][0].color,
-      StartWidth: startWidth,
-      StartHeight: startHeight
+      startWidth: startWidth,
+      startHeight: startHeight
     };
     this.configValues = { ...this.configValues };
   }

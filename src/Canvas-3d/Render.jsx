@@ -20,8 +20,8 @@ const Render = observer(() => {
             width: cuboid?.width || 0,
             height: cuboid?.height || 0,
             depth: cuboid?.depth || 0,
-            StartWidth: cuboid?.StartWidth || 0,
-            StartHeight: cuboid?.StartHeight || 0,
+            startWidth: cuboid?.startWidth || 0,
+            startHeight: cuboid?.startHeight || 0,
             raw_index: parseInt(raw_index),
             col_index: parseInt(col_index)
           });
