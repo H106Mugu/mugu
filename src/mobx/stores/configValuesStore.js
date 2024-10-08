@@ -1,4 +1,5 @@
 import { makeAutoObservable, observable } from "mobx";
+import { getCuboidParameters } from "../../Canvas-3d/Utils/CuboidUtils";
 
 class ConfigValuesStore {
   currentConfigType = "structure"; // Initialize currentConfigType with a default value
@@ -69,50 +70,19 @@ class ConfigValuesStore {
   }
 
   addCuboidAtPosition(raw_index, col_index) {
-    const defaultCuboid = this.configValues[0][0]; // Default cuboid at [0,0]
-  
-    // Check if the row exists, if not, initialize it
-    if (!this.configValues[raw_index]) {
-      this.configValues[raw_index] = {};
-    }
-  
-    let width, height, startWidth, startHeight;
-  
-    // Calculate width from the same column (if exists), otherwise use default
-    if (raw_index > 0) {
-      width = this.configValues[raw_index - 1][col_index].width;
-      startHeight = this.configValues[raw_index - 1][col_index].StartHeight + (this.configValues[raw_index - 1][col_index].height / 10);
-    } else {
-      width = defaultCuboid.width;
-      startHeight = defaultCuboid.StartHeight;
-    }
-  
-    // Calculate height from the same row (if exists), otherwise use default
-    if (col_index > 0) {
-      if (this.configValues[raw_index][col_index - 1]) {
-        height = this.configValues[raw_index][col_index - 1].height;
-        startWidth = this.configValues[raw_index][col_index - 1].StartWidth + (this.configValues[raw_index][col_index - 1].width / 10);
-      } else {
-        height = this.configValues[0][col_index - 1].height;
-        startWidth = this.configValues[0][col_index - 1].StartWidth + (this.configValues[0][col_index - 1].width / 10);
-      }     
-    } else {
-      height = defaultCuboid.height;
-      startWidth = defaultCuboid.StartWidth;
-    }
+    const { width, height, startWidth, startHeight } = getCuboidParameters(this.configValues, raw_index, col_index);
   
     // Insert the new cuboid into the configValues store
     this.configValues[raw_index][col_index] = {
-      width: width, // Calculated width from the same column
-      height: height, // Calculated height from the same row
-      depth: defaultCuboid.depth, // Use depth from [0,0]
-      materialType: defaultCuboid.materialType, // Use materialType from [0,0]
-      color: defaultCuboid.color, // Use color from [0,0]
-      StartWidth: startWidth, // Calculated StartWidth based on the previous cuboid in the same column
-      StartHeight: startHeight // Calculated StartHeight based on the previous cuboid in the same row
+      width: width,
+      height: height,
+      depth: this.configValues[0][0].depth,
+      materialType: this.configValues[0][0].materialType,
+      color: this.configValues[0][0].color,
+      StartWidth: startWidth,
+      StartHeight: startHeight
     };
-    console.log(this.configValues[raw_index][col_index], raw_index, col_index);
-    this.configValues = { ...this.configValues }; // Create a shallow copy to trigger reactivity
+    this.configValues = { ...this.configValues };
   }
   
 }

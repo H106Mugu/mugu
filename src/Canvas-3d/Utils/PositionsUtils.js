@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useStores } from "../../mobx/context/StoreContext";
 
 export function IsRight(raw_index, col_index) {
@@ -20,6 +21,10 @@ export function IsRight(raw_index, col_index) {
 
 export function IsTop(raw_index, col_index) {
     const { configValuesStore } = useStores();
-    // Check if there's no cuboid in the next row at the same column
     return !configValuesStore.hasCuboidAt(raw_index + 1, col_index);
   }
+
+export function handleAddCuboid(raw_index, col_index) {
+  const { configValuesStore } = useStores();
+  return configValuesStore.addCuboidAtPosition(raw_index, col_index); // Add cuboid
+};

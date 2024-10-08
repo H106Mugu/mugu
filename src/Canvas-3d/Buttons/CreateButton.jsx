@@ -1,16 +1,15 @@
 import { Html } from "@react-three/drei"; // Use Sphere from drei for 3D clickable buttons
-import { useStores } from "../mobx/context/StoreContext";
+import { useStores } from "../../mobx/context/StoreContext";
 
-const CreateButton = ({ position, raw_index, col_index, isRight = true }) => {
+const CreateButton = ({ position, raw_index, col_index, onRight = true }) => {
   const { configValuesStore } = useStores();
 
   const onClick = () => {
-    if (isRight) {
-      configValuesStore.addCuboidAtPosition(raw_index, (col_index) + 1);
+    if (onRight) {
+      configValuesStore.addCuboidAtPosition(raw_index, col_index + 1);
       return;
     }
-
-    configValuesStore.addCuboidAtPosition((raw_index) + 1, col_index);
+    configValuesStore.addCuboidAtPosition(raw_index + 1, col_index);
     return;
   };
 
