@@ -5,6 +5,6 @@ export const pipeConnections = [
   ];
   
   export const cornerOffsets = [
-    [-1, -1, -1], [1, -1, -1], [1, 1, -1], [-1, 1, -1], // Back face
-    [-1, -1, 1], [1, -1, 1], [1, 1, 1], [-1, 1, 1]      // Front face
+    [0, 0, -1], [2, 0, -1], [2, 2, -1], [0, 2, -1], // Back face
+    [0, 0, 1], [2, 0, 1], [2, 2, 1], [0, 2, 1]      // Front face
   ]

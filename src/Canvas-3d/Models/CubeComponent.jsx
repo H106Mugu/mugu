@@ -1,29 +1,28 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/no-unknown-property */
-import { Box, Edges } from '@react-three/drei';
+import { Box } from '@react-three/drei';
 import { useThree } from '@react-three/fiber';
-import { useRef } from 'react';
-import * as THREE from 'three';
+import { useRef, useState } from 'react';
+import { getEdgePoints } from '../Utils/EdgePointsUtils';
+import { EdgeCylinder } from './EdgeCylinder';
 
-export const CubeComponent = ({ position, rotation, size, isVisible, onCubeSelect, rawIndex, colIndex }) => {
+export const CubeComponent = ({ position, rotation, size, isVisible, onCubeSelect, rawIndex, colIndex, width, height }) => {
     const cubeRef = useRef();
     const { raycaster } = useThree();
+    const [hovered, setHovered] = useState(false);
+
+    const edgeRadius = 0.5;
+    const offset = 2;
 
     const handleClick = (event) => {
         event.stopPropagation(); // Prevent event from propagating to other cubes
         const intersects = raycaster.intersectObject(cubeRef.current);
-        
+
         // Check if the cube is the first (closest) object hit by the ray
         if (intersects.length > 0 && intersects[0].object === cubeRef.current) {
-            onCubeSelect(rawIndex, colIndex); // Notify parent with rawIndex and colIndex
+            onCubeSelect(rawIndex, colIndex);
         }
     };
-
-    // Scale factor to move edges slightly outside the original cube
-    const edgeOffsetScale = 1.07; // Adjust this value to control the distance of edges
-
-    // Apply the scale to size
-    const edgeSize = size.map(dim => dim * edgeOffsetScale);
+    const edgePosition = [position[0] - width / 20, position[1] - height / 20, position[2] + offset];
+    const edges = getEdgePoints(edgePosition, size, offset);
 
     return (
         <>
@@ -32,17 +31,41 @@ export const CubeComponent = ({ position, rotation, size, isVisible, onCubeSelec
                 ref={cubeRef}
                 position={position}
                 rotation={rotation}
-                args={size} // Width, Height, Depth of the Cube
-                onClick={handleClick} // Add click event
-                visible={false} // Make the cube invisible, edges will be shown
+                args={size}
+                onClick={handleClick}
+                onPointerOver={() => setHovered(true)}
+                onPointerOut={() => setHovered(false)}
+                visible={false}
             />
 
-            {/* Visible edges at a slight offset */}
+            {/* Show edges based on selection */}
             {isVisible && (
-                <lineSegments position={position} rotation={rotation}>
-                    <edgesGeometry attach="geometry" args={[new THREE.BoxGeometry(...edgeSize)]} />
-                    <lineBasicMaterial attach="material" color="blue" />
-                </lineSegments>
+                <>
+                    {edges.map((edge, index) => (
+                        <EdgeCylinder
+                            key={index}
+                            start={edge[0]}
+                            end={edge[1]}
+                            color={'blue'}
+                            radius={edgeRadius}
+                        />
+                    ))}
+                </>
+            )}
+
+            {/* Show edges in green when hovered, but not when selected */}
+            {hovered && !isVisible && (
+                <>
+                    {edges.map((edge, index) => (
+                        <EdgeCylinder
+                            key={`hover-${index}`}
+                            start={edge[0]}
+                            end={edge[1]}
+                            color={'green'}
+                            radius={edgeRadius}
+                        />
+                    ))}
+                </>
             )}
         </>
     );

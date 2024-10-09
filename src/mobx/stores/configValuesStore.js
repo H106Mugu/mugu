@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { makeAutoObservable, observable } from "mobx";
 import { getCuboidParameters } from "../../Canvas-3d/Utils/CuboidUtils";
 
@@ -19,8 +20,8 @@ class ConfigValuesStore {
         width: 500, // Width of the cuboid
         height: 500, // Height of the cuboid
         depth: 400,
-        startWidth: 0,
-        startHeight: 0,
+        startWidth: -25,
+        startHeight: -25,
         materialType: 'metal', // Material type of the cuboid
         color: '#ff0000' // Color of the cuboid
       },
@@ -51,15 +52,72 @@ class ConfigValuesStore {
   }
 
   // Define a single action to set values based on key
-  setConfigValue(key, value, raw_index = 0) {
+  setConfigValue(key, value) {
+
+    const raw_index = this.selectedCuboid.rawIndex;
+    const col_index = this.selectedCuboid.colIndex;
+    value = parseInt(value);
+
     if (key === "shelfType" || key === "structureElements" || key === "color") {
       this.configValues[key] = value;
       return;
     }
+  
+    // Handle width: update the value in all rows of a particular column (colIndex)
+    if (key === "width") {
+      Object.keys(this.configValues).forEach((rowIndex) => {
+        if (this.configValues[rowIndex][col_index]) {
+          this.configValues[rowIndex][col_index][key] = value; // Update width
+        }
+      });
+      this.recalculateStartWidthHeight(col_index, parseInt(value));
+      this.configValues = { ...this.configValues };
+      return;
+  }
+  
+    // Handle height: update the value in all columns of a particular row (raw_index)
+    if (key === "height") {
+      Object.keys(this.configValues[raw_index]).forEach((colIndex) => {
+        this.configValues[raw_index][colIndex][key] = value;
+        console.log(this.configValues[raw_index][col_index]);
+      });
+      this.recalculateStartWidthHeight(col_index, parseInt(value));
+      this.configValues = { ...this.configValues };
+      return;
+    }
+  
+    // Handle depth: update the value in all cells (all rows and columns)
+    if (key === "depth") {
+      Object.keys(this.configValues).forEach((rowIndex) => {
+        Object.keys(this.configValues[rowIndex]).forEach((colIndex) => {
+          this.configValues[rowIndex][colIndex][key] = value;
+          console.log(this.configValues[rowIndex][col_index]);
+        });
+      });
+      this.configValues = { ...this.configValues };
+      return;
+    }
+  }
 
-    // Update the configValues object for all columns in the specified row
-    Object.keys(this.configValues[raw_index]).forEach((colIndex) => {
-      this.configValues[raw_index][colIndex][key] = value;
+  // Function to recalculate startWidth for all cuboids in the specified column
+  recalculateStartWidthHeight(colIndex, newWidth) {
+    // Iterate over each row in configValues
+    Object.keys(this.configValues).forEach((rowIndex) => {
+      // Now iterate over each column in the row
+      Object.keys(this.configValues[rowIndex]).forEach((columnIndex) => {
+        const cuboid = this.configValues[rowIndex][columnIndex];
+        if (cuboid) {
+          // Calculate new parameters based on the new width
+          const { width, height, startWidth, startHeight } = getCuboidParameters(this.configValues, rowIndex, columnIndex);
+          
+          // Update the cuboid with the new parameters
+          this.configValues[rowIndex][columnIndex].startWidth = startWidth;
+          this.configValues[rowIndex][columnIndex].startHeight = startHeight;
+
+          // For debugging purposes
+          console.log(`Updated Cuboid at [${rowIndex}][${columnIndex}]:`, this.configValues[rowIndex][columnIndex].width);
+        }
+      });
     });
   }
   
