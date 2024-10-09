@@ -6,28 +6,17 @@ import CreateButton from "../Buttons/CreateButton";
 import { IsRight, IsTop, handleAddCuboid } from "../Utils/PositionsUtils";
 import { CubeComponent } from "../Models/CubeComponent";
 import configValuesStore from "../../mobx/stores/configValuesStore";
+import { observer } from "mobx-react-lite"; // Import observer from mobx-react-lite
 
-const CuboidRenderer = ({ cuboidData }) => {
-    const { key, width, height, depth, startWidth, startHeight, raw_index, col_index } = cuboidData;
+const CuboidRenderer = observer(({ cuboidData }) => {
+  const { key, width, height, depth, startWidth, startHeight, raw_index, col_index } = cuboidData;
 
-  // State to track visibility
-  const [isVisible, setIsVisible] = useState(false); 
+  const isVisible = configValuesStore.selectedCuboid.rawIndex === raw_index && configValuesStore.selectedCuboid.colIndex === col_index;
 
   const handleCubeSelect = (rawIndex, colIndex) => {
-    configValuesStore.setSelectedCuboid(rawIndex, colIndex); // Store the selected indices in the store
-
-    // Update visibility based on selected indices
-    const currentlySelected = configValuesStore.selectedCuboid;
-    const visible = currentlySelected.rawIndex === raw_index && currentlySelected.colIndex === col_index;
-    setIsVisible(visible); // Update the state to trigger re-render
-    console.log("storeIndexes", currentlySelected.rawIndex, currentlySelected.colIndex, "isVisible", visible);
+    configValuesStore.setSelectedCuboid(rawIndex, colIndex);
+    console.log("indexes", configValuesStore.selectedCuboid.rawIndex, configValuesStore.selectedCuboid.colIndex);
   };
-
-  // Check visibility directly based on the store's selectedCuboid
-  useEffect(() => {
-    const currentlySelected = configValuesStore.selectedCuboid;
-    setIsVisible(currentlySelected.rawIndex === raw_index && currentlySelected.colIndex === col_index);
-  }, [configValuesStore.selectedCuboid, raw_index, col_index]);
 
   return (
     <React.Fragment key={key}>
@@ -42,11 +31,11 @@ const CuboidRenderer = ({ cuboidData }) => {
       <CubeComponent
         position={[startWidth, startHeight, 0]}
         rotation={[0, 0, 0]}
-        size={[width / 10, height / 10, depth / 10]} // Size for the Cube
-        isVisible={isVisible} // Check if this cube is selected
-        onCubeSelect={handleCubeSelect} // Pass the select handler
-        rawIndex={raw_index} // Pass raw index
-        colIndex={col_index} // Pass column index
+        size={[width / 10, height / 10, depth / 10]}
+        isVisible={isVisible}
+        onCubeSelect={handleCubeSelect}
+        rawIndex={raw_index}
+        colIndex={col_index}
       />
       {IsRight(raw_index, col_index) && (
         <CreateButton
@@ -68,6 +57,6 @@ const CuboidRenderer = ({ cuboidData }) => {
       )}
     </React.Fragment>
   );
-};
+});
 
 export default CuboidRenderer;
