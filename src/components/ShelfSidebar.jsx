@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import CustomAntdRadioGroup from "./CustomAntdRadioGroup";
 import {
   heightOptions as defaultHeightOptions,
@@ -8,131 +8,12 @@ import {
   structureElements as defaultStructureElements,
   depthOptions as defaultDepthOptions,
 } from "../data/optionData";
-import { Button } from "antd";
+import { Button, Tooltip } from "antd";
 import MobileShelfBottombar from "./MobileShelfBottombar";
 import useBreakpoints from "../hooks/useBreakpoints";
 import { useStores } from "../mobx/context/StoreContext";
 import { observer } from "mobx-react-lite";
-
-const getUpdatedOptions = (
-  shelfType,
-  selectedWidth,
-  selectedDepth,
-  selectedStructureElement
-) => {
-  let newWidthOptions = [];
-  let newDepthOptions = [];
-  let newHeightOptions = [];
-  let newStructureElements = [];
-
-  if (shelfType === "acrylic") {
-    newWidthOptions = [
-      { label: "270", value: "270" },
-      { label: "370", value: "370" },
-    ];
-    newHeightOptions = [
-      { label: "121", value: "121" },
-      { label: "180", value: "180" },
-      { label: "200", value: "200" },
-      { label: "270", value: "270" },
-      { label: "313", value: "313" },
-      { label: "370", value: "370" },
-      { label: "483", value: "483" },
-      { label: "603", value: "603" },
-    ];
-    newDepthOptions = [...newWidthOptions];
-    newStructureElements = defaultStructureElements.filter((option) =>
-      ["withTopAndBottomOnly", "withoutShelves"].includes(option.value)
-    );
-  } else if (shelfType === "stainless") {
-    // Common width options for "stainless"
-    newWidthOptions = [
-      { label: "121", value: "121" },
-      { label: "313", value: "313" },
-      { label: "483", value: "483" },
-      { label: "603", value: "603" },
-    ];
-
-    // Set structureElements for stainless
-    newStructureElements = defaultStructureElements.filter((option) =>
-      ["all", "withoutBack", "withTopAndBottomOnly"].includes(option.value)
-    );
-
-    if (
-      selectedStructureElement === "all" ||
-      selectedStructureElement === "withoutBack"
-    ) {
-      if (selectedWidth === "121") {
-        newDepthOptions = [{ label: "313", value: "313" }];
-        newHeightOptions = ["121", "313", "483", "603"].map((h) => ({
-          label: h,
-          value: h,
-        }));
-      } else if (selectedWidth === "313") {
-        newDepthOptions = ["121", "313", "483", "603"].map((d) => ({
-          label: d,
-          value: d,
-        }));
-        if (selectedDepth === "121") {
-          newHeightOptions = [{ label: "313", value: "313" }];
-        } else if (selectedDepth === "313") {
-          newHeightOptions = ["121", "313", "483", "603"].map((h) => ({
-            label: h,
-            value: h,
-          }));
-        } else if (selectedDepth === "483" || selectedDepth === "603") {
-          newHeightOptions = [{ label: "313", value: "313" }];
-        }
-      } else if (selectedWidth === "483" || selectedWidth === "603") {
-        newDepthOptions = [{ label: "313", value: "313" }];
-        newHeightOptions = ["121", "313", "483", "603"].map((h) => ({
-          label: h,
-          value: h,
-        }));
-      }
-    } else if (selectedStructureElement === "withTopAndBottomOnly") {
-      if (
-        selectedWidth === "121" ||
-        selectedWidth === "483" ||
-        selectedWidth === "603"
-      ) {
-        newDepthOptions = [{ label: "313", value: "313" }];
-        newHeightOptions = [
-          "121",
-          "180",
-          "200",
-          "270",
-          "313",
-          "370",
-          "483",
-          "603",
-        ].map((h) => ({ label: h, value: h }));
-      } else if (selectedWidth === "313") {
-        newDepthOptions = ["121", "313", "483", "603"].map((d) => ({
-          label: d,
-          value: d,
-        }));
-        newHeightOptions = [
-          "121",
-          "180",
-          "200",
-          "270",
-          "313",
-          "370",
-          "483",
-          "603",
-        ].map((h) => ({ label: h, value: h }));
-      }
-    }
-  }
-
-  return {
-    widthOptions: newWidthOptions,
-    depthOptions: newDepthOptions,
-    heightOptions: newHeightOptions,
-    structureElements: newStructureElements,
-  };
-};
+import { FaInfo } from "react-icons/fa"; // const processedCombinations = new Set();
 
 const ShelfSidebar = observer(() => {
   const breakpoint = useBreakpoints();
@@ -151,8 +32,328 @@ const ShelfSidebar = observer(() => {
   const [changedKey, setChangedKey] = useState("0");
   const { configValuesStore, submitFormStore } = useStores();
 
+  // const getUpdatedOptions = (
+  //   shelfType,
+  //   selectedWidth,
+  //   selectedDepth,
+  //   selectedStructureElement
+  // ) => {
+  //   let newWidthOptions = [];
+  //   let newDepthOptions = [];
+  //   let newHeightOptions = [];
+  //   let newStructureElements = [];
+
+  //   // Utility function to generate a unique key based on the arguments
+  //   const generateKey = (value, optionType, id) => {
+  //     return `${value}-${optionType}-${id}`;
+  //   };
+
+  //   // Function to handle options change if not already processed
+  //   const handleOptionChangeOnce = (value, optionType, id) => {
+  //     const key = generateKey(value, optionType, id);
+  //     if (!processedCombinations.has(key)) {
+  //       handleSidebarOptionsChange(value, optionType, id);
+  //       processedCombinations.add(key);
+  //     }
+  //   };
+
+  //   if (shelfType === "acrylic") {
+  //     // Set width and height options for acrylic
+  //     newWidthOptions = [
+  //       { label: "270", value: "270" },
+  //       { label: "370", value: "370" },
+  //     ];
+  //     newHeightOptions = [
+  //       { label: "121", value: "121" },
+  //       { label: "180", value: "180" },
+  //       { label: "200", value: "200" },
+  //       { label: "270", value: "270" },
+  //       { label: "313", value: "313" },
+  //       { label: "370", value: "370" },
+  //       { label: "483", value: "483" },
+  //       { label: "603", value: "603" },
+  //     ];
+  //     newDepthOptions = [...newWidthOptions];
+
+  //     newStructureElements = defaultStructureElements.filter((option) =>
+  //       ["withTopAndBottomOnly", "withoutShelves"].includes(option.value)
+  //     );
+
+  //     // Ensure option change for acrylic is handled once
+  //     if (newWidthOptions.length > 0)
+  //       handleOptionChangeOnce(newWidthOptions[0].value, "width", "10");
+
+  //     if (newHeightOptions.length > 0)
+  //       handleOptionChangeOnce(newHeightOptions[0].value, "height", "11");
+
+  //     if (newDepthOptions.length > 0)
+  //       handleOptionChangeOnce(newDepthOptions[0].value, "depth", "12");
+
+  //     if (newStructureElements.length > 0)
+  //       handleOptionChangeOnce(
+  //         newStructureElements[0].value,
+  //         "structureElements",
+  //         "13"
+  //       );
+  //   } else if (shelfType === "stainless") {
+  //     // Set structureElements for stainless
+  //     newStructureElements = defaultStructureElements.filter((option) =>
+  //       ["all", "withoutBack", "withTopAndBottomOnly"].includes(option.value)
+  //     );
+  //     if (newStructureElements.length > 0)
+  //       handleOptionChangeOnce(
+  //         newStructureElements[0].value,
+  //         "structureElements",
+  //         "2"
+  //       );
+
+  //     // Common width options for "stainless"
+  //     newWidthOptions = [
+  //       { label: "121", value: "121" },
+  //       { label: "313", value: "313" },
+  //       { label: "483", value: "483" },
+  //       { label: "603", value: "603" },
+  //     ];
+
+  //     if (newWidthOptions.length > 0)
+  //       handleOptionChangeOnce(newWidthOptions[0].value, "width", "3");
+
+  //     // Nested conditions within stainless
+  //     if (
+  //       selectedStructureElement === "all" ||
+  //       selectedStructureElement === "withoutBack"
+  //     ) {
+  //       if (selectedWidth === "121") {
+  //         newDepthOptions = [{ label: "313", value: "313" }];
+  //         newHeightOptions = ["121", "313", "483", "603"].map((h) => ({
+  //           label: h,
+  //           value: h,
+  //         }));
+
+  //         if (newHeightOptions.length > 0)
+  //           handleOptionChangeOnce(newHeightOptions[0].value, "height", "5");
+
+  //         if (newDepthOptions.length > 0)
+  //           handleOptionChangeOnce(newDepthOptions[0].value, "depth", "4");
+  //       } else if (selectedWidth === "313") {
+  //         newDepthOptions = ["121", "313", "483", "603"].map((d) => ({
+  //           label: d,
+  //           value: d,
+  //         }));
+
+  //         if (newDepthOptions.length > 0)
+  //           handleOptionChangeOnce(newDepthOptions[0].value, "depth", "4");
+
+  //         if (selectedDepth === "121") {
+  //           newHeightOptions = [{ label: "313", value: "313" }];
+
+  //           if (newHeightOptions.length > 0)
+  //             handleOptionChangeOnce(newHeightOptions[0].value, "height", "14");
+  //         } else if (selectedDepth === "313") {
+  //           newHeightOptions = ["121", "313", "483", "603"].map((h) => ({
+  //             label: h,
+  //             value: h,
+  //           }));
+
+  //           if (newHeightOptions.length > 0)
+  //             handleOptionChangeOnce(newHeightOptions[0].value, "height", "15");
+  //         } else if (selectedDepth === "483" || selectedDepth === "603") {
+  //           newHeightOptions = [{ label: "313", value: "313" }];
+
+  //           if (newHeightOptions.length > 0)
+  //             handleOptionChangeOnce(newHeightOptions[0].value, "height", "16");
+  //         }
+  //       } else if (selectedWidth === "483" || selectedWidth === "603") {
+  //         newDepthOptions = [{ label: "313", value: "313" }];
+  //         newHeightOptions = ["121", "313", "483", "603"].map((h) => ({
+  //           label: h,
+  //           value: h,
+  //         }));
+
+  //         if (newDepthOptions.length > 0)
+  //           handleOptionChangeOnce(newDepthOptions[0].value, "depth", "17");
+  //       }
+  //     } else if (selectedStructureElement === "withTopAndBottomOnly") {
+  //       if (
+  //         selectedWidth === "121" ||
+  //         selectedWidth === "483" ||
+  //         selectedWidth === "603"
+  //       ) {
+  //         newDepthOptions = [{ label: "313", value: "313" }];
+  //         newHeightOptions = [
+  //           "121",
+  //           "180",
+  //           "200",
+  //           "270",
+  //           "313",
+  //           "370",
+  //           "483",
+  //           "603",
+  //         ].map((h) => ({ label: h, value: h }));
+
+  //         // alert("Here" + newHeightOptions.length);
+  //         if (newDepthOptions.length > 0)
+  //           handleOptionChangeOnce(newDepthOptions[0].value, "depth", "6");
+
+  //         if (newHeightOptions.length > 0)
+  //           handleOptionChangeOnce(newHeightOptions[0].value, "height", "7");
+  //       } else if (selectedWidth === "313") {
+  //         newDepthOptions = ["121", "313", "483", "603"].map((d) => ({
+  //           label: d,
+  //           value: d,
+  //         }));
+  //         newHeightOptions = [
+  //           "121",
+  //           "180",
+  //           "200",
+  //           "270",
+  //           "313",
+  //           "370",
+  //           "483",
+  //           "603",
+  //         ].map((h) => ({ label: h, value: h }));
+
+  //         if (newDepthOptions.length > 0)
+  //           handleOptionChangeOnce(newDepthOptions[0].value, "depth", "8");
+
+  //         if (newHeightOptions.length > 0)
+  //           handleOptionChangeOnce(newHeightOptions[0].value, "height", "9");
+  //       }
+  //     }
+  //   }
+
+  //   return {
+  //     widthOptions: newWidthOptions,
+  //     depthOptions: newDepthOptions,
+  //     heightOptions: newHeightOptions,
+  //     structureElements: newStructureElements,
+  //   };
+  // };
+
+  const getUpdatedOptions = (
+    shelfType,
+    selectedWidth,
+    selectedDepth,
+    selectedStructureElement
+  ) => {
+    let newWidthOptions = [];
+    let newDepthOptions = [];
+    let newHeightOptions = [];
+    let newStructureElements = [];
+
+    // Track if we already handled sidebar options
+
+    if (shelfType === "acrylic") {
+      newWidthOptions = [
+        { label: "270", value: "270" },
+        { label: "370", value: "370" },
+      ];
+      newHeightOptions = [
+        { label: "121", value: "121" },
+        { label: "180", value: "180" },
+        { label: "200", value: "200" },
+        { label: "270", value: "270" },
+        { label: "313", value: "313" },
+        { label: "370", value: "370" },
+        { label: "483", value: "483" },
+        { label: "603", value: "603" },
+      ];
+      newDepthOptions = [...newWidthOptions];
+      newStructureElements = defaultStructureElements.filter((option) =>
+        ["withTopAndBottomOnly", "withoutShelves"].includes(option.value)
+      );
+    } else if (shelfType === "stainless") {
+      // Set structureElements for stainless
+      newStructureElements = defaultStructureElements.filter((option) =>
+        ["all", "withoutBack", "withTopAndBottomOnly"].includes(option.value)
+      );
+      // Common width options for "stainless"
+      newWidthOptions = [
+        { label: "121", value: "121" },
+        { label: "313", value: "313" },
+        { label: "483", value: "483" },
+        { label: "603", value: "603" },
+      ];
+
+      if (
+        selectedStructureElement === "all" ||
+        selectedStructureElement === "withoutBack"
+      ) {
+        if (selectedWidth === "121") {
+          newDepthOptions = [{ label: "313", value: "313" }];
+          newHeightOptions = ["121", "313", "483", "603"].map((h) => ({
+            label: h,
+            value: h,
+          }));
+        } else if (selectedWidth === "313") {
+          newDepthOptions = ["121", "313", "483", "603"].map((d) => ({
+            label: d,
+            value: d,
+          }));
+          if (selectedDepth === "121") {
+            newHeightOptions = [{ label: "313", value: "313" }];
+          } else if (selectedDepth === "313") {
+            newHeightOptions = ["121", "313", "483", "603"].map((h) => ({
+              label: h,
+              value: h,
+            }));
+          } else if (selectedDepth === "483" || selectedDepth === "603") {
+            newHeightOptions = [{ label: "313", value: "313" }];
+          }
+        } else if (selectedWidth === "483" || selectedWidth === "603") {
+          newDepthOptions = [{ label: "313", value: "313" }];
+          newHeightOptions = ["121", "313", "483", "603"].map((h) => ({
+            label: h,
+            value: h,
+          }));
+        }
+      } else if (selectedStructureElement === "withTopAndBottomOnly") {
+        if (
+          selectedWidth === "121" ||
+          selectedWidth === "483" ||
+          selectedWidth === "603"
+        ) {
+          newDepthOptions = [{ label: "313", value: "313" }];
+          newHeightOptions = [
+            "121",
+            "180",
+            "200",
+            "270",
+            "313",
+            "370",
+            "483",
+            "603",
+          ].map((h) => ({ label: h, value: h }));
+        } else if (selectedWidth === "313") {
+          newDepthOptions = ["121", "313", "483", "603"].map((d) => ({
+            label: d,
+            value: d,
+          }));
+          newHeightOptions = [
+            "121",
+            "180",
+            "200",
+            "270",
+            "313",
+            "370",
+            "483",
+            "603",
+          ].map((h) => ({ label: h, value: h }));
+        }
+      }
+    }
+
+    return {
+      widthOptions: newWidthOptions,
+      depthOptions: newDepthOptions,
+      heightOptions: newHeightOptions,
+      structureElements: newStructureElements,
+    };
+  };
+
   const handleSidebarOptionsChange = (value, type, key) => {
     configValuesStore.setConfigValue(type, value);
+    console.log("Changed key qdaereae:", key, value, type);
     setChangedKey(key);
     switch (type) {
       case "shelfType":
@@ -181,6 +382,14 @@ const ShelfSidebar = observer(() => {
         break;
     }
   };
+
+  useLayoutEffect(() => {
+    handleSidebarOptionsChange(
+      configValuesStore.getAllConfigValues.shelfType,
+      "shelfType",
+      "1"
+    );
+  }, [configValuesStore]);
 
   // useEffect to update options based on shelfType
   useEffect(() => {
@@ -216,9 +425,50 @@ const ShelfSidebar = observer(() => {
 
   const sidebarOptionsData = [
     {
-      title: "Choose Your Shelf Type",
+      title: (
+        <div className="flex items-center gap-2 w-full">
+          <div>Choose Your Shelf Type</div>
+          <div>
+            <Tooltip
+              autoAdjustOverflow={true}
+              color="black"
+              overlayClassName="bg-theme-primary rounded-lg text-white w-[330px] max-w-[400px] h-[122px]"
+              title={
+                <div className="text-center text-xs p-2">
+                  <div className="leading-[14.65px] mb-2">
+                    <div className="text-[#949494] font-[500]">
+                      Acrylic Panel Shelves
+                    </div>
+                    <div className="text-white font-[400]">
+                      Open-sided design, supported by shelf supporters. They
+                      cannot create walls
+                    </div>
+                  </div>
+                  <div className="leading-[14.65px]">
+                    <div className="text-[#949494] font-[500]">
+                      Stainless Steel Panel Shelves
+                    </div>
+                    <div className="text-white font-[400]">
+                      Attach directly to the frame without supporters and create
+                      walls
+                    </div>
+                  </div>
+                </div>
+              }
+              placement={
+                breakpoint === "xs" || breakpoint === "sm" ? "top" : "bottom"
+              }
+            >
+              <FaInfo className="bg-theme-primary rounded-full text-white text-xs p-[2px] cursor-pointer" />
+              {/*Info icon */}
+            </Tooltip>
+          </div>
+        </div>
+      ),
+      category: "type",
       component: (
         <CustomAntdRadioGroup
+          value={configValuesStore.getAllConfigValues.shelfType}
           options={shelfTypeOption}
           disabled={false}
           onChange={(ev) =>
@@ -229,10 +479,12 @@ const ShelfSidebar = observer(() => {
     },
     {
       title: "Structure Elements",
+      category: "structure",
       component: (
         <CustomAntdRadioGroup
+          value={configValuesStore.getAllConfigValues.structureElements}
           options={structureOptions}
-          disabled={parseInt(changedKey) < 1}
+          // disabled={parseInt(changedKey) < 1}
           onChange={(ev) =>
             handleSidebarOptionsChange(
               ev.target.value,
@@ -245,10 +497,12 @@ const ShelfSidebar = observer(() => {
     },
     {
       title: "Width (mm)",
+      category: "structure",
       component: (
         <CustomAntdRadioGroup
+          value={configValuesStore.getAllConfigValues[0][0]["width"]}
           options={widthOptions}
-          disabled={parseInt(changedKey) < 2}
+          // disabled={parseInt(changedKey) < 2}
           onChange={(ev) =>
             handleSidebarOptionsChange(ev.target.value, "width", "3")
           }
@@ -257,10 +511,12 @@ const ShelfSidebar = observer(() => {
     },
     {
       title: "Depth (mm)",
+      category: "structure",
       component: (
         <CustomAntdRadioGroup
+          value={configValuesStore.getAllConfigValues[0][0]["depth"]}
           options={depthOptions}
-          disabled={parseInt(changedKey) < 3}
+          // disabled={parseInt(changedKey) < 3}
           onChange={(ev) =>
             handleSidebarOptionsChange(ev.target.value, "depth", "4")
           }
@@ -269,10 +525,12 @@ const ShelfSidebar = observer(() => {
     },
     {
       title: "Height (mm)",
+      category: "structure",
       component: (
         <CustomAntdRadioGroup
+          value={configValuesStore.getAllConfigValues[0][0].height}
           options={heightOptions}
-          disabled={parseInt(changedKey) < 4}
+          // disabled={parseInt(changedKey) < 4}
           onChange={(ev) =>
             handleSidebarOptionsChange(ev.target.value, "height", "5")
           }
@@ -281,10 +539,12 @@ const ShelfSidebar = observer(() => {
     },
     {
       title: "Color",
+      category: "color",
       component: (
         <CustomAntdRadioGroup
+          value={configValuesStore.getAllConfigValues.color}
           options={colorOptions}
-          disabled={parseInt(changedKey) < 5}
+          // disabled={parseInt(changedKey) < 5}
           onChange={(ev) =>
             handleSidebarOptionsChange(ev.target.value, "color", "6")
           }
@@ -304,27 +564,24 @@ const ShelfSidebar = observer(() => {
         <div className="flex flex-col gap-6 w-full">
           {sidebarOptionsData.map((option, index) => (
             <div key={index}>
-              <div className="mb-2 font-medium w-full">{option.title}</div>
+              <div className="mb-2 text-sm font-medium w-full">
+                {option.title}
+              </div>
               <div className="mb-2 font-medium w-full overflow-x-auto overflow-y-hidden">
                 {option.component}
               </div>
             </div>
           ))}
 
-          <div className="text-sm">
-            <span className="font-semibold">Next step:</span> Lorem ipsum dolor
-            sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-            veniam, quis nostrud exercitation.
-          </div>
+          <div className="text-sm">Submit the design for a quote</div>
           <Button
-            disabled={parseInt(changedKey) < sidebarOptionsData.length}
+            // disabled={parseInt(changedKey) < sidebarOptionsData.length}
             size="large"
-            type="primary"
-            className="w-full py-6"
+            type="default"
+            className="w-full py-6 rounded-full"
             onClick={() => submitFormStore.setModalOpen(true)}
           >
-            Get a quote on this!
+            <span className="text-[16px]">Submit</span>
           </Button>
         </div>
       )}

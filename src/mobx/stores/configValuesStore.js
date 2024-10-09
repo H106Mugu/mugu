@@ -2,7 +2,7 @@ import { makeAutoObservable, observable } from "mobx";
 import { getCuboidParameters } from "../../Canvas-3d/Utils/CuboidUtils";
 
 class ConfigValuesStore {
-  currentConfigType = "structure"; // Initialize currentConfigType with a default value
+  currentConfigType = "type"; // Initialize currentConfigType with a default value
 
   selectedCuboid = {
     rawIndex: null,
@@ -36,7 +36,7 @@ class ConfigValuesStore {
 
   // Setter for currentConfigType
   setCurrentConfigType(value) {
-    if (value === "structure" || value === "color") {
+    if (value === "structure" || value === "color" || value === "type") {
       this.currentConfigType = value;
     } else {
       console.warn(
@@ -52,9 +52,14 @@ class ConfigValuesStore {
 
   // Define a single action to set values based on key
   setConfigValue(key, value, raw_index = 0) {
+    if (key === "shelfType" || key === "structureElements" || key === "color") {
+      this.configValues[key] = value;
+      return;
+    }
+
     // Update the configValues object for all columns in the specified row
-    Object.keys(this.configValues[raw_index]).forEach(colIndex => {
-        this.configValues[raw_index][colIndex][key] = value;
+    Object.keys(this.configValues[raw_index]).forEach((colIndex) => {
+      this.configValues[raw_index][colIndex][key] = value;
     });
   }
   
@@ -75,7 +80,7 @@ class ConfigValuesStore {
   }
 
   // Getter to retrieve all configuration values
-  getAllConfigValues() {
+  get getAllConfigValues() {
     return { ...this.configValues }; // Return a shallow copy of the configValues
   }
 

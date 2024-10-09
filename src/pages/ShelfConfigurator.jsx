@@ -33,16 +33,21 @@ const ShelfConfigurator = observer(() => {
   return (
     <>
       <div className="flex flex-col md:flex-row h-[100dvh] relative">
-        <div className="bg-gray-100 w-full md:w-[75%] h-[75%] md:h-full flex justify-center items-center">
-          <div className="absolute top-3 left-4 flex items-center">
-            <Button type="link" className="gap-1 !px-0 !py-0">
-              <IoArrowBackOutline className="text-xl text-theme-primary font-semibold" />
-              <span className="text-md text-theme-primary font-semibold">
+        <div className="bg-gray-100 w-full md:w-[66%] h-[75%] md:h-full flex justify-center items-center">
+          <div className="absolute top-3 left-2 flex items-center z-30">
+            <Button
+              type="link"
+              className="gap-1 group !px-0 !py-0 text-theme-primary/70 hover:!text-theme-primary"
+            >
+              <IoArrowBackOutline className="text-lg group-hover:-ms-px transition-all" />
+              <span className="text-[14px] group-hover:ms-px transition-all">
                 Back
               </span>
             </Button>
           </div>
-          <div className="absolute top-[55px] left-4 flex items-center gap-3">
+          <div className="absolute top-[53px] left-0 right-0 flex items-center z-30 w-full md:w-[75%] md:hidden h-px bg-theme-primary" />
+
+          <div className="absolute top-[70px] left-4 flex items-center gap-2 z-30">
             <CustomCheckbox
               checked={checked}
               onChange={handleCheckboxChange}
@@ -50,12 +55,12 @@ const ShelfConfigurator = observer(() => {
               icon={<RxRulerHorizontal />}
             />
             <Button>
-              <TbCube3dSphere />
+              <TbCube3dSphere className="text-theme-primary" />
               Reset cam
             </Button>
           </div>
           <div
-            className={`absolute top-[95px] left-4 flex items-center gap-3 transition-all duration-500 ease-in-out
+            className={`absolute top-[110px] z-30 left-4 flex items-center gap-3 transition-all duration-500 ease-in-out
             ${checked ? "opacity-100" : "opacity-0"}
             `}
           >
@@ -63,7 +68,7 @@ const ShelfConfigurator = observer(() => {
           </div>
           <Canvas_3d />
         </div>
-        <div className="w-full md:w-[25%] min-h-[260px] h-[25%] md:h-full md:min-w-[400px] p-6 bg-[#fbfbfc] overflow-auto">
+        <div className="w-full md:w-[34%] h-[220px] md:h-full md:min-w-[450px] p-0 md:p-6 bg-[#fbfbfc] overflow-auto">
           <ShelfSidebar />
         </div>
         <div
@@ -78,21 +83,30 @@ const ShelfConfigurator = observer(() => {
         </div>
       </div>
       <Modal
+        width={325}
         centered
-        title="Modal Heading"
+        title="Welcome to the 3D Configurator"
         open={!modalStore.getModalState}
         onCancel={() => modalStore.setModalState(true)}
         footer={[
           <Button
             key="start"
-            type="primary"
+            type="default"
             onClick={() => modalStore.setModalState(true)}
+            className="w-full"
           >
             Get Started
           </Button>,
         ]}
       >
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        <div className="font-[700] text-sm mb-[6px]">
+          Start customizing your shelf with a few simple steps.
+        </div>
+        <div className="font-[500] text-sm">
+          Choose your materials, adjust dimensions, and select colors to design
+          your perfect shelf. When you're done, request a quote, and our team
+          will follow up with pricing.
+        </div>
       </Modal>
       <SubmitFormModal
         open={submitFormStore.isModalOpen}
@@ -110,10 +124,25 @@ const StructureOrColorRadioGroup = ({ value, onChange }) => {
       value={value}
       onChange={onChange}
       buttonStyle="solid"
-      className="flex gap-4"
+      className="flex items-center gap-4 relative"
     >
-      <Radio.Button value="structure">Structure</Radio.Button>
-      <Radio.Button value="color">Color</Radio.Button>
+      <Radio.Button className="z-10" value="type">
+        Type
+      </Radio.Button>
+
+      {/* Line between the radio buttons */}
+      <div className="absolute left-0 right-0 h-px bg-black" />
+
+      <Radio.Button className="z-10" value="structure">
+        Structure
+      </Radio.Button>
+
+      {/* Line between the radio buttons */}
+      {/* <div className="absolute left-[128px] w-16 h-px bg-black" /> */}
+
+      <Radio.Button className="z-10" value="color">
+        Colour
+      </Radio.Button>
     </Radio.Group>
   );
 };
