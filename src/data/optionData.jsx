@@ -14,7 +14,7 @@ export const shelfTypeOption = [
           className="w-[53px] h-[53px] mix-blend-multiply"
         />
         <div className="text-[12px] leading-4">Acrylic Panel Shelf</div>
-        <div className="text-[12px] font-thin leading-3">
+        <div className="text-[12px] font-light leading-3">
           *Open shelves only
         </div>
       </div>
@@ -30,7 +30,7 @@ export const shelfTypeOption = [
           className="w-[53px] h-[53px] mix-blend-multiply"
         />
         <div className="text-[12px] leading-4">Stainless Panel Shelf</div>
-        <div className="text-[12px] !font-thin leading-3">
+        <div className="text-[12px] font-light leading-3">
           *Open & closed shelves
         </div>
       </div>
@@ -44,7 +44,7 @@ export const structureElements = [
     label: (
       <div className="flex flex-col items-center justify-start pt-5 h-full min-h-[111px] w-full px-1">
         <img src={all} alt="All (no front)" className="w-[53px] h-[53px]" />
-        <p className="text-[11px] leading-3">All (no front)</p>
+        <p className="text-xs leading-3">All (no front)</p>
       </div>
     ),
     value: "all",
@@ -57,7 +57,7 @@ export const structureElements = [
           alt="Without Back"
           className="w-[53px] h-[53px]"
         />
-        <p className="text-[11px] leading-3">Without Back</p>
+        <p className="text-xs leading-3">Without Back</p>
       </div>
     ),
     value: "withoutBack",
@@ -70,7 +70,7 @@ export const structureElements = [
           alt="With top and bottom only"
           className="w-[53px] h-[53px]"
         />
-        <p className="text-[11px] leading-3">With top and bottom only</p>
+        <p className="text-xs leading-3">With top and bottom only</p>
       </div>
     ),
     value: "withTopAndBottomOnly",
@@ -83,7 +83,7 @@ export const structureElements = [
           alt="Without Shelves"
           className="w-[53px] h-[53px]"
         />
-        <p className="text-[11px] leading-3">Without Shelves</p>
+        <p className="text-xs leading-3">Without Shelves</p>
       </div>
     ),
     value: "withoutShelves",
@@ -96,7 +96,7 @@ export const structureElements = [
           alt="Without Shelves and walls"
           className="w-[53px] h-[53px]"
         />
-        <p className="text-[11px] leading-3">Without Shelves and walls</p>
+        <p className="text-xs leading-3">Without Shelves and walls</p>
       </div>
     ),
     value: "withoutShelvesAndWalls",

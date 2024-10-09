@@ -37,10 +37,12 @@ const ShelfConfigurator = observer(() => {
           <div className="absolute top-3 left-2 flex items-center z-30">
             <Button
               type="link"
-              className="gap-1 !px-0 !py-0 text-theme-primary/70 hover:!text-theme-primary"
+              className="gap-1 group !px-0 !py-0 text-theme-primary/70 hover:!text-theme-primary"
             >
-              <IoArrowBackOutline className="text-lg" />
-              <span className="text-md">Back</span>
+              <IoArrowBackOutline className="text-lg group-hover:-ms-px transition-all" />
+              <span className="text-[14px] group-hover:ms-px transition-all">
+                Back
+              </span>
             </Button>
           </div>
           <div className="absolute top-[53px] left-0 right-0 flex items-center z-30 w-full md:w-[75%] md:hidden h-px bg-theme-primary" />

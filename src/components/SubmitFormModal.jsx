@@ -72,7 +72,7 @@ const SubmitFormModal = ({ open, onClose }) => {
           rules={[{ required: true, message: "Please enter your postcode!" }]}
         >
           <Input
-            placeholder="Enter your postcode"
+            placeholder="Postcode*"
             className="!p-[8px] rounded-none border-[#BCBCBC]"
           />
         </Form.Item>

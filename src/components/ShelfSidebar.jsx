@@ -8,13 +8,12 @@ import {
   structureElements as defaultStructureElements,
   depthOptions as defaultDepthOptions,
 } from "../data/optionData";
-import { Button } from "antd";
+import { Button, Tooltip } from "antd";
 import MobileShelfBottombar from "./MobileShelfBottombar";
 import useBreakpoints from "../hooks/useBreakpoints";
 import { useStores } from "../mobx/context/StoreContext";
 import { observer } from "mobx-react-lite";
-
-// const processedCombinations = new Set();
+import { FaInfo } from "react-icons/fa"; // const processedCombinations = new Set();
 
 const ShelfSidebar = observer(() => {
   const breakpoint = useBreakpoints();
@@ -426,7 +425,46 @@ const ShelfSidebar = observer(() => {
 
   const sidebarOptionsData = [
     {
-      title: "Choose Your Shelf Type",
+      title: (
+        <div className="flex items-center gap-2 w-full">
+          <div>Choose Your Shelf Type</div>
+          <div>
+            <Tooltip
+              autoAdjustOverflow={true}
+              color="black"
+              overlayClassName="bg-theme-primary rounded-lg text-white w-[330px] max-w-[400px] h-[122px]"
+              title={
+                <div className="text-center text-xs p-2">
+                  <div className="leading-[14.65px] mb-2">
+                    <div className="text-[#949494] font-[500]">
+                      Acrylic Panel Shelves
+                    </div>
+                    <div className="text-white font-[400]">
+                      Open-sided design, supported by shelf supporters. They
+                      cannot create walls
+                    </div>
+                  </div>
+                  <div className="leading-[14.65px]">
+                    <div className="text-[#949494] font-[500]">
+                      Stainless Steel Panel Shelves
+                    </div>
+                    <div className="text-white font-[400]">
+                      Attach directly to the frame without supporters and create
+                      walls
+                    </div>
+                  </div>
+                </div>
+              }
+              placement={
+                breakpoint === "xs" || breakpoint === "sm" ? "top" : "bottom"
+              }
+            >
+              <FaInfo className="bg-theme-primary rounded-full text-white text-xs p-[2px] cursor-pointer" />
+              {/*Info icon */}
+            </Tooltip>
+          </div>
+        </div>
+      ),
       category: "type",
       component: (
         <CustomAntdRadioGroup

@@ -35,7 +35,7 @@ const MobileShelfBottombar = observer(({ sidebarOptionsData, changedKey }) => {
     <div>
       <Tabs defaultActiveKey="1" items={tabItems} className="h-[157px]" />
       <div
-        className={`fixed right-0 left-0 flex py-3 px-4 bg-white shadow-xl transition-all duration-1000 ease-in-out ${
+        className={`fixed right-0 left-0 py-1 px-3 flex items-center bg-white shadow-xl transition-all duration-1000 ease-in-out ${
           breakpoint === "xs" || breakpoint === "sm"
             ? "bottom-0 opacity-100"
             : "-bottom-3 opacity-0"
@@ -44,7 +44,7 @@ const MobileShelfBottombar = observer(({ sidebarOptionsData, changedKey }) => {
         <div className="font-[500] text-sm">Submit the design for a quote</div>
         <Button
           disabled={parseInt(changedKey) !== sidebarOptionsData.length}
-          size="small"
+          size="middle"
           type="default"
           className="ms-auto rounded-full border-theme-primary hover:!bg-[#d9d9d9]"
           onClick={() => submitFormStore.setModalOpen(true)}
