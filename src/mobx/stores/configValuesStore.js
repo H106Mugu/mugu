@@ -69,6 +69,10 @@ class ConfigValuesStore {
     this.selectedCuboid.colIndex = colIndex;
   }
 
+  get getSelectedCuboidIndex() {
+    return this.selectedCuboid;
+  }
+
   // Getter for selected cuboid's indices
   get getSelectedCuboid() {
     return this.selectedCuboid;
@@ -103,6 +107,7 @@ class ConfigValuesStore {
       startHeight: startHeight
     };
     this.configValues = { ...this.configValues };
+    console.log(this.configValues);
   }
   
 }
