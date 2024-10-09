@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useStores } from "../../mobx/context/StoreContext";
 
-export function IsRight(raw_index, col_index) {
+export function isOnRight(raw_index, col_index) {
     const { configValuesStore } = useStores();
     // Case 1: First row, check if the next column is empty
     if (raw_index === 0 && !configValuesStore.hasCuboidAt(raw_index, col_index + 1)) {
@@ -19,7 +19,7 @@ export function IsRight(raw_index, col_index) {
     return false;
   }
 
-export function IsTop(raw_index, col_index) {
+export function isOnTop(raw_index, col_index) {
     const { configValuesStore } = useStores();
     return !configValuesStore.hasCuboidAt(raw_index + 1, col_index);
   }

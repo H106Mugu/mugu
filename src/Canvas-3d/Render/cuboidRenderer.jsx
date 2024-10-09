@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Model from "../Models/Model";
 import CreateButton from "../Buttons/CreateButton";
-import { IsRight, IsTop, handleAddCuboid } from "../Utils/PositionsUtils";
+import { isOnRight, isOnTop, handleAddCuboid } from "../Utils/PositionsUtils";
 import { CubeComponent } from "../Models/CubeComponent";
 import configValuesStore from "../../mobx/stores/configValuesStore";
 import { observer } from "mobx-react-lite"; // Import observer from mobx-react-lite
@@ -37,23 +37,26 @@ const CuboidRenderer = observer(({ cuboidData }) => {
         rawIndex={raw_index}
         colIndex={col_index}
       />
-      {IsRight(raw_index, col_index) && (
-        <CreateButton
-          position={[startWidth + width / 20 + 2, startHeight, 0]}
-          raw_index={raw_index}
-          col_index={col_index}
-          onClick={() => handleAddCuboid(raw_index, col_index + 1)}
-          onRight={true}
-        />
+      {/* Show CreateButton for the right side only if this cube is selected */}
+      {isVisible && isOnRight(raw_index, col_index) && (
+          <CreateButton
+              position={[startWidth + width / 20 + 2, startHeight, 0]}
+              raw_index={raw_index}
+              col_index={col_index}
+              onClick={() => handleAddCuboid(raw_index, col_index + 1)}
+              onRight={true}
+          />
       )}
-      {IsTop(raw_index, col_index) && (
-        <CreateButton
-          position={[startWidth, startHeight + height / 20 + 2, 0]}
-          raw_index={raw_index}
-          col_index={col_index}
-          onClick={() => handleAddCuboid(raw_index + 1, col_index)}
-          onRight={false}
-        />
+
+      {/* Show CreateButton for the top side only if this cube is selected */}
+      {isVisible && isOnTop(raw_index, col_index) && (
+          <CreateButton
+              position={[startWidth, startHeight + height / 20 + 2, 0]}
+              raw_index={raw_index}
+              col_index={col_index}
+              onClick={() => handleAddCuboid(raw_index + 1, col_index)}
+              onRight={false}
+          />
       )}
     </React.Fragment>
   );

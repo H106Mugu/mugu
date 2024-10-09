@@ -10,7 +10,7 @@ export default function Canvas_3d() {
         <ambientLight intensity={1} />
         <color attach="background" args={["#f0f0f0"]} />
         <CameraControls
-          minDistance={1} // Minimum zoom distance
+          minDistance={100} // Minimum zoom distance
           maxDistance={400} // Maximum zoom distance
           dollyToCursor={true} // Zoom to cursor
         />
