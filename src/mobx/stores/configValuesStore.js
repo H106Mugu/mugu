@@ -17,11 +17,11 @@ class ConfigValuesStore {
     color: "",
     0: { // Row 0
       0: { // Column 0
-        width: 500, // Width of the cuboid
-        height: 500, // Height of the cuboid
+        width: 400, // Width of the cuboid
+        height: 450, // Height of the cuboid
         depth: 400,
-        startWidth: -25,
-        startHeight: -25,
+        startWidth: -20,
+        startHeight: -19,
         materialType: 'metal', // Material type of the cuboid
         color: '#ff0000' // Color of the cuboid
       },
@@ -54,8 +54,6 @@ class ConfigValuesStore {
   // Define a single action to set values based on key
   setConfigValue(key, value) {
 
-    const raw_index = this.selectedCuboid.rawIndex;
-    const col_index = this.selectedCuboid.colIndex;
     value = parseInt(value);
 
     if (key === "shelfType" || key === "structureElements" || key === "color") {
@@ -63,66 +61,34 @@ class ConfigValuesStore {
       return;
     }
   
-    // Handle width: update the value in all rows of a particular column (colIndex)
-    if (key === "width") {
+    if (key === "width" || key === "height" || key === "depth") {
       Object.keys(this.configValues).forEach((rowIndex) => {
-        if (this.configValues[rowIndex][col_index]) {
-          this.configValues[rowIndex][col_index][key] = value; // Update width
-        }
+        Object.keys(this.configValues[rowIndex]).forEach((columnIndex) => {
+          this.configValues[rowIndex][columnIndex][key] = value;
+        })
       });
-      this.recalculateStartWidthHeight(col_index, parseInt(value));
+      this.recalculateStartWidthHeight()
       this.configValues = { ...this.configValues };
       return;
-  }
-  
-    // Handle height: update the value in all columns of a particular row (raw_index)
-    if (key === "height") {
-      Object.keys(this.configValues[raw_index]).forEach((colIndex) => {
-        this.configValues[raw_index][colIndex][key] = value;
-        console.log(this.configValues[raw_index][col_index]);
-      });
-      this.recalculateStartWidthHeight(col_index, parseInt(value));
-      this.configValues = { ...this.configValues };
-      return;
+      }
     }
-  
-    // Handle depth: update the value in all cells (all rows and columns)
-    if (key === "depth") {
-      Object.keys(this.configValues).forEach((rowIndex) => {
-        Object.keys(this.configValues[rowIndex]).forEach((colIndex) => {
-          this.configValues[rowIndex][colIndex][key] = value;
-          console.log(this.configValues[rowIndex][col_index]);
-        });
-      });
-      this.configValues = { ...this.configValues };
-      return;
-    }
-  }
 
   // Function to recalculate startWidth for all cuboids in the specified column
-  recalculateStartWidthHeight(colIndex, newWidth) {
-    // Iterate over each row in configValues
+  recalculateStartWidthHeight() {
     Object.keys(this.configValues).forEach((rowIndex) => {
-      // Now iterate over each column in the row
       Object.keys(this.configValues[rowIndex]).forEach((columnIndex) => {
         const cuboid = this.configValues[rowIndex][columnIndex];
         if (cuboid) {
-          // Calculate new parameters based on the new width
           const { width, height, startWidth, startHeight } = getCuboidParameters(this.configValues, rowIndex, columnIndex);
-          
-          // Update the cuboid with the new parameters
           this.configValues[rowIndex][columnIndex].startWidth = startWidth;
           this.configValues[rowIndex][columnIndex].startHeight = startHeight;
-
-          // For debugging purposes
-          console.log(`Updated Cuboid at [${rowIndex}][${columnIndex}]:`, this.configValues[rowIndex][columnIndex].width);
         }
       });
     });
   }
   
    // Setter for selected cuboid's indices
-   setSelectedCuboid(rawIndex, colIndex) {
+  setSelectedCuboid(rawIndex, colIndex) {
     this.selectedCuboid.rawIndex = rawIndex;
     this.selectedCuboid.colIndex = colIndex;
   }
@@ -165,7 +131,6 @@ class ConfigValuesStore {
       startHeight: startHeight
     };
     this.configValues = { ...this.configValues };
-    console.log(this.configValues);
   }
   
 }

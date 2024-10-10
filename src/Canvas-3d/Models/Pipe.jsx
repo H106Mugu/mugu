@@ -2,7 +2,7 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
-export const Pipe = ({ start, end, radius = 1, material }) => {
+export const Pipe = ({ start, end, radius = 0.75, material }) => {
     const pipeRef = useRef();
   
     useEffect(() => {
