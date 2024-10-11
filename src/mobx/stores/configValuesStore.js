@@ -13,16 +13,16 @@ class ConfigValuesStore {
   // Define your observable state as an object
   configValues = observable(
     {
-      shelfType: "",
-      structureElements: "",
-      color: "",
+      shelfType: "acrylic",
+      structureElements: "withTopAndBottomOnly",
+      color: "transparentBlack",
       0: {
         // Row 0
         0: {
           // Column 0
-          width: 400, // Width of the cuboid
-          height: 450, // Height of the cuboid
-          depth: 400,
+          width: 270, // Width of the cuboid
+          height: 121, // Height of the cuboid
+          depth: 270,
           startWidth: -20,
           startHeight: -19,
           materialType: "metal", // Material type of the cuboid
