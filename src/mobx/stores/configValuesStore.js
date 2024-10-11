@@ -11,22 +11,27 @@ class ConfigValuesStore {
   };
 
   // Define your observable state as an object
-  configValues = observable({
-    shelfType: "",
-    structureElements: "",
-    color: "",
-    0: { // Row 0
-      0: { // Column 0
-        width: 400, // Width of the cuboid
-        height: 450, // Height of the cuboid
-        depth: 400,
-        startWidth: -20,
-        startHeight: -19,
-        materialType: 'metal', // Material type of the cuboid
-        color: '#ff0000' // Color of the cuboid
+  configValues = observable(
+    {
+      shelfType: "",
+      structureElements: "",
+      color: "",
+      0: {
+        // Row 0
+        0: {
+          // Column 0
+          width: 400, // Width of the cuboid
+          height: 450, // Height of the cuboid
+          depth: 400,
+          startWidth: -20,
+          startHeight: -19,
+          materialType: "metal", // Material type of the cuboid
+          color: "#ff0000", // Color of the cuboid
+        },
       },
     },
-  }, { deep: true });
+    { deep: true }
+  );
 
   constructor() {
     // Automatically make properties observable
@@ -53,41 +58,52 @@ class ConfigValuesStore {
 
   // Define a single action to set values based on key
   setConfigValue(key, value) {
-
-    value = parseInt(value);
-
     if (key === "shelfType" || key === "structureElements" || key === "color") {
       this.configValues[key] = value;
       return;
     }
-  
+
     if (key === "width" || key === "height" || key === "depth") {
+      value = parseInt(value);
+
       Object.keys(this.configValues).forEach((rowIndex) => {
-        Object.keys(this.configValues[rowIndex]).forEach((columnIndex) => {
-          this.configValues[rowIndex][columnIndex][key] = value;
-        })
+        if (typeof this.configValues[rowIndex] === "object") {
+          // Ensure it's a row object, not other values like shelfType
+          Object.keys(this.configValues[rowIndex]).forEach((colIndex) => {
+            this.configValues[rowIndex][colIndex][key] = value;
+          });
+        }
       });
-      this.recalculateStartWidthHeight()
+
+      // Object.keys(this.configValues).forEach((rowIndex) => {
+      //   Object.keys(this.configValues[rowIndex]).forEach((columnIndex) => {
+      //     this.configValues[rowIndex][columnIndex][key] = value;
+      //   });
+      // });
+      this.recalculateStartWidthHeight();
       this.configValues = { ...this.configValues };
       return;
-      }
     }
+  }
 
   // Function to recalculate startWidth for all cuboids in the specified column
   recalculateStartWidthHeight() {
     Object.keys(this.configValues).forEach((rowIndex) => {
-      Object.keys(this.configValues[rowIndex]).forEach((columnIndex) => {
-        const cuboid = this.configValues[rowIndex][columnIndex];
-        if (cuboid) {
-          const { width, height, startWidth, startHeight } = getCuboidParameters(this.configValues, rowIndex, columnIndex);
-          this.configValues[rowIndex][columnIndex].startWidth = startWidth;
-          this.configValues[rowIndex][columnIndex].startHeight = startHeight;
-        }
-      });
+      if (typeof this.configValues[rowIndex] === "object") {
+        Object.keys(this.configValues[rowIndex]).forEach((columnIndex) => {
+          const cuboid = this.configValues[rowIndex][columnIndex];
+          if (cuboid) {
+            const { width, height, startWidth, startHeight } =
+              getCuboidParameters(this.configValues, rowIndex, columnIndex);
+            this.configValues[rowIndex][columnIndex].startWidth = startWidth;
+            this.configValues[rowIndex][columnIndex].startHeight = startHeight;
+          }
+        });
+      }
     });
   }
-  
-   // Setter for selected cuboid's indices
+
+  // Setter for selected cuboid's indices
   setSelectedCuboid(rawIndex, colIndex) {
     this.selectedCuboid.rawIndex = rawIndex;
     this.selectedCuboid.colIndex = colIndex;
@@ -118,8 +134,12 @@ class ConfigValuesStore {
   }
 
   addCuboidAtPosition(raw_index, col_index) {
-    const { width, height, startWidth, startHeight } = getCuboidParameters(this.configValues, raw_index, col_index);
-  
+    const { width, height, startWidth, startHeight } = getCuboidParameters(
+      this.configValues,
+      raw_index,
+      col_index
+    );
+
     // Insert the new cuboid into the configValues store
     this.configValues[raw_index][col_index] = {
       width: width,
@@ -128,11 +148,10 @@ class ConfigValuesStore {
       materialType: this.configValues[0][0].materialType,
       color: this.configValues[0][0].color,
       startWidth: startWidth,
-      startHeight: startHeight
+      startHeight: startHeight,
     };
     this.configValues = { ...this.configValues };
   }
-  
 }
 
 // Export a singleton instance

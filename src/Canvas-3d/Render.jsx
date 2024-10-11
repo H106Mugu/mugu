@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import { useStores } from "../mobx/context/StoreContext";
-import './css/Three.css';
+import "./css/Three.css";
 import CuboidRenderer from "./Render/cuboidRenderer";
 
 const Render = observer(() => {
@@ -13,20 +13,27 @@ const Render = observer(() => {
       const allCuboids = [];
 
       // Flattening the configValuesStore
-      Object.entries(configValuesStore.configValues).forEach(([raw_index, columns]) => {
-        Object.entries(columns).forEach(([col_index, cuboid]) => {
-          allCuboids.push({
-            key: `${raw_index}-${col_index}`,
-            width: cuboid?.width || 0,
-            height: cuboid?.height || 0,
-            depth: cuboid?.depth || 0,
-            startWidth: cuboid?.startWidth || 0,
-            startHeight: cuboid?.startHeight || 0,
-            raw_index: parseInt(raw_index),
-            col_index: parseInt(col_index)
-          });
-        });
-      });
+      Object.entries(configValuesStore.configValues).forEach(
+        ([raw_index, columns]) => {
+          // Ensure it's a row object (not properties like shelfType or other non-object entries)
+          if (typeof columns === "object") {
+            Object.entries(columns).forEach(([col_index, cuboid]) => {
+              if (cuboid) {
+                allCuboids.push({
+                  key: `${raw_index}-${col_index}`,
+                  width: cuboid?.width || 0,
+                  height: cuboid?.height || 0,
+                  depth: cuboid?.depth || 0,
+                  startWidth: cuboid?.startWidth || 0,
+                  startHeight: cuboid?.startHeight || 0,
+                  raw_index: parseInt(raw_index),
+                  col_index: parseInt(col_index),
+                });
+              }
+            });
+          }
+        }
+      );
 
       setCuboids(allCuboids);
       console.log("cuboids", allCuboids);

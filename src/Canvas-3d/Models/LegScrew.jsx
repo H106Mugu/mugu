@@ -7,7 +7,7 @@ export const LegScrew = ({ position, material }) => {
 
   const { scene } = useLoader(GLTFLoader, "/Models/ScrewLegV1.0.glb");
 
-  const clonedScene = scene.clone(true); 
+  const clonedScene = scene.clone(true);
 
   clonedScene.traverse((child) => {
     if (child.isMesh) {
@@ -18,9 +18,7 @@ export const LegScrew = ({ position, material }) => {
   const modifiedPosition = position.clone();
   modifiedPosition.y -= 0.5;
 
-  console.log("position in leg", position);
-
-
-  return <primitive object={clonedScene} position={modifiedPosition} scale={scale} />;
+  return (
+    <primitive object={clonedScene} position={modifiedPosition} scale={scale} />
+  );
 };
-

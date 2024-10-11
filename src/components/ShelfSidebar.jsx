@@ -500,7 +500,7 @@ const ShelfSidebar = observer(() => {
       category: "structure",
       component: (
         <CustomAntdRadioGroup
-          value={configValuesStore.getAllConfigValues[0][0]["width"]}
+          value={configValuesStore.getAllConfigValues[0][0]["width"].toString()}
           options={widthOptions}
           // disabled={parseInt(changedKey) < 2}
           onChange={(ev) =>
@@ -514,7 +514,7 @@ const ShelfSidebar = observer(() => {
       category: "structure",
       component: (
         <CustomAntdRadioGroup
-          value={configValuesStore.getAllConfigValues[0][0]["depth"]}
+          value={configValuesStore.getAllConfigValues[0][0]["depth"].toString()}
           options={depthOptions}
           // disabled={parseInt(changedKey) < 3}
           onChange={(ev) =>
@@ -528,7 +528,9 @@ const ShelfSidebar = observer(() => {
       category: "structure",
       component: (
         <CustomAntdRadioGroup
-          value={configValuesStore.getAllConfigValues[0][0].height}
+          value={configValuesStore.getAllConfigValues[0][0][
+            "height"
+          ].toString()}
           options={heightOptions}
           // disabled={parseInt(changedKey) < 4}
           onChange={(ev) =>

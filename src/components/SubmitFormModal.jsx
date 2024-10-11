@@ -22,13 +22,13 @@ const SubmitFormModal = ({ open, onClose }) => {
   return (
     <Modal
       centered
-      width={325}
+      width={330}
       title="Submit your custom design"
       open={open}
       onCancel={onClose}
       footer={null} // No default footer buttons
     >
-      <div className="font-thin text-sm leading-4">
+      <div className="font-medium text-sm leading-4">
         Thank you for customising your shelf design! Please provide your
         information below, and one of our friendly team members will reach out
         to you shortly with the quote.
@@ -69,7 +69,13 @@ const SubmitFormModal = ({ open, onClose }) => {
 
         <Form.Item
           name="postcode"
-          rules={[{ required: true, message: "Please enter your postcode!" }]}
+          rules={[
+            { required: true, message: "Please enter your postcode!" },
+            {
+              pattern: /^[0-9]{4}$/, // Regular expression for Australian postcodes
+              message: "Please enter a valid Australian postcode!",
+            },
+          ]}
         >
           <Input
             placeholder="Postcode*"
