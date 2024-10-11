@@ -18,6 +18,10 @@ export default function Canvas_3d() {
           minDistance={100} // Minimum zoom distance
           maxDistance={400} // Maximum zoom distance
           dollyToCursor={true} // Zoom to cursor
+          maxPolarAngle={Math.PI / 2}
+          minPolarAngle={Math.PI / 8}
+          maxAzimuthAngle={Math.PI / 4}
+          minAzimuthAngle={-Math.PI / 4}
         />
         <Render />
         <Environment preset="sunset" />
