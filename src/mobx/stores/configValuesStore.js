@@ -58,32 +58,71 @@ class ConfigValuesStore {
 
   // Define a single action to set values based on key
   setConfigValue(key, value) {
+
+    const raw_index = this.selectedCuboid.rawIndex;
+    const col_index = this.selectedCuboid.colIndex;
+
     if (key === "shelfType" || key === "structureElements" || key === "color") {
       this.configValues[key] = value;
       return;
     }
 
-    if (key === "width" || key === "height" || key === "depth") {
+    // if (key === "width" || key === "height" || key === "depth") {
+    //   value = parseInt(value);
+    //   Object.keys(this.configValues).forEach((rowIndex) => {
+    //     if (typeof this.configValues[rowIndex] === "object") {
+    //       // Ensure it's a row object, not other values like shelfType
+    //       Object.keys(this.configValues[rowIndex]).forEach((colIndex) => {
+    //         this.configValues[rowIndex][colIndex][key] = value;
+    //       });
+    //     }
+    //   });
+    //   this.recalculateStartWidthHeight();
+    //   this.configValues = { ...this.configValues };
+    //   return;
+    // }
+    // Handle width: update the value in all rows of a particular column (colIndex)
+    if (key === "width") {
       value = parseInt(value);
-
       Object.keys(this.configValues).forEach((rowIndex) => {
         if (typeof this.configValues[rowIndex] === "object") {
-          // Ensure it's a row object, not other values like shelfType
+          if (this.configValues[rowIndex][col_index]) {
+            this.configValues[rowIndex][col_index][key] = value; // Update width
+          }
+        }
+      });
+      this.recalculateStartWidthHeight(col_index, parseInt(value));
+      this.configValues = { ...this.configValues };
+      console.log(this.configValues);
+      return;
+    }
+
+    // Handle height: update the value in all columns of a particular row (raw_index)
+    if (key === "height") {
+      value = parseInt(value);
+      Object.keys(this.configValues[raw_index]).forEach((colIndex) => {
+        this.configValues[raw_index][colIndex][key] = value;
+        console.log(this.configValues[raw_index][col_index]);
+      });
+      this.recalculateStartWidthHeight(col_index, parseInt(value));
+      this.configValues = { ...this.configValues };
+      return;
+    }
+  
+    // Handle depth: update the value in all cells (all rows and columns)
+    if (key === "depth") {
+      value = parseInt(value);
+      Object.keys(this.configValues).forEach((rowIndex) => {
+        if (typeof this.configValues[rowIndex] === "object") {
           Object.keys(this.configValues[rowIndex]).forEach((colIndex) => {
             this.configValues[rowIndex][colIndex][key] = value;
           });
         }
       });
-
-      // Object.keys(this.configValues).forEach((rowIndex) => {
-      //   Object.keys(this.configValues[rowIndex]).forEach((columnIndex) => {
-      //     this.configValues[rowIndex][columnIndex][key] = value;
-      //   });
-      // });
-      this.recalculateStartWidthHeight();
       this.configValues = { ...this.configValues };
       return;
     }
+    
   }
 
   // Function to recalculate startWidth for all cuboids in the specified column
@@ -107,6 +146,7 @@ class ConfigValuesStore {
   setSelectedCuboid(rawIndex, colIndex) {
     this.selectedCuboid.rawIndex = rawIndex;
     this.selectedCuboid.colIndex = colIndex;
+    this.selectedCuboid = { ...this.selectedCuboid };
   }
 
   get getSelectedCuboidIndex() {

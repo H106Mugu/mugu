@@ -4,25 +4,39 @@ import { useRef, useState } from 'react';
 import { getEdgePoints } from '../Utils/EdgePointsUtils';
 import { EdgeCylinder } from './EdgeCylinder';
 
-export const CubeComponent = ({ position, rotation, size, isVisible, onCubeSelect, rawIndex, colIndex, width, height }) => {
+export const CubeComponent = ({ position, rotation, size, isVisible, onCubeSelect, rawIndex, colIndex, width, height, depth }) => {
     const cubeRef = useRef();
-    const { raycaster } = useThree();
+    const { raycaster, scene } = useThree();
     const [hovered, setHovered] = useState(false);
 
-    const edgeRadius = 0.5;
     const offset = 2;
 
     const handleClick = (event) => {
         event.stopPropagation(); // Prevent event from propagating to other cubes
-        const intersects = raycaster.intersectObject(cubeRef.current);
 
-        // Check if the cube is the first (closest) object hit by the ray
-        if (intersects.length > 0 && intersects[0].object === cubeRef.current) {
-            onCubeSelect(rawIndex, colIndex);
+        // Update the raycaster with the current mouse position
+        raycaster.setFromCamera(event.pointer, event.camera);
+
+        // Get all intersected objects
+        const intersects = raycaster.intersectObjects(scene.children, true);
+
+        if (intersects.length > 0) {
+            // Sort the intersects by distance (closest object first)
+            const sortedIntersects = intersects.sort((a, b) => a.distance - b.distance);
+
+            // Get the first (closest) intersected object
+            const closestIntersect = sortedIntersects[0];
+
+            // Check if the closest object is the current cube
+            if (closestIntersect.object === cubeRef.current) {
+                onCubeSelect(rawIndex, colIndex);
+            }
         }
     };
-    const edgePosition = [position[0] - width / 20, position[1] - height / 20, position[2] + offset];
+
+    const edgePosition = [position[0] - width / 20, position[1] - height / 20, position[2] - depth / 20];
     const edges = getEdgePoints(edgePosition, size, offset);
+    // console.log("edges", edges[0]);
 
     return (
         <>
@@ -47,7 +61,6 @@ export const CubeComponent = ({ position, rotation, size, isVisible, onCubeSelec
                             start={edge[0]}
                             end={edge[1]}
                             color={'blue'}
-                            radius={edgeRadius}
                         />
                     ))}
                 </>
@@ -62,7 +75,6 @@ export const CubeComponent = ({ position, rotation, size, isVisible, onCubeSelec
                             start={edge[0]}
                             end={edge[1]}
                             color={'green'}
-                            radius={edgeRadius}
                         />
                     ))}
                 </>

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import CustomAntdRadioGroup from "./CustomAntdRadioGroup";
 import {
@@ -30,6 +31,9 @@ const ShelfSidebar = observer(() => {
   );
   const [changedKey, setChangedKey] = useState("0");
   const { configValuesStore, submitFormStore } = useStores();
+
+  const selectedCuboid = configValuesStore.getSelectedCuboid;
+
 
   // const getUpdatedOptions = (
   //   shelfType,
@@ -382,6 +386,25 @@ const ShelfSidebar = observer(() => {
     }
   };
 
+  const getValuesFromSelectedCuboid = () => {
+
+    const { rawIndex, colIndex } = configValuesStore.getSelectedCuboid;
+
+    const widthValue = configValuesStore.hasCuboidAt(rawIndex, colIndex)
+      ? configValuesStore.getConfigValue("width", rawIndex, colIndex).toString()
+      : "0"; // Provide a default value if there is no cuboid at that index
+
+    const heightValue = configValuesStore.hasCuboidAt(rawIndex, colIndex)
+      ? configValuesStore.getConfigValue("height", rawIndex, colIndex).toString()
+      : "0"; // Provide a default value if there is no cuboid at that index 
+  
+    const depthValue = configValuesStore.hasCuboidAt(rawIndex, colIndex)
+      ? configValuesStore.getConfigValue("depth", rawIndex, colIndex).toString()
+      : "0"; // Provide a default value if there is no cuboid at that index
+
+    return [widthValue, heightValue, depthValue];
+  };
+
   useLayoutEffect(() => {
     handleSidebarOptionsChange(
       configValuesStore.getAllConfigValues.shelfType,
@@ -415,6 +438,36 @@ const ShelfSidebar = observer(() => {
       setHeightOptions(updatedOptions.heightOptions);
     }
   }, [structureElement, width, depth, shelfType]); // Added structureElement dependency
+
+  useEffect(() => {
+    if (
+      selectedCuboid.rawIndex !== null &&
+      selectedCuboid.colIndex !== null &&
+      configValuesStore.hasCuboidAt(selectedCuboid.rawIndex, selectedCuboid.colIndex)
+    ) {
+      // Fetch height and width for the selected cuboid and update the state
+      const selectedHeight = configValuesStore.getConfigValue(
+        "height",
+        selectedCuboid.rawIndex,
+        selectedCuboid.colIndex
+      );
+      const selectedWidth = configValuesStore.getConfigValue(
+        "width",
+        selectedCuboid.rawIndex,
+        selectedCuboid.colIndex
+      );
+
+      const selectedDepth = configValuesStore.getConfigValue(
+        "depth",
+        selectedCuboid.rawIndex,
+        selectedCuboid.colIndex
+      );
+
+      setHeight(selectedHeight);
+      setWidth(selectedWidth);
+      setDepth(selectedDepth);
+    }
+  }, [selectedCuboid, configValuesStore]);
 
   const resetSelections = () => {
     setWidth(null);
@@ -501,7 +554,7 @@ const ShelfSidebar = observer(() => {
       category: "structure",
       component: (
         <CustomAntdRadioGroup
-          value={configValuesStore.getAllConfigValues[0][0]["width"].toString()}
+          value={getValuesFromSelectedCuboid()[0]}
           options={widthOptions}
           // disabled={parseInt(changedKey) < 2}
           onChange={(ev) =>
@@ -515,7 +568,7 @@ const ShelfSidebar = observer(() => {
       category: "structure",
       component: (
         <CustomAntdRadioGroup
-          value={configValuesStore.getAllConfigValues[0][0]["depth"].toString()}
+          value={getValuesFromSelectedCuboid()[2]}
           options={depthOptions}
           // disabled={parseInt(changedKey) < 3}
           onChange={(ev) =>
@@ -529,9 +582,7 @@ const ShelfSidebar = observer(() => {
       category: "structure",
       component: (
         <CustomAntdRadioGroup
-          value={configValuesStore.getAllConfigValues[0][0][
-            "height"
-          ].toString()}
+          value={getValuesFromSelectedCuboid()[1]}
           options={heightOptions}
           // disabled={parseInt(changedKey) < 4}
           onChange={(ev) =>

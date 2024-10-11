@@ -30,8 +30,8 @@ const CuboidRenderer = observer(({ cuboidData }) => {
         raw_index={raw_index}
         col_index={col_index}
       />
-      {/* <CubeComponent
-        position={[startWidth + width / 20, startHeight + height / 20, 0]}
+      <CubeComponent
+        position={[startWidth + width / 20, startHeight + height / 20, depth / 20]}
         rotation={[0, 0, 0]}
         size={[width / 10, height / 10, depth / 10]}
         isVisible={isVisible}
@@ -40,11 +40,12 @@ const CuboidRenderer = observer(({ cuboidData }) => {
         colIndex={col_index}
         width={width}
         height={height}
+        depth={depth}
         startHeight={startHeight}
         startWidth={startWidth}
-      /> */}
+      />
       {/* Show CreateButton for the right side only if this cube is selected */}
-      {isOnRight(raw_index, col_index) && (
+      {isVisible && isOnRight(raw_index, col_index) && (
           <CreateButton
               position={[startWidth + width / 10, startHeight + height / 20, depth / 20]}
               raw_index={raw_index}
@@ -55,7 +56,7 @@ const CuboidRenderer = observer(({ cuboidData }) => {
       )}
 
       {/* Show CreateButton for the top side only if this cube is selected */}
-      {isOnTop(raw_index, col_index) && (
+      {isVisible && isOnTop(raw_index, col_index) && (
           <CreateButton
               position={[startWidth + width / 20 , startHeight + height / 10, depth / 20]}
               raw_index={raw_index}

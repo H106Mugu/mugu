@@ -3,7 +3,7 @@ import { useLoader } from "@react-three/fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
 const Silhouette = () => {
-  const position = [-60, -25, -4];
+  const position = [-60, -25, 0.1];
   const scale = [1.1, 1.1, 1.1];
 
   const { scene } = useLoader(GLTFLoader, "/Models/shadow_man.glb"); // Load the GLB file
