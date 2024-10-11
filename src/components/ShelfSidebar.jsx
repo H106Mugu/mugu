@@ -13,7 +13,6 @@ import MobileShelfBottombar from "./MobileShelfBottombar";
 import useBreakpoints from "../hooks/useBreakpoints";
 import { useStores } from "../mobx/context/StoreContext";
 import { observer } from "mobx-react-lite";
-import { FaInfo } from "react-icons/fa"; // const processedCombinations = new Set();
 
 const ShelfSidebar = observer(() => {
   const breakpoint = useBreakpoints();
@@ -459,7 +458,9 @@ const ShelfSidebar = observer(() => {
                 breakpoint === "xs" || breakpoint === "sm" ? "top" : "bottom"
               }
             >
-              <FaInfo className="bg-theme-primary rounded-full text-white text-xs p-[2px] cursor-pointer" />
+              <div className="bg-theme-primary rounded-full text-white text-[10px] p-px cursor-pointer w-3 h-3 flex justify-center items-center">
+                i
+              </div>
               {/*Info icon */}
             </Tooltip>
           </div>
