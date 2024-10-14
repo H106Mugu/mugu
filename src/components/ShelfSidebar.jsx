@@ -338,7 +338,7 @@ const ShelfSidebar = observer(() => {
             label: d,
             value: d,
           }));
-          handleChangeOnce(newDepthOptions[0].value, "depth", "16");
+          handleChangeOnce(newDepthOptions[1].value, "depth", "16");
 
           newHeightOptions = [
             "121",
