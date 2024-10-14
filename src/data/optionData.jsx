@@ -1,15 +1,19 @@
-import all from "../assets/images/structure/all.svg";
-import withoutBack from "../assets/images/structure/withoutBack.svg";
-import withoutShelves from "../assets/images/structure/withoutShelves.svg";
-import withoutShelvesAndWalls from "../assets/images/structure/withoutShelvesAndWalls.svg";
-import withTopAndBottomOnly from "../assets/images/structure/withTopAndBottomOnly.svg";
+import acrylic from "../assets/images/structure/acrylic.png";
+import stainless from "../assets/images/structure/stainless.png";
+
+import all from "../assets/images/structure/all.png";
+import withoutBack from "../assets/images/structure/withoutBack.png";
+import withoutShelves from "../assets/images/structure/withoutShelves.png";
+import withoutShelvesAndWalls from "../assets/images/structure/withTopAndBottomOnlyAcrylic.png";
+import withTopAndBottomOnly from "../assets/images/structure/withTopAndBottomOnly.png";
+import withTopAndBottomOnlyAcrylic from "../assets/images/structure/withTopAndBottomOnlyAcrylic.png";
 
 export const shelfTypeOption = [
   {
     label: (
       <div className="flex flex-col items-center justify-center min-h-[111px] h-full w-full text-center">
         <img
-          src={withTopAndBottomOnly}
+          src={acrylic}
           alt="All (no front)"
           className="w-[53px] h-[53px] mix-blend-multiply"
         />
@@ -25,7 +29,7 @@ export const shelfTypeOption = [
     label: (
       <div className="flex flex-col items-center justify-center min-h-[111px] h-full w-full text-center">
         <img
-          src={all}
+          src={stainless}
           alt="All (no front)"
           className="w-[53px] h-[53px] mix-blend-multiply"
         />
@@ -66,7 +70,7 @@ export const structureElements = [
     label: (
       <div className="flex flex-col items-center justify-start pt-5 h-full min-h-[111px] w-full px-1">
         <img
-          src={withTopAndBottomOnly}
+          src={withTopAndBottomOnlyAcrylic}
           alt="With top and bottom only"
           className="w-[53px] h-[53px]"
         />
@@ -75,6 +79,19 @@ export const structureElements = [
     ),
     value: "withTopAndBottomOnly",
   },
+  // {
+  //   label: (
+  //     <div className="flex flex-col items-center justify-start pt-5 h-full min-h-[111px] w-full px-1">
+  //       <img
+  //         src={withTopAndBottomOnlyAcrylic}
+  //         alt="With top and bottom only"
+  //         className="w-[53px] h-[53px]"
+  //       />
+  //       <p className="text-xs leading-3">With top and bottom only</p>
+  //     </div>
+  //   ),
+  //   value: "withTopAndBottomOnly-a",
+  // },
   {
     label: (
       <div className="flex flex-col items-center justify-start pt-5 h-full min-h-[111px] w-full px-1">

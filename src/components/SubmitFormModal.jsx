@@ -2,16 +2,34 @@ import React, { useState } from "react";
 import { Modal, Form, Input, Checkbox, Button } from "antd";
 import { useStores } from "../mobx/context/StoreContext";
 
+import { pdf } from "@react-pdf/renderer";
+import PDFDocument from "./PDFDocument"; // Adjust the path as necessary
+
 const SubmitFormModal = ({ open, onClose }) => {
   const [form] = Form.useForm();
   const { submitFormStore } = useStores();
   const [loading, setLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     console.log("Received values from form: ", values);
     submitFormStore.setFields(values);
     setLoading(true);
+
+    // Create the PDF
+    const doc = <PDFDocument data={values} />;
+    const blob = await pdf(doc).toBlob();
+
+    // Trigger download
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "Mugu-quote.pdf";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
     setTimeout(() => {
       setLoading(false);
       setIsSubmitted(true);
@@ -33,6 +51,19 @@ const SubmitFormModal = ({ open, onClose }) => {
         information below, and one of our friendly team members will reach out
         to you shortly with the quote.
       </div>
+      <button
+        className="border mt-4 rounded-md p-2 bg-theme-primary text-white"
+        onClick={() =>
+          form.setFieldsValue({
+            name: "John Doe",
+            email: "test@test.com",
+            postcode: "2000",
+            requireShipping: true,
+          })
+        }
+      >
+        Fill Form
+      </button>
       <p className="my-4 font-semibold">Your info</p>
       <Form
         disabled={isSubmitted}
