@@ -66,11 +66,32 @@ class ConfigValuesStore {
     if (key === "width" || key === "height" || key === "depth") {
       value = parseInt(value);
 
-      Object.keys(this.configValues).forEach((rowIndex) => {
-        if (typeof this.configValues[rowIndex] === "object") {
-          // Ensure it's a row object, not other values like shelfType
-          Object.keys(this.configValues[rowIndex]).forEach((colIndex) => {
-            this.configValues[rowIndex][colIndex][key] = value;
+      // Object.keys(this.configValues).forEach((rowIndex) => {
+      //   if (typeof this.configValues[rowIndex] === "object") {
+      //     // Ensure it's a row object, not other values like shelfType
+      //     Object.keys(this.configValues[rowIndex]).forEach((colIndex) => {
+      //       this.configValues[rowIndex][colIndex][key] = value;
+      //     });
+      //   }
+      // });
+
+      // Loop through all rows
+      // Log the structure of configValues for debugging
+      // console.log("configValues", this.configValues);
+
+      // Loop through all rows
+      Object.keys(this.configValues).forEach((configKey) => {
+        const row = this.configValues[configKey];
+
+        // Ensure it's a row object with cuboids (e.g., not shelfType or color)
+        if (row && typeof row === "object" && !Array.isArray(row)) {
+          Object.keys(row).forEach((colIndex) => {
+            const cuboid = row[colIndex];
+
+            // Update the cuboid with the new value for width/height/depth
+            if (cuboid && typeof cuboid === "object") {
+              cuboid[key] = value;
+            }
           });
         }
       });

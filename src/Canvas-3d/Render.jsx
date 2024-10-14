@@ -36,7 +36,6 @@ const Render = observer(() => {
       );
 
       setCuboids(allCuboids);
-      console.log("cuboids", allCuboids);
     };
 
     initializeCuboids(); // Call to initialize cuboids

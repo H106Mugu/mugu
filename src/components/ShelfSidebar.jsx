@@ -14,9 +14,17 @@ import useBreakpoints from "../hooks/useBreakpoints";
 import { useStores } from "../mobx/context/StoreContext";
 import { observer } from "mobx-react-lite";
 
+import withTopAndBottomOnly from "../assets/images/structure/withTopAndBottomOnly.png";
+import withTopAndBottomOnlyAcrylic from "../assets/images/structure/withTopAndBottomOnlyAcrylic.png";
+
+// Set to track called changes
+const calledChanges = new Set();
+
 const ShelfSidebar = observer(() => {
   const breakpoint = useBreakpoints();
   const [shelfType, setShelfType] = useState(null);
+  const [previousShelfType, setPreviousShelfType] = useState(shelfType); // Track previous shelfType
+
   const [width, setWidth] = useState(null);
   const [depth, setDepth] = useState(null);
   const [height, setHeight] = useState(null);
@@ -42,22 +50,7 @@ const ShelfSidebar = observer(() => {
   //   let newHeightOptions = [];
   //   let newStructureElements = [];
 
-  //   // Utility function to generate a unique key based on the arguments
-  //   const generateKey = (value, optionType, id) => {
-  //     return `${value}-${optionType}-${id}`;
-  //   };
-
-  //   // Function to handle options change if not already processed
-  //   const handleOptionChangeOnce = (value, optionType, id) => {
-  //     const key = generateKey(value, optionType, id);
-  //     if (!processedCombinations.has(key)) {
-  //       handleSidebarOptionsChange(value, optionType, id);
-  //       processedCombinations.add(key);
-  //     }
-  //   };
-
   //   if (shelfType === "acrylic") {
-  //     // Set width and height options for acrylic
   //     newWidthOptions = [
   //       { label: "270", value: "270" },
   //       { label: "370", value: "370" },
@@ -73,39 +66,14 @@ const ShelfSidebar = observer(() => {
   //       { label: "603", value: "603" },
   //     ];
   //     newDepthOptions = [...newWidthOptions];
-
   //     newStructureElements = defaultStructureElements.filter((option) =>
   //       ["withTopAndBottomOnly", "withoutShelves"].includes(option.value)
   //     );
-
-  //     // Ensure option change for acrylic is handled once
-  //     if (newWidthOptions.length > 0)
-  //       handleOptionChangeOnce(newWidthOptions[0].value, "width", "10");
-
-  //     if (newHeightOptions.length > 0)
-  //       handleOptionChangeOnce(newHeightOptions[0].value, "height", "11");
-
-  //     if (newDepthOptions.length > 0)
-  //       handleOptionChangeOnce(newDepthOptions[0].value, "depth", "12");
-
-  //     if (newStructureElements.length > 0)
-  //       handleOptionChangeOnce(
-  //         newStructureElements[0].value,
-  //         "structureElements",
-  //         "13"
-  //       );
   //   } else if (shelfType === "stainless") {
   //     // Set structureElements for stainless
   //     newStructureElements = defaultStructureElements.filter((option) =>
   //       ["all", "withoutBack", "withTopAndBottomOnly"].includes(option.value)
   //     );
-  //     if (newStructureElements.length > 0)
-  //       handleOptionChangeOnce(
-  //         newStructureElements[0].value,
-  //         "structureElements",
-  //         "2"
-  //       );
-
   //     // Common width options for "stainless"
   //     newWidthOptions = [
   //       { label: "121", value: "121" },
@@ -114,10 +82,6 @@ const ShelfSidebar = observer(() => {
   //       { label: "603", value: "603" },
   //     ];
 
-  //     if (newWidthOptions.length > 0)
-  //       handleOptionChangeOnce(newWidthOptions[0].value, "width", "3");
-
-  //     // Nested conditions within stainless
   //     if (
   //       selectedStructureElement === "all" ||
   //       selectedStructureElement === "withoutBack"
@@ -128,39 +92,20 @@ const ShelfSidebar = observer(() => {
   //           label: h,
   //           value: h,
   //         }));
-
-  //         if (newHeightOptions.length > 0)
-  //           handleOptionChangeOnce(newHeightOptions[0].value, "height", "5");
-
-  //         if (newDepthOptions.length > 0)
-  //           handleOptionChangeOnce(newDepthOptions[0].value, "depth", "4");
   //       } else if (selectedWidth === "313") {
   //         newDepthOptions = ["121", "313", "483", "603"].map((d) => ({
   //           label: d,
   //           value: d,
   //         }));
-
-  //         if (newDepthOptions.length > 0)
-  //           handleOptionChangeOnce(newDepthOptions[0].value, "depth", "4");
-
   //         if (selectedDepth === "121") {
   //           newHeightOptions = [{ label: "313", value: "313" }];
-
-  //           if (newHeightOptions.length > 0)
-  //             handleOptionChangeOnce(newHeightOptions[0].value, "height", "14");
   //         } else if (selectedDepth === "313") {
   //           newHeightOptions = ["121", "313", "483", "603"].map((h) => ({
   //             label: h,
   //             value: h,
   //           }));
-
-  //           if (newHeightOptions.length > 0)
-  //             handleOptionChangeOnce(newHeightOptions[0].value, "height", "15");
   //         } else if (selectedDepth === "483" || selectedDepth === "603") {
   //           newHeightOptions = [{ label: "313", value: "313" }];
-
-  //           if (newHeightOptions.length > 0)
-  //             handleOptionChangeOnce(newHeightOptions[0].value, "height", "16");
   //         }
   //       } else if (selectedWidth === "483" || selectedWidth === "603") {
   //         newDepthOptions = [{ label: "313", value: "313" }];
@@ -168,9 +113,6 @@ const ShelfSidebar = observer(() => {
   //           label: h,
   //           value: h,
   //         }));
-
-  //         if (newDepthOptions.length > 0)
-  //           handleOptionChangeOnce(newDepthOptions[0].value, "depth", "17");
   //       }
   //     } else if (selectedStructureElement === "withTopAndBottomOnly") {
   //       if (
@@ -189,13 +131,6 @@ const ShelfSidebar = observer(() => {
   //           "483",
   //           "603",
   //         ].map((h) => ({ label: h, value: h }));
-
-  //         // alert("Here" + newHeightOptions.length);
-  //         if (newDepthOptions.length > 0)
-  //           handleOptionChangeOnce(newDepthOptions[0].value, "depth", "6");
-
-  //         if (newHeightOptions.length > 0)
-  //           handleOptionChangeOnce(newHeightOptions[0].value, "height", "7");
   //       } else if (selectedWidth === "313") {
   //         newDepthOptions = ["121", "313", "483", "603"].map((d) => ({
   //           label: d,
@@ -211,12 +146,6 @@ const ShelfSidebar = observer(() => {
   //           "483",
   //           "603",
   //         ].map((h) => ({ label: h, value: h }));
-
-  //         if (newDepthOptions.length > 0)
-  //           handleOptionChangeOnce(newDepthOptions[0].value, "depth", "8");
-
-  //         if (newHeightOptions.length > 0)
-  //           handleOptionChangeOnce(newHeightOptions[0].value, "height", "9");
   //       }
   //     }
   //   }
@@ -233,20 +162,35 @@ const ShelfSidebar = observer(() => {
     shelfType,
     selectedWidth,
     selectedDepth,
-    selectedStructureElement
+    selectedStructureElement,
+    previousShelfType
   ) => {
     let newWidthOptions = [];
     let newDepthOptions = [];
     let newHeightOptions = [];
     let newStructureElements = [];
 
-    // Track if we already handled sidebar options
+    // Function to handle change only once
+    const handleChangeOnce = (value, type, key) => {
+      const id = `${type}-${key}`; // Unique identifier
+      if (!calledChanges.has(id)) {
+        calledChanges.add(id);
+        handleSidebarOptionsChange(value, type, key);
+      }
+    };
+
+    // Reset the set if shelfType changes
+    if (shelfType !== previousShelfType) {
+      calledChanges.clear();
+    }
 
     if (shelfType === "acrylic") {
       newWidthOptions = [
         { label: "270", value: "270" },
         { label: "370", value: "370" },
       ];
+      handleChangeOnce(newWidthOptions[0].value, "width", "1");
+
       newHeightOptions = [
         { label: "121", value: "121" },
         { label: "180", value: "180" },
@@ -257,22 +201,74 @@ const ShelfSidebar = observer(() => {
         { label: "483", value: "483" },
         { label: "603", value: "603" },
       ];
+      handleChangeOnce(newHeightOptions[0].value, "height", "2");
+
       newDepthOptions = [...newWidthOptions];
+      handleChangeOnce(newDepthOptions[0].value, "depth", "3");
+
       newStructureElements = defaultStructureElements.filter((option) =>
         ["withTopAndBottomOnly", "withoutShelves"].includes(option.value)
       );
+      newStructureElements = newStructureElements.map((option) => {
+        if (option.value === "withTopAndBottomOnly") {
+          return {
+            ...option, // Keep existing properties
+            label: (
+              <div className="flex flex-col items-center justify-start pt-5 h-full min-h-[111px] w-full px-1">
+                <img
+                  src={withTopAndBottomOnlyAcrylic}
+                  alt="With top and bottom only"
+                  className="w-[53px] h-[53px]"
+                />
+                <p className="text-xs leading-3">With top and bottom only</p>
+              </div>
+            ),
+          };
+        }
+
+        // Return the option unchanged if no condition is met
+        return option;
+      });
+      handleChangeOnce(newStructureElements[0].value, "structureElements", "4");
     } else if (shelfType === "stainless") {
-      // Set structureElements for stainless
       newStructureElements = defaultStructureElements.filter((option) =>
         ["all", "withoutBack", "withTopAndBottomOnly"].includes(option.value)
       );
-      // Common width options for "stainless"
+
+      newStructureElements = newStructureElements.map((option) => {
+        if (option.value === "withTopAndBottomOnly") {
+          return {
+            ...option, // Keep existing properties
+            label: (
+              <div className="flex flex-col items-center justify-start pt-5 h-full min-h-[111px] w-full px-1">
+                <img
+                  src={withTopAndBottomOnly}
+                  alt="With top and bottom only"
+                  className="w-[53px] h-[53px]"
+                />
+                <p className="text-xs leading-3">With top and bottom only</p>
+              </div>
+            ),
+          };
+        }
+
+        // Return the option unchanged if no condition is met
+        return option;
+      });
+
+      handleChangeOnce(
+        newStructureElements[0].value,
+        "structureElements",
+        "20"
+      );
+
       newWidthOptions = [
         { label: "121", value: "121" },
         { label: "313", value: "313" },
         { label: "483", value: "483" },
         { label: "603", value: "603" },
       ];
+      handleChangeOnce(newWidthOptions[0].value, "width", "5");
 
       if (
         selectedStructureElement === "all" ||
@@ -280,31 +276,42 @@ const ShelfSidebar = observer(() => {
       ) {
         if (selectedWidth === "121") {
           newDepthOptions = [{ label: "313", value: "313" }];
+          handleChangeOnce(newDepthOptions[0].value, "depth", "6");
+
           newHeightOptions = ["121", "313", "483", "603"].map((h) => ({
             label: h,
             value: h,
           }));
+          handleChangeOnce(newHeightOptions[0].value, "height", "7");
         } else if (selectedWidth === "313") {
           newDepthOptions = ["121", "313", "483", "603"].map((d) => ({
             label: d,
             value: d,
           }));
+          handleChangeOnce(newDepthOptions[1].value, "depth", "8");
+
           if (selectedDepth === "121") {
             newHeightOptions = [{ label: "313", value: "313" }];
+            handleChangeOnce(newHeightOptions[0].value, "height", "9");
           } else if (selectedDepth === "313") {
             newHeightOptions = ["121", "313", "483", "603"].map((h) => ({
               label: h,
               value: h,
             }));
+            handleChangeOnce(newHeightOptions[0].value, "height", "10");
           } else if (selectedDepth === "483" || selectedDepth === "603") {
             newHeightOptions = [{ label: "313", value: "313" }];
+            handleChangeOnce(newHeightOptions[0].value, "height", "11");
           }
         } else if (selectedWidth === "483" || selectedWidth === "603") {
           newDepthOptions = [{ label: "313", value: "313" }];
+          handleChangeOnce(newDepthOptions[0].value, "depth", "12");
+
           newHeightOptions = ["121", "313", "483", "603"].map((h) => ({
             label: h,
             value: h,
           }));
+          handleChangeOnce(newHeightOptions[0].value, "height", "13");
         }
       } else if (selectedStructureElement === "withTopAndBottomOnly") {
         if (
@@ -313,6 +320,8 @@ const ShelfSidebar = observer(() => {
           selectedWidth === "603"
         ) {
           newDepthOptions = [{ label: "313", value: "313" }];
+          handleChangeOnce(newDepthOptions[0].value, "depth", "14");
+
           newHeightOptions = [
             "121",
             "180",
@@ -323,11 +332,14 @@ const ShelfSidebar = observer(() => {
             "483",
             "603",
           ].map((h) => ({ label: h, value: h }));
+          handleChangeOnce(newHeightOptions[0].value, "height", "15");
         } else if (selectedWidth === "313") {
           newDepthOptions = ["121", "313", "483", "603"].map((d) => ({
             label: d,
             value: d,
           }));
+          handleChangeOnce(newDepthOptions[0].value, "depth", "16");
+
           newHeightOptions = [
             "121",
             "180",
@@ -338,6 +350,7 @@ const ShelfSidebar = observer(() => {
             "483",
             "603",
           ].map((h) => ({ label: h, value: h }));
+          handleChangeOnce(newHeightOptions[0].value, "height", "17");
         }
       }
     }
@@ -352,7 +365,6 @@ const ShelfSidebar = observer(() => {
 
   const handleSidebarOptionsChange = (value, type, key) => {
     configValuesStore.setConfigValue(type, value);
-    console.log("Changed key qdaereae:", key, value, type);
     setChangedKey(key);
     switch (type) {
       case "shelfType":
@@ -382,6 +394,11 @@ const ShelfSidebar = observer(() => {
     }
   };
 
+  useEffect(() => {
+    // Update the previous shelf type whenever the current shelf type changes
+    setPreviousShelfType(shelfType);
+  }, [shelfType]);
+
   useLayoutEffect(() => {
     handleSidebarOptionsChange(
       configValuesStore.getAllConfigValues.shelfType,
@@ -393,7 +410,13 @@ const ShelfSidebar = observer(() => {
   // useEffect to update options based on shelfType
   useEffect(() => {
     if (shelfType) {
-      const updatedOptions = getUpdatedOptions(shelfType, null, null, null);
+      const updatedOptions = getUpdatedOptions(
+        shelfType,
+        null,
+        null,
+        null,
+        previousShelfType
+      );
       setWidthOptions(updatedOptions.widthOptions);
       setDepthOptions(updatedOptions.depthOptions);
       setHeightOptions(updatedOptions.heightOptions);
@@ -408,7 +431,8 @@ const ShelfSidebar = observer(() => {
         shelfType,
         width,
         depth,
-        structureElement
+        structureElement,
+        previousShelfType
       ); // Passing structureElement here
       setWidthOptions(updatedOptions.widthOptions);
       setDepthOptions(updatedOptions.depthOptions);
@@ -555,6 +579,11 @@ const ShelfSidebar = observer(() => {
       ),
     },
   ];
+
+  console.log(
+    "configValueshdiouhioiissa",
+    configValuesStore.getAllConfigValues
+  );
 
   return (
     <>

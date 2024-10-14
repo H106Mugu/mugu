@@ -28,8 +28,6 @@ const Model = ({
     material.needsUpdate = true;
   }
 
-  console.log("width", width, "startWidth", startWidth);
-
   const corners = cornerOffsets.map(
     ([x, y, z]) =>
       new THREE.Vector3(

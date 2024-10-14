@@ -7,6 +7,7 @@ import { observer } from "mobx-react-lite";
 import CustomCheckbox from "../components/CustomCheckbox";
 import { RxRulerHorizontal } from "react-icons/rx";
 import { TbCube3dSphere } from "react-icons/tb";
+import { RiDeleteBinLine } from "react-icons/ri";
 import Canvas_3d from "../Canvas-3d/Canvas_3d";
 import { IoArrowBackOutline } from "react-icons/io5";
 import SubmitFormModal from "../components/SubmitFormModal";
@@ -33,7 +34,7 @@ const ShelfConfigurator = observer(() => {
   return (
     <>
       <div className="flex flex-col md:flex-row h-[100dvh] relative">
-        <div className="bg-gray-100 w-full md:w-[66%] h-[75%] md:h-full flex justify-center items-center">
+        <div className="relative bg-gray-100 w-full md:w-[66%] h-[75%] md:h-full flex justify-center items-center">
           <div className="absolute top-3 left-2 flex items-center z-30">
             <Button
               type="link"
@@ -45,7 +46,7 @@ const ShelfConfigurator = observer(() => {
               </span>
             </Button>
           </div>
-          <div className="absolute top-[53px] left-0 right-0 flex items-center z-30 w-full md:w-[75%] md:hidden h-px bg-theme-primary" />
+          <div className="absolute top-[53px] left-0 right-0 flex items-center z-30 w-full h-px bg-theme-primary" />
 
           <div className="absolute top-[70px] left-4 flex items-center gap-2 z-30">
             <CustomCheckbox
@@ -59,6 +60,14 @@ const ShelfConfigurator = observer(() => {
               Reset cam
             </Button>
           </div>
+
+          <div className="absolute bottom-4 md:bottom-8 right-4 md:right-8 flex items-center gap-2 z-30">
+            <Button>
+              <RiDeleteBinLine className="text-theme-primary" />
+              Remove selected element{" "}
+            </Button>
+          </div>
+
           <div
             className={`absolute top-[110px] z-30 left-4 flex items-center gap-3 transition-all duration-500 ease-in-out
             ${checked ? "opacity-100" : "opacity-0"}
@@ -100,12 +109,12 @@ const ShelfConfigurator = observer(() => {
         ]}
       >
         <div className="font-[700] text-sm mb-[6px]">
-          Start customizing your shelf with a few simple steps.
+          Start customising your shelf in just a few easy steps.
         </div>
         <div className="font-[500] text-sm">
-          Choose your materials, adjust dimensions, and select colors to design
-          your perfect shelf. When you're done, request a quote, and our team
-          will follow up with pricing.
+          Choose your materials, adjust the dimensions, and select colours to
+          create your perfect shelf. Once you're finished, request a quote and
+          our team will follow up with pricing.
         </div>
       </Modal>
       <SubmitFormModal
