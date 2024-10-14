@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import ShelfSidebar from "../components/ShelfSidebar";
 import { useStores } from "../mobx/context/StoreContext";
@@ -64,7 +66,7 @@ const ShelfConfigurator = observer(() => {
             ${checked ? "opacity-100" : "opacity-0"}
             `}
           >
-            W: 400/H:450/D:400
+            W: {configValuesStore.totalLength.width}/H: {configValuesStore.totalLength.height}/D: {configValuesStore.configValues[0][0].depth}
           </div>
           <Canvas_3d />
         </div>

@@ -11,6 +11,7 @@ import {
   bottomCornersIndices,
 } from "../Utils/ModelUtils";
 import { LegScrew } from "./LegScrew";
+import { Supporter } from "./Supporter";
 
 const Model = ({
   width,
@@ -38,7 +39,7 @@ const Model = ({
         (z * depth) / 2
       )
   );
-
+  
   const legPipes = bottomCornersIndices.map((index) => {
     const start = corners[index];
     const end = new THREE.Vector3(start.x, start.y - 5, start.z); // 5 units below the corner
@@ -83,7 +84,15 @@ const Model = ({
             material={material}
           />
         ))}
-      {/* <LegScrew/> */}
+
+      {corners.map((corner, index) => (
+        <Supporter
+          key={`connector-${index}`}
+          position={corner}
+          material={material}
+          uniqueKey={`${index}`} 
+        />
+      ))}
     </>
   );
 };

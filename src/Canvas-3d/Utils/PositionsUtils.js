@@ -28,3 +28,43 @@ export function handleAddCuboid(raw_index, col_index) {
   const { configValuesStore } = useStores();
   return configValuesStore.addCuboidAtPosition(raw_index, col_index); // Add cuboid
 };
+
+// Function to get rotation and adjusted position based on uniqueKey
+export const adjustPositionAndGetRotation = (key, originalPosition) => {
+  const newPosition = [...originalPosition]; // Clone original position
+  let rotation;
+
+  switch (key) {
+      case 0:
+      case 3:
+          newPosition[0] += 1.5; // Add 1.5 to x
+          newPosition[2] += 1.6; // Add 1.5 to z
+          rotation = [0, Math.PI * 1.5, 0];
+          break;
+      case 1:
+      case 2:
+          newPosition[0] -= 1.6; // Subtract 1.5 from x
+          newPosition[2] += 1.5; // Add 1.5 to z
+          rotation = [0, Math.PI, 0];
+          break;
+      case 4:
+      case 7:
+          newPosition[0] += 1.6; // Add 1.5 to x
+          newPosition[2] -= 1.5; // Subtract 1.5 from z
+          rotation = [0, 0, 0];
+          break;
+      case 5:
+      case 6:
+          newPosition[0] -= 1.5; // Subtract 1.5 from x
+          newPosition[2] -= 1.6; // Subtract 1.5 from z
+          rotation = [0, Math.PI * 0.5, 0];
+          break;
+      default:
+          rotation = [0, 0, 0]; // Default rotation
+          break;
+  }
+
+  return { adjustedPosition: newPosition, rotation };
+};
+
+
