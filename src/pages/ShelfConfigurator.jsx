@@ -61,7 +61,7 @@ const ShelfConfigurator = observer(() => {
             </Button>
           </div>
 
-          <div className="absolute bottom-4 md:bottom-8 right-4 md:right-8 flex items-center gap-2 z-30">
+          <div className="absolute bottom-4 md:bottom-6 right-4 md:right-8 flex items-center gap-2 z-30">
             <Button>
               <RiDeleteBinLine className="text-theme-primary" />
               Remove selected element{" "}
