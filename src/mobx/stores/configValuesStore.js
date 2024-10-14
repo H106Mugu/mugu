@@ -21,7 +21,7 @@ class ConfigValuesStore {
         0: {
           // Column 0
           width: 270, // Width of the cuboid
-          height: 121, // Height of the cuboid
+          height: 270, // Height of the cuboid
           depth: 270,
           startWidth: -20,
           startHeight: -19,
