@@ -205,7 +205,7 @@ const ShelfSidebar = observer(() => {
         { label: "483", value: "483" },
         { label: "603", value: "603" },
       ];
-      handleChangeOnce(newHeightOptions[0].value, "height", "2");
+      handleChangeOnce(newHeightOptions[3].value, "height", "2");
 
       newDepthOptions = [...newWidthOptions];
       handleChangeOnce(newDepthOptions[0].value, "depth", "3");
@@ -630,10 +630,10 @@ const ShelfSidebar = observer(() => {
     },
   ];
 
-  console.log(
-    "configValueshdiouhioiissa",
-    configValuesStore.getAllConfigValues
-  );
+  // console.log(
+  //   "configValueshdiouhioiissa",
+  //   configValuesStore.getAllConfigValues
+  // );
 
   return (
     <>

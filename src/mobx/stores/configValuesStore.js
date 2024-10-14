@@ -80,8 +80,8 @@ class ConfigValuesStore {
   // Define a single action to set values based on key
   setConfigValue(key, value) {
 
-    const raw_index = this.selectedCuboid.rawIndex;
-    const col_index = this.selectedCuboid.colIndex;
+    let raw_index = this.selectedCuboid.rawIndex;
+    let col_index = this.selectedCuboid.colIndex;
 
     if (key === "shelfType" || key === "structureElements" || key === "color") {
       this.configValues[key] = value;
@@ -106,6 +106,9 @@ class ConfigValuesStore {
     // Handle height: update the value in all columns of a particular row (raw_index)
     if (key === "height") {
       value = parseInt(value);
+      if (raw_index === null) {
+        raw_index = 0;
+      }
       Object.keys(this.configValues[raw_index]).forEach((colIndex) => {
         this.configValues[raw_index][colIndex][key] = value;
       });
@@ -117,19 +120,6 @@ class ConfigValuesStore {
     // Handle depth: update the value in all cells (all rows and columns)
     if (key === "depth") {
       value = parseInt(value);
-
-      // Object.keys(this.configValues).forEach((rowIndex) => {
-      //   if (typeof this.configValues[rowIndex] === "object") {
-      //     // Ensure it's a row object, not other values like shelfType
-      //     Object.keys(this.configValues[rowIndex]).forEach((colIndex) => {
-      //       this.configValues[rowIndex][colIndex][key] = value;
-      //     });
-      //   }
-      // });
-
-      // Loop through all rows
-      // Log the structure of configValues for debugging
-      // console.log("configValues", this.configValues);
 
       // Loop through all rows
       Object.keys(this.configValues).forEach((configKey) => {
@@ -230,9 +220,9 @@ class ConfigValuesStore {
     if (this.configValues[raw_index] && this.configValues[raw_index][col_index]) {
       const nextRow = this.configValues[parseInt(raw_index) + 1];
       const nextColumn = this.configValues[raw_index][parseInt(col_index) + 1];
-      if ((nextRow && nextRow[col_index]) || (raw_index === 0 && nextColumn)) {
-        console.log("Cannot be deleted: There is a cuboid above at row", raw_index + 1, "column", col_index);
-        return;
+      if ((nextRow && nextRow[col_index]) || (raw_index === 0 && nextColumn) || (raw_index === 0 && col_index === 0)) {
+        this.errorMessage = `Cannot be deleted: There is a cuboid above at row ${raw_index + 1}, column ${col_index} or a cuboid to the right.`;
+        return; // Exit without deleting
       }
       delete this.configValues[raw_index][col_index];
       this.selectedCuboid.rawIndex = null;

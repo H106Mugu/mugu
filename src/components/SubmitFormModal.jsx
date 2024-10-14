@@ -1,9 +1,11 @@
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { Modal, Form, Input, Checkbox, Button } from "antd";
 import { useStores } from "../mobx/context/StoreContext";
 
 import { pdf } from "@react-pdf/renderer";
-import PDFDocument from "./PDFDocument"; // Adjust the path as necessary
+import PDFDocument from "./PDFDocument";
 
 const SubmitFormModal = ({ open, onClose }) => {
   const [form] = Form.useForm();
