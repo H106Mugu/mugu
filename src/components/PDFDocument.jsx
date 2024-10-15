@@ -350,7 +350,7 @@ const PDFDocument = ({ data }) => (
         }}
       >
         <View style={styles.rowContainer}>
-          {/* First Row: Website Icon and URL */}
+          {/* First Column: Website Icon and URL */}
           <View style={styles.rowColumn}>
             <Image src={websiteIcon} style={styles.icon} />
             <Link src="https://mugu.com.au/" style={styles.linkText}>
@@ -358,15 +358,15 @@ const PDFDocument = ({ data }) => (
             </Link>
           </View>
 
-          {/* Second Row: Email Icon and Email Address */}
+          {/* Second Column: Email Icon and Email Address */}
           <View style={styles.rowColumn}>
             <Image src={emailIcon} style={styles.icon} />
             <Link src="mailto:info@mugu.com.au" style={styles.linkText}>
-              Info@mugu.com.au
+              info@mugu.com.au
             </Link>
           </View>
 
-          {/* Third Row: Instagram Icon and Instagram Handle */}
+          {/* Third Column: Instagram Icon and Instagram Handle */}
           <View style={styles.rowColumn}>
             <Image src={instagramIcon} style={styles.icon} />
             <Link
