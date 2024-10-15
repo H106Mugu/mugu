@@ -167,7 +167,7 @@ const tableData = [
     value: "800mm x 600mm x 400mm",
   },
   {
-    key: "Panel Color",
+    key: "Panel Colour",
     value: "Transparent Black(Panel 1,3), Transparent Orange(Panel 2)",
   },
 ];
@@ -196,7 +196,7 @@ const PDFDocument = ({ data }) => (
           <View style={styles.rightColumn}>
             <Text style={styles.title}>Request for Quotation</Text>
             <Text style={styles.text}>
-              You've requested a quote for a customized shelf on{" "}
+              You've requested a quote for a customised shelf on{" "}
               {formatDate(new Date())}. Here are the details of your
               configuration.
             </Text>
@@ -338,8 +338,8 @@ const PDFDocument = ({ data }) => (
         >
           <Text style={styles.title}>Next Step</Text>
           <Text style={styles.text}>
-            Thank you for your submission. Our team will contact you shortly
-            with the quotation.
+            Thank you for your submission. Our team will be in touch shortly
+            with your quotation.
           </Text>
         </View>
       </View>

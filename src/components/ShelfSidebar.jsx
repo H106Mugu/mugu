@@ -567,7 +567,7 @@ const ShelfSidebar = observer(() => {
       ),
     },
     {
-      title: "Color",
+      title: "Colour",
       category: "color",
       component: (
         <CustomAntdRadioGroup
