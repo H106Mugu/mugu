@@ -2,7 +2,7 @@
 import * as THREE from 'three';
 
 
-export const EdgeCylinder = ({ start, end, color, radius = 0.4 }) => {
+export const EdgeCylinder = ({ start, end, color, radius = 0.7 }) => {
     const direction = new THREE.Vector3().subVectors(end, start);
     const length = direction.length();
     const midPoint = new THREE.Vector3().addVectors(start, end).divideScalar(2);

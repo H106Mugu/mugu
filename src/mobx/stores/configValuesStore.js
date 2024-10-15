@@ -57,10 +57,10 @@ class ConfigValuesStore {
       const lastCuboidInTallestColumn = getLastCuboidInTallestColumn(this.configValues);
       if (lastCuboidInTallestColumn) {
         this.totalLength.height = (lastCuboidInTallestColumn.startHeight + 25) * 10 + lastCuboidInTallestColumn.height;
-      }
-    });
-  }
-  
+        }
+      });
+    }
+    
   // Setter for currentConfigType
   setCurrentConfigType(value) {
     if (value === "structure" || value === "color" || value === "type") {
@@ -91,6 +91,13 @@ class ConfigValuesStore {
     // Handle width: update the value in all rows of a particular column (colIndex)
     if (key === "width") {
       value = parseInt(value);
+      if (raw_index != null) {
+        const oldValue = this.configValues[raw_index][col_index][key];
+        console.log("old value", oldValue)
+        if (this.totalLength.width + value - oldValue > 2500) {
+          return;
+        }
+      }
       Object.keys(this.configValues).forEach((rowIndex) => {
         if (typeof this.configValues[rowIndex] === "object") {
           if (this.configValues[rowIndex][col_index]) {
@@ -106,6 +113,13 @@ class ConfigValuesStore {
     // Handle height: update the value in all columns of a particular row (raw_index)
     if (key === "height") {
       value = parseInt(value);
+      if (raw_index != null) {
+        const oldValue = this.configValues[raw_index][col_index][key];
+        console.log("old value", oldValue)
+        if (this.totalLength.height + value - oldValue > 2500) {
+          return;
+        }
+      }
       if (raw_index === null) {
         raw_index = 0;
       }
@@ -121,16 +135,11 @@ class ConfigValuesStore {
     if (key === "depth") {
       value = parseInt(value);
 
-      // Loop through all rows
       Object.keys(this.configValues).forEach((configKey) => {
         const row = this.configValues[configKey];
-
-        // Ensure it's a row object with cuboids (e.g., not shelfType or color)
         if (row && typeof row === "object" && !Array.isArray(row)) {
           Object.keys(row).forEach((colIndex) => {
             const cuboid = row[colIndex];
-
-            // Update the cuboid with the new value for width/height/depth
             if (cuboid && typeof cuboid === "object") {
               cuboid[key] = value;
             }
@@ -201,6 +210,12 @@ class ConfigValuesStore {
       raw_index,
       col_index
     );
+    if ((startHeight * 10 + 250) + height > 2500) {
+      return;
+    }
+    if ((startWidth * 10 + 200) + width > 2500) {
+      return;      
+    }
 
     // Insert the new cuboid into the configValues store
     this.configValues[raw_index][col_index] = {

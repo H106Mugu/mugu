@@ -7,8 +7,8 @@ import { Connector } from "./Connector";
 import { Pipe } from "./Pipe";
 import {
   pipeConnections,
-  cornerOffsets,
-  bottomCornersIndices,
+  getCorners,
+  getLegPipes,
 } from "../Utils/ModelUtils";
 import { LegScrew } from "./LegScrew";
 import { Supporter } from "./Supporter";
@@ -29,22 +29,8 @@ const Model = ({
     material.needsUpdate = true;
   }
 
-  // console.log("width", width, "startWidth", startWidth);
-
-  const corners = cornerOffsets.map(
-    ([x, y, z]) =>
-      new THREE.Vector3(
-        startWidth + (x * width) / 2,
-        startHeight + (y * height) / 2,
-        (z * depth) / 2
-      )
-  );
-  
-  const legPipes = bottomCornersIndices.map((index) => {
-    const start = corners[index];
-    const end = new THREE.Vector3(start.x, start.y - 5, start.z); // 5 units below the corner
-    return { start, end };
-  });
+  const corners = getCorners(width, height, depth, startWidth, startHeight);
+  const legPipes = getLegPipes(corners);
 
   return (
     <>

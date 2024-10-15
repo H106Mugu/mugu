@@ -463,27 +463,29 @@ const ShelfSidebar = observer(() => {
   }, [structureElement, width, depth, shelfType]); // Added structureElement dependency
 
   useEffect(() => {
+    const row = selectedCuboid.rawIndex
+    const column = selectedCuboid.colIndex
     if (
-      selectedCuboid.rawIndex !== null &&
-      selectedCuboid.colIndex !== null &&
-      configValuesStore.hasCuboidAt(selectedCuboid.rawIndex, selectedCuboid.colIndex)
+      row !== null &&
+      column !== null &&
+      configValuesStore.hasCuboidAt(row, column)
     ) {
       // Fetch height and width for the selected cuboid and update the state
       const selectedHeight = configValuesStore.getConfigValue(
         "height",
-        selectedCuboid.rawIndex,
-        selectedCuboid.colIndex
+        row,
+        column
       );
       const selectedWidth = configValuesStore.getConfigValue(
         "width",
-        selectedCuboid.rawIndex,
-        selectedCuboid.colIndex
+        row,
+        column
       );
 
       const selectedDepth = configValuesStore.getConfigValue(
         "depth",
-        selectedCuboid.rawIndex,
-        selectedCuboid.colIndex
+        row,
+        column
       );
 
       setHeight(selectedHeight);
