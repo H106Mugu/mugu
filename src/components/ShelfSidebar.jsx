@@ -454,8 +454,7 @@ const ShelfSidebar = observer(() => {
           <div>
             <Tooltip
               autoAdjustOverflow={true}
-              arrow={false}
-              color="transparent"
+              color="black"
               wrapperClassName="flex items-center gap-1"
               overlayClassName="bg-theme-primary rounded-lg text-white w-[330px] max-w-[400px] h-[125px] border border-[#606060] shadow-[0px_6px_12px_0px_rgba(0,0,0,0.2)]"
               title={
