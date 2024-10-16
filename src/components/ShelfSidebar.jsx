@@ -217,7 +217,7 @@ const ShelfSidebar = observer(() => {
           return {
             ...option, // Keep existing properties
             label: (
-              <div className="flex flex-col items-center justify-start pt-5 h-full min-h-[111px] w-full px-1">
+              <div className="flex flex-col items-center justify-start pt-7 h-full min-h-[131px] w-full px-1">
                 <img
                   src={withTopAndBottomOnlyAcrylic}
                   alt="With top and bottom only"
@@ -243,7 +243,7 @@ const ShelfSidebar = observer(() => {
           return {
             ...option, // Keep existing properties
             label: (
-              <div className="flex flex-col items-center justify-start pt-5 h-full min-h-[111px] w-full px-1">
+              <div className="flex flex-col items-center justify-start pt-7 h-full min-h-[131px] w-full px-1">
                 <img
                   src={withTopAndBottomOnly}
                   alt="With top and bottom only"
