@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ShelfSidebar from "../components/ShelfSidebar";
 import { useStores } from "../mobx/context/StoreContext";
-import { Modal, Button, Radio } from "antd";
+import { Modal, Button, Radio, Switch } from "antd";
 import useBreakpoints from "../hooks/useBreakpoints";
 import { observer } from "mobx-react-lite";
 import CustomCheckbox from "../components/CustomCheckbox";
@@ -16,12 +16,11 @@ const ShelfConfigurator = observer(() => {
   const { modalStore, submitFormStore, configValuesStore } = useStores();
   const breakpoint = useBreakpoints();
   const [isMobile, setIsMobile] = useState(false);
+  const [checked, setChecked] = useState(false);
 
   useEffect(() => {
     setIsMobile(breakpoint === "xs" || breakpoint === "sm");
   }, [breakpoint]);
-
-  const [checked, setChecked] = useState(false);
 
   const handleCheckboxChange = () => {
     setChecked((prevChecked) => !prevChecked); // Toggle the checked state
@@ -59,6 +58,21 @@ const ShelfConfigurator = observer(() => {
               <TbCube3dSphere className="text-theme-primary" />
               Reset cam
             </Button>
+          </div>
+
+          <div className="absolute top-[75px] right-4 flex items-center gap-2 z-30 pointer-events-none opacity-0 md:opacity-100 md:pointer-events-auto">
+            <div className="me-4">Options:</div>
+            <Radio.Group
+              value={configValuesStore.selectionType}
+              onChange={(e) =>
+                configValuesStore.setSelectionType(e.target.value)
+              }
+              optionType="default"
+              className="flex flex-row justify-center items-start  gap-1"
+            >
+              <Radio.Button value="element">Element</Radio.Button>
+              <Radio.Button value="panel">Panel</Radio.Button>
+            </Radio.Group>
           </div>
 
           <div className="absolute bottom-4 md:bottom-6 right-4 md:right-8 flex items-center gap-2 z-30">

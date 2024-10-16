@@ -10,6 +10,22 @@ class ConfigValuesStore {
     colIndex: null,
   };
 
+  selectionType = "element"; // Initialize selectionType with a default value
+
+  get getSelectionType() {
+    return this.selectionType;
+  }
+
+  setSelectionType(value) {
+    if (value === "element" || value === "panel") {
+      this.selectionType = value;
+    } else {
+      console.warn(
+        "Invalid value for selectionType. Must be 'cuboid' or 'panel'."
+      );
+    }
+  }
+
   // Define your observable state as an object
   configValues = observable(
     {
@@ -60,6 +76,11 @@ class ConfigValuesStore {
   setConfigValue(key, value) {
     if (key === "shelfType" || key === "structureElements" || key === "color") {
       this.configValues[key] = value;
+
+      if (key === "structureElements" && value === "withoutShelves") {
+        // reset color to null if structureElements is withoutShelves
+        this.configValues.color = "";
+      }
       return;
     }
 

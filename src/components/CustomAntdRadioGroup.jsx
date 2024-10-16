@@ -67,7 +67,7 @@
 //         <Radio
 //           key={index}
 //           value={option.value}
-//           disabled={option.disabled}
+//           disabled={disabled}
 //           className={`text-center transition-all duration-300 ease-in-out ${
 //             typeof option.label === "string"
 //               ? "border hover:border-theme-primary before:hover:!bg-theme-transparent hover:!border-l-theme-primary transition-all duration-300 ease-in-out min-w-12"
@@ -85,7 +85,7 @@
 //             ) : (
 //               // Clone the label element and apply the `className` dynamically
 //               React.cloneElement(option.label, {
-//                 disabled: option.disabled,
+//                 disabled: disabled,
 //                 className: `${option.label.props.className || ""} ${
 //                   option.value === value
 //                     ? isColorOption
@@ -97,7 +97,7 @@
 //                     ? "hover:border-theme-transparent"
 //                     : "hover:border-theme-primary"
 //                 } transition-all duration-300 ease-in-out ${
-//                   option.disabled ? "opacity-50 pointer-events-none" : ""
+//                   disabled ? "opacity-50 pointer-events-none" : ""
 //                 }`,
 //                 children: (
 //                   <>
@@ -198,7 +198,7 @@ const CustomAntdRadioGroup = ({
         <Radio
           key={index}
           value={option.value}
-          disabled={option.disabled}
+          disabled={disabled}
           className={`text-center ${
             !isSmallScreen ? "transition-all duration-200 ease-in-out" : ""
           } ${
@@ -219,7 +219,7 @@ const CustomAntdRadioGroup = ({
               <span>{option.label}</span>
             ) : (
               React.cloneElement(option.label, {
-                disabled: option.disabled,
+                disabled: disabled,
                 className: `${option.label.props.className || ""} ${
                   option.value === value
                     ? isColorOption
@@ -234,7 +234,7 @@ const CustomAntdRadioGroup = ({
                   !isSmallScreen
                     ? "transition-all duration-200 ease-in-out"
                     : ""
-                } ${option.disabled ? "opacity-50 pointer-events-none" : ""}`,
+                } ${disabled ? "opacity-50 pointer-events-none" : ""}`,
                 children: (
                   <>
                     {option.label.props.children}

@@ -8,12 +8,13 @@ import {
   structureElements as defaultStructureElements,
   depthOptions as defaultDepthOptions,
 } from "../data/optionData";
-import { Button, Tooltip } from "antd";
+import { Button, message, Tooltip } from "antd";
 import MobileShelfBottombar from "./MobileShelfBottombar";
 import useBreakpoints from "../hooks/useBreakpoints";
 import { useStores } from "../mobx/context/StoreContext";
 import { observer } from "mobx-react-lite";
-
+import { IoMdInformation } from "react-icons/io";
+import { IoCloseOutline } from "react-icons/io5";
 import withTopAndBottomOnly from "../assets/images/structure/withTopAndBottomOnly.png";
 import withTopAndBottomOnlyAcrylic from "../assets/images/structure/withTopAndBottomOnlyAcrylic.png";
 
@@ -38,6 +39,8 @@ const ShelfSidebar = observer(() => {
   );
   const [changedKey, setChangedKey] = useState("0");
   const { configValuesStore, submitFormStore } = useStores();
+
+  const [messageApi, contextHolder] = message.useMessage();
 
   // const getUpdatedOptions = (
   //   shelfType,
@@ -456,7 +459,7 @@ const ShelfSidebar = observer(() => {
               autoAdjustOverflow={true}
               color="black"
               wrapperClassName="flex items-center gap-1"
-              overlayClassName="bg-theme-primary rounded-lg text-white w-[330px] max-w-[400px] h-[125px] border border-[#606060] shadow-[0px_6px_12px_0px_rgba(0,0,0,0.2)]"
+              overlayClassName="bg-theme-primary rounded-lg text-white w-[85%] max-w-[330px] h-[125px] border border-[#606060] shadow-[0px_6px_12px_0px_rgba(0,0,0,0.2)]"
               title={
                 <div className="text-center text-xs p-2">
                   <div className="leading-[14.65px] mb-2">
@@ -510,7 +513,6 @@ const ShelfSidebar = observer(() => {
         <CustomAntdRadioGroup
           value={configValuesStore.getAllConfigValues.structureElements}
           options={structureOptions}
-          // disabled={parseInt(changedKey) < 1}
           onChange={(ev) =>
             handleSidebarOptionsChange(
               ev.target.value,
@@ -524,11 +526,18 @@ const ShelfSidebar = observer(() => {
     {
       title: "Width (mm)",
       category: "structure",
+      isDisabled: configValuesStore.selectionType === "panel",
+      disabledMessage:
+        "To configure dimensions, please choose the element from the options and then select it in the 3D shelf.",
       component: (
         <CustomAntdRadioGroup
           value={configValuesStore.getAllConfigValues[0][0]["width"].toString()}
           options={widthOptions}
-          // disabled={parseInt(changedKey) < 2}
+          disabled={
+            breakpoint === "xs" || breakpoint === "sm"
+              ? false
+              : configValuesStore.selectionType === "panel"
+          }
           onChange={(ev) =>
             handleSidebarOptionsChange(ev.target.value, "width", "3")
           }
@@ -538,11 +547,18 @@ const ShelfSidebar = observer(() => {
     {
       title: "Depth (mm)",
       category: "structure",
+      isDisabled: configValuesStore.selectionType === "panel",
+      disabledMessage:
+        "To configure dimensions, please choose the element from the options and then select it in the 3D shelf.",
       component: (
         <CustomAntdRadioGroup
           value={configValuesStore.getAllConfigValues[0][0]["depth"].toString()}
           options={depthOptions}
-          // disabled={parseInt(changedKey) < 3}
+          disabled={
+            breakpoint === "xs" || breakpoint === "sm"
+              ? false
+              : configValuesStore.selectionType === "panel"
+          }
           onChange={(ev) =>
             handleSidebarOptionsChange(ev.target.value, "depth", "4")
           }
@@ -552,13 +568,20 @@ const ShelfSidebar = observer(() => {
     {
       title: "Height (mm)",
       category: "structure",
+      isDisabled: configValuesStore.selectionType === "panel",
+      disabledMessage:
+        "To configure dimensions, please choose the element from the options and then select it in the 3D shelf.",
       component: (
         <CustomAntdRadioGroup
           value={configValuesStore.getAllConfigValues[0][0][
             "height"
           ].toString()}
           options={heightOptions}
-          // disabled={parseInt(changedKey) < 4}
+          disabled={
+            breakpoint === "xs" || breakpoint === "sm"
+              ? false
+              : configValuesStore.selectionType === "panel"
+          }
           onChange={(ev) =>
             handleSidebarOptionsChange(ev.target.value, "height", "5")
           }
@@ -566,13 +589,58 @@ const ShelfSidebar = observer(() => {
       ),
     },
     {
-      title: "Colour",
+      title: (
+        <div className="flex items-center gap-2 w-full">
+          <div>Colour</div>
+          <div>
+            <Tooltip
+              autoAdjustOverflow={true}
+              color="black"
+              overlayClassName="bg-theme-primary rounded-lg text-white w-[80%] max-w-[330px] h-[55px] border border-[#606060] shadow-[0px_6px_12px_0px_rgba(0,0,0,0.2)]"
+              title={
+                <div className="text-center text-xs p-2">
+                  <div className="leading-[14.65px] mb-2">
+                    <div className="text-white font-[400]">
+                      All panels will have the same colour for the stainless
+                      panel shelf type.
+                    </div>
+                  </div>
+                </div>
+              }
+              placement={
+                breakpoint === "xs" || breakpoint === "sm"
+                  ? "topRight"
+                  : "bottom"
+              }
+            >
+              <div className="bg-theme-primary rounded-full text-white text-[10px] p-px cursor-pointer w-3 h-3 flex justify-center items-center">
+                i
+              </div>
+              {/*Info icon */}
+            </Tooltip>
+          </div>
+        </div>
+      ),
       category: "color",
+      isDisabled:
+        configValuesStore.selectionType === "element" ||
+        configValuesStore.configValues.structureElements === "withoutShelves",
+      disabledMessage:
+        configValuesStore.selectionType === "element"
+          ? "To configure the colour, please choose the panel from the options and then select it in the 3D shelf."
+          : "As the selected element is without shelves, the panel won't have any colour configuration.",
       component: (
         <CustomAntdRadioGroup
           value={configValuesStore.getAllConfigValues.color}
           options={colorOptions}
-          // disabled={parseInt(changedKey) < 5}
+          disabled={
+            breakpoint === "xs" || breakpoint === "sm"
+              ? configValuesStore.configValues.structureElements ===
+                "withoutShelves"
+              : configValuesStore.selectionType === "element" ||
+                configValuesStore.configValues.structureElements ===
+                  "withoutShelves"
+          }
           onChange={(ev) =>
             handleSidebarOptionsChange(ev.target.value, "color", "6")
           }
@@ -595,7 +663,29 @@ const ShelfSidebar = observer(() => {
               <div className="mb-2 text-sm font-medium w-full">
                 {option.title}
               </div>
-              <div className="mb-2 font-medium w-full overflow-x-auto overflow-y-hidden">
+              <div
+                className="mb-2 font-medium w-full overflow-x-auto overflow-y-hidden"
+                onClick={() => {
+                  if (!option.isDisabled) return;
+
+                  messageApi.open({
+                    type: "info",
+                    icon: (
+                      <IoMdInformation className="text-black bg-white text-xs me-3 rounded-full" />
+                    ),
+                    duration: 5,
+                    content: (
+                      <div className="bg-theme-primary text-white text-sm flex items-center">
+                        {option.disabledMessage || "This option is disabled."}
+                        <IoCloseOutline
+                          className="text-white text-lg ms-3 cursor-pointer"
+                          onClick={() => messageApi.destroy()}
+                        />
+                      </div>
+                    ),
+                  });
+                }}
+              >
                 {option.component}
               </div>
             </div>
@@ -613,6 +703,7 @@ const ShelfSidebar = observer(() => {
           </Button>
         </div>
       )}
+      {contextHolder}
     </>
   );
 });
