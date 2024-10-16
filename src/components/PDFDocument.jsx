@@ -169,7 +169,7 @@ const tableData = [
     value: "800mm x 600mm x 400mm",
   },
   {
-    key: "Panel Color",
+    key: "Panel Colour",
     value: "Transparent Black(Panel 1,3), Transparent Orange(Panel 2)",
   },
 ];
@@ -198,7 +198,7 @@ const PDFDocument = ({ data }) => (
           <View style={styles.rightColumn}>
             <Text style={styles.title}>Request for Quotation</Text>
             <Text style={styles.text}>
-              You've requested a quote for a customized shelf on{" "}
+              You've requested a quote for a customised shelf on{" "}
               {formatDate(new Date())}. Here are the details of your
               configuration.
             </Text>
@@ -340,8 +340,8 @@ const PDFDocument = ({ data }) => (
         >
           <Text style={styles.title}>Next Step</Text>
           <Text style={styles.text}>
-            Thank you for your submission. Our team will contact you shortly
-            with the quotation.
+            Thank you for your submission. Our team will be in touch shortly
+            with your quotation.
           </Text>
         </View>
       </View>
@@ -352,7 +352,7 @@ const PDFDocument = ({ data }) => (
         }}
       >
         <View style={styles.rowContainer}>
-          {/* First Row: Website Icon and URL */}
+          {/* First Column: Website Icon and URL */}
           <View style={styles.rowColumn}>
             <Image src={websiteIcon} style={styles.icon} />
             <Link src="https://mugu.com.au/" style={styles.linkText}>
@@ -360,15 +360,15 @@ const PDFDocument = ({ data }) => (
             </Link>
           </View>
 
-          {/* Second Row: Email Icon and Email Address */}
+          {/* Second Column: Email Icon and Email Address */}
           <View style={styles.rowColumn}>
             <Image src={emailIcon} style={styles.icon} />
             <Link src="mailto:info@mugu.com.au" style={styles.linkText}>
-              Info@mugu.com.au
+              info@mugu.com.au
             </Link>
           </View>
 
-          {/* Third Row: Instagram Icon and Instagram Handle */}
+          {/* Third Column: Instagram Icon and Instagram Handle */}
           <View style={styles.rowColumn}>
             <Image src={instagramIcon} style={styles.icon} />
             <Link
