@@ -20,6 +20,7 @@ const Model = ({
   startWidth,
   startHeight,
   raw_index,
+  col_index,
 }) => {
   const { scene } = useLoader(GLTFLoader, "/Models/Material.glb");
   const material = scene.getObjectByName("Plane").material;
@@ -59,6 +60,9 @@ const Model = ({
           key={`connector-${index}`}
           position={corner}
           material={material}
+          uniqueKey={`${index}`}
+          raw_index={raw_index}
+          col_index={col_index}
         />
       ))}
 
