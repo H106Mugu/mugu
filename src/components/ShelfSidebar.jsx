@@ -4,7 +4,8 @@ import {
   heightOptions as defaultHeightOptions,
   shelfTypeOption,
   widthOptions as defaultWidthOptions,
-  colorOptions,
+  acrylicColorOptions,
+  stainlessColorOptions,
   structureElements as defaultStructureElements,
   depthOptions as defaultDepthOptions,
 } from "../data/optionData";
@@ -632,7 +633,13 @@ const ShelfSidebar = observer(() => {
       component: (
         <CustomAntdRadioGroup
           value={configValuesStore.getAllConfigValues.color}
-          options={colorOptions}
+          options={
+            configValuesStore.getAllConfigValues.shelfType === "acrylic"
+              ? acrylicColorOptions
+              : configValuesStore.getAllConfigValues.shelfType === "stainless"
+              ? stainlessColorOptions
+              : []
+          }
           disabled={
             breakpoint === "xs" || breakpoint === "sm"
               ? configValuesStore.configValues.structureElements ===
@@ -664,7 +671,7 @@ const ShelfSidebar = observer(() => {
                 {option.title}
               </div>
               <div
-                className="mb-2 font-medium w-full overflow-x-auto overflow-y-hidden"
+                className="mb-2 font-medium w-full overflow-x-auto overflow-y-hidden md:min-h-9"
                 onClick={() => {
                   if (!option.isDisabled) return;
 

@@ -167,7 +167,7 @@ const CustomAntdRadioGroup = ({
 
   const isColorOption = options
     ?.map((option) => option.value)
-    .includes("clear");
+    .includes("#f7531d");
 
   const getButtonWidth = () => {
     // Calculate the width based on the number of options

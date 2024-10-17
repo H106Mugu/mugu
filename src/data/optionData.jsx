@@ -120,56 +120,54 @@ export const structureElements = [
   },
 ];
 
-export const colorOptions = [
+export const acrylicColorOptions = [
   {
     label: (
       <div className="w-full h-[70px] flex flex-col justify-start items-center">
         <div
-          style={{ backgroundColor: "black" }}
-          className="w-8 h-8 rounded-full border mt-1 hover:border-theme-primary transition-all duration-300 ease-in-out"
-        />
-        <div className="text-[12px] text-center font-normal leading-3 mt-1">
-          Transparent Black
-        </div>
-      </div>
-    ),
-    value: "transparentBlack",
-  },
-
-  {
-    label: (
-      <div className="w-full h-[70px] flex flex-col justify-start items-center">
-        <div
-          style={{ backgroundColor: "white" }}
-          className="w-8 h-8 rounded-full border mt-1 hover:border-theme-primary transition-all duration-300 ease-in-out"
-        />
-        <div className="text-[12px] text-center font-normal leading-3 mt-1">
-          White
-        </div>
-      </div>
-    ),
-    value: "white",
-  },
-  {
-    label: (
-      <div className="w-full h-[70px] flex flex-col justify-start items-center">
-        <div
-          style={{ backgroundColor: "orange" }}
-          className="w-8 h-8 rounded-full border mt-1 hover:border-theme-primary transition-all duration-300 ease-in-out"
+          style={{ backgroundColor: "#f7531d" }}
+          className="w-8 h-8 rounded-full border mt-1 hover:border-theme-primary transition-all duration-300 ease-in-out opacity-60"
         />
         <div className="text-[12px] text-center font-normal leading-3 mt-1">
           Transparent Orange
         </div>
       </div>
     ),
-    value: "transparentOrange",
+    value: "#f7531d",
   },
-
   {
     label: (
       <div className="w-full h-[70px] flex flex-col justify-start items-center">
         <div
-          style={{ backgroundColor: "transparent" }}
+          style={{ backgroundColor: "#000000" }}
+          className="w-8 h-8 rounded-full border mt-1 hover:border-theme-primary transition-all duration-300 ease-in-out opacity-60"
+        />
+        <div className="text-[12px] text-center font-normal leading-3 mt-1">
+          Transparent Black
+        </div>
+      </div>
+    ),
+    value: "#000000",
+  },
+  {
+    label: (
+      <div className="w-full h-[70px] flex flex-col justify-start items-center">
+        <div
+          style={{ backgroundColor: "#ffffff" }}
+          className="w-8 h-8 rounded-full border mt-1 hover:border-theme-primary transition-all duration-300 ease-in-out"
+        />
+        <div className="text-[12px] text-center font-normal leading-3 mt-1">
+          Solid White
+        </div>
+      </div>
+    ),
+    value: "#ffffff",
+  },
+  {
+    label: (
+      <div className="w-full h-[70px] flex flex-col justify-start items-center">
+        <div
+          style={{ backgroundColor: "#FFFFFF00" }}
           className="w-8 h-8 rounded-full border mt-1 hover:border-theme-primary transition-all duration-300 ease-in-out"
         />
         <div className="text-[12px] text-center font-normal leading-3 mt-1">
@@ -177,7 +175,94 @@ export const colorOptions = [
         </div>
       </div>
     ),
-    value: "clear",
+    value: "#FFFFFF00",
+  },
+];
+
+export const stainlessColorOptions = [
+  {
+    label: (
+      <div className="w-full h-[70px] flex flex-col justify-start items-center">
+        <div
+          style={{ backgroundColor: "#f7531d" }}
+          className="w-8 h-8 rounded-full border mt-1 hover:border-theme-primary transition-all duration-300 ease-in-out"
+        />
+        <div className="text-[12px] text-center font-normal leading-3 mt-1">
+          Orange
+        </div>
+      </div>
+    ),
+    value: "#f7531d",
+  },
+  {
+    label: (
+      <div className="w-full h-[70px] flex flex-col justify-start items-center">
+        <div
+          style={{ backgroundColor: "#e4ad42" }}
+          className="w-8 h-8 rounded-full border mt-1 hover:border-theme-primary transition-all duration-300 ease-in-out"
+        />
+        <div className="text-[12px] text-center font-normal leading-3 mt-1">
+          Yellow
+        </div>
+      </div>
+    ),
+    value: "#e4ad42",
+  },
+  {
+    label: (
+      <div className="w-full h-[70px] flex flex-col justify-start items-center">
+        <div
+          style={{ backgroundColor: "#ffffff" }}
+          className="w-8 h-8 rounded-full border mt-1 hover:border-theme-primary transition-all duration-300 ease-in-out"
+        />
+        <div className="text-[12px] text-center font-normal leading-3 mt-1">
+          White
+        </div>
+      </div>
+    ),
+    value: "#ffffff",
+  },
+  {
+    label: (
+      <div className="w-full h-[70px] flex flex-col justify-start items-center">
+        <div
+          style={{ backgroundColor: "#000000" }}
+          className="w-8 h-8 rounded-full border mt-1 hover:border-theme-primary transition-all duration-300 ease-in-out"
+        />
+        <div className="text-[12px] text-center font-normal leading-3 mt-1">
+          Black
+        </div>
+      </div>
+    ),
+    value: "#000000",
+  },
+  {
+    label: (
+      <div className="w-full h-[70px] flex flex-col justify-start items-center">
+        <div
+          style={{ backgroundColor: "#d8bcb1" }}
+          className="w-8 h-8 rounded-full border mt-1 hover:border-theme-primary transition-all duration-300 ease-in-out"
+        />
+        <div className="text-[12px] text-center font-normal leading-3 mt-1">
+          Pink
+        </div>
+      </div>
+    ),
+    value: "#d8bcb1",
+  },
+  {
+    label: (
+      <div className="w-full h-[70px] flex flex-col justify-start items-center">
+        <div
+          style={{ backgroundColor: "#8faabc" }}
+          className="w-8 h-8 rounded-full border mt-1 hover:border-theme-primary transition-all duration-300 ease-in-out"
+        />
+        <div className="text-[12px] text-center font-normal leading-3 mt-1">
+          Sky
+        </div>
+      </div>
+    ),
+    value: "#8faabc",
   },
 ];
 
