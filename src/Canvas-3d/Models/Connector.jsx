@@ -12,7 +12,6 @@ export const Connector = ({ position, uniqueKey, raw_index, col_index }) => {
   // Load the selected model
   const { scene } = useLoader(GLTFLoader, modelPath);
   const clonedScene = scene.clone(true);
-  console.log("position", position, "uniqueKey", uniqueKey, "modelPath", modelPath, "rotation", rotation );
 
   return (
     <primitive

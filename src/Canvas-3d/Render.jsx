@@ -1,5 +1,6 @@
+/* eslint-disable no-unused-vars */
 import { observer } from "mobx-react-lite";
-import { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useStores } from "../mobx/context/StoreContext";
 import "./css/Three.css";
 import CuboidRenderer from "./Render/cuboidRenderer";
@@ -7,6 +8,7 @@ import CuboidRenderer from "./Render/cuboidRenderer";
 const Render = observer(() => {
   const { configValuesStore } = useStores();
   const [cuboids, setCuboids] = useState([]);
+  const planeRefs = useRef({});
 
   useEffect(() => {
     const initializeCuboids = () => {
@@ -40,7 +42,7 @@ const Render = observer(() => {
     };
 
     initializeCuboids(); // Call to initialize cuboids
-  }, [configValuesStore.configValues]); // Depend on the store's observable object
+  }, [configValuesStore.configValues, configValuesStore.selectionType]); // Depend on the store's observable object
 
   // Render cuboids and pass them to the CuboidRenderer component
   return (

@@ -10,6 +10,10 @@ class ConfigValuesStore {
     colIndex: null,
   };
 
+  selectedPanel = {
+    rawIndex: null,
+  }
+
   totalLength = {
     width: 270,
     height: 330,
@@ -29,6 +33,11 @@ class ConfigValuesStore {
       );
     }
   }
+
+  colorRows = {
+    0: "black",
+    1: "black",
+  };
 
   // Define your observable state as an object
   configValues = observable(
@@ -80,6 +89,7 @@ class ConfigValuesStore {
   setCurrentConfigType(value) {
     if (value === "structure" || value === "color" || value === "type") {
       this.currentConfigType = value;
+      console.log(this.currentConfigType);
     } else {
       console.warn(
         "Invalid value for currentConfigType. Must be 'structure' or 'color'."
@@ -100,11 +110,23 @@ class ConfigValuesStore {
 
     if (key === "shelfType" || key === "structureElements" || key === "color") {
       this.configValues[key] = value;
+      console.log("value", value)
 
       if (key === "structureElements" && value === "withoutShelves") {
         // reset color to null if structureElements is withoutShelves
         this.configValues.color = "";
       }
+      if (key === "color") {    
+        if (this.configValues.shelfType === "acrylic") {
+          this.colorRows[this.selectedPanel.rawIndex] = value;   
+          console.log("inside set config value in", this.colorRows[this.selectedPanel.rawIndex]); 
+        }
+        else if (this.shelfType === "stainless") {
+          this.configValues.color = value;
+          console.log("inside set config value in", this.configValues.color);
+        }
+      }
+      this.configValues = { ...this.configValues };
       return;
     }
 
@@ -200,6 +222,23 @@ class ConfigValuesStore {
     return this.selectedCuboid;
   }
 
+  setSelectedPanel(raw_index) {
+    this.selectedPanel.rawIndex = raw_index;
+    this.selectedPanel = { ...this.selectedPanel };
+  }
+  get getSelectedPanel() {
+    return this.selectedPanel.rawIndex;
+  }
+
+  setColorRows(key, value) {
+    this.colorRows[key] = value;
+    this.colorRows = { ...this.colorRows };
+  }
+
+  get getColorRows() {
+    return this.colorRows;
+  }
+
   get getTotalLength() {
     return this.totalLength;
   }
@@ -247,6 +286,10 @@ class ConfigValuesStore {
       startWidth: startWidth,
       startHeight: startHeight,
     };
+
+    if (!this.colorRows[raw_index + 1]) {
+      this.colorRows[raw_index + 1] = "black"      
+    }
 
     this.configValues = { ...this.configValues };
   }
