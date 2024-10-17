@@ -5,7 +5,8 @@ import {
   heightOptions as defaultHeightOptions,
   shelfTypeOption,
   widthOptions as defaultWidthOptions,
-  colorOptions,
+  acrylicColorOptions,
+  stainlessColorOptions,
   structureElements as defaultStructureElements,
   depthOptions as defaultDepthOptions,
 } from "../data/optionData";
@@ -220,7 +221,7 @@ const ShelfSidebar = observer(() => {
           return {
             ...option, // Keep existing properties
             label: (
-              <div className="flex flex-col items-center justify-start pt-5 h-full min-h-[111px] w-full px-1">
+              <div className="flex flex-col items-center justify-start pt-7 h-full min-h-[131px] w-full px-1">
                 <img
                   src={withTopAndBottomOnlyAcrylic}
                   alt="With top and bottom only"
@@ -246,7 +247,7 @@ const ShelfSidebar = observer(() => {
           return {
             ...option, // Keep existing properties
             label: (
-              <div className="flex flex-col items-center justify-start pt-5 h-full min-h-[111px] w-full px-1">
+              <div className="flex flex-col items-center justify-start pt-7 h-full min-h-[131px] w-full px-1">
                 <img
                   src={withTopAndBottomOnly}
                   alt="With top and bottom only"
@@ -679,11 +680,17 @@ const ShelfSidebar = observer(() => {
       disabledMessage:
         configValuesStore.selectionType === "element"
           ? "To configure the colour, please choose the panel from the options and then select it in the 3D shelf."
-          : "As the selected element is without shelves, the panel won't have any colour configuration.",
+          : "As the selected element is without shelves, there are no panels available to configure their colour.",
       component: (
         <CustomAntdRadioGroup
           value={configValuesStore.getAllConfigValues.color}
-          options={colorOptions}
+          options={
+            configValuesStore.getAllConfigValues.shelfType === "acrylic"
+              ? acrylicColorOptions
+              : configValuesStore.getAllConfigValues.shelfType === "stainless"
+              ? stainlessColorOptions
+              : []
+          }
           disabled={
             breakpoint === "xs" || breakpoint === "sm"
               ? configValuesStore.configValues.structureElements ===
@@ -715,7 +722,7 @@ const ShelfSidebar = observer(() => {
                 {option.title}
               </div>
               <div
-                className="mb-2 font-medium w-full overflow-x-auto overflow-y-hidden"
+                className="mb-2 font-medium w-full overflow-x-auto overflow-y-hidden md:min-h-9"
                 onClick={() => {
                   if (!option.isDisabled) return;
 
