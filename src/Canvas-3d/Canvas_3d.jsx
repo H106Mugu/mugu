@@ -7,7 +7,7 @@ import { Plane } from "./Models/Plane";
 export default function Canvas_3d() {
   return (
     <>
-      <Canvas camera={{ position: [-8, 10, 150], fov: 50 }}>
+      <Canvas camera={{ position: [-8, 25, 150], fov: 50 }}>
         <ambientLight intensity={1} />
         <color attach="background" args={["#f0f0f0"]} />
         {/* <axesHelper args={[100]} position={[0, 0, 0]} /> */}
