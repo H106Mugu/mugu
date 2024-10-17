@@ -628,7 +628,7 @@ const ShelfSidebar = observer(() => {
       disabledMessage:
         configValuesStore.selectionType === "element"
           ? "To configure the colour, please choose the panel from the options and then select it in the 3D shelf."
-          : "As the selected element is without shelves, the panel won't have any colour configuration.",
+          : "As the selected element is without shelves, there are no panels available to configure their colour.",
       component: (
         <CustomAntdRadioGroup
           value={configValuesStore.getAllConfigValues.color}

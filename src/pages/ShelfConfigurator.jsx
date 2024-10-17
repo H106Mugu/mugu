@@ -60,7 +60,7 @@ const ShelfConfigurator = observer(() => {
             </Button>
           </div>
 
-          <div className="absolute top-[75px] right-4 flex items-center gap-2 z-30 pointer-events-none opacity-0 md:opacity-100 md:pointer-events-auto">
+          <div className="absolute top-[5px] lg:top-[75px] right-4 flex flex-col lg:flex-row items-center gap-0 z-30 transition-top duration-200 pointer-events-none opacity-0 md:opacity-100 md:pointer-events-auto">
             <div className="me-4">Options:</div>
             <Radio.Group
               value={configValuesStore.selectionType}
