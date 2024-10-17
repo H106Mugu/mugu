@@ -35,8 +35,8 @@ class ConfigValuesStore {
   }
 
   colorRows = {
-    0: "black",
-    1: "black",
+    0: "#f7531d",
+    1: "#f7531d",
   };
 
   // Define your observable state as an object
@@ -288,7 +288,7 @@ class ConfigValuesStore {
     };
 
     if (!this.colorRows[raw_index + 1]) {
-      this.colorRows[raw_index + 1] = "black"      
+      this.colorRows[raw_index + 1] = "#f7531d";      
     }
 
     this.configValues = { ...this.configValues };

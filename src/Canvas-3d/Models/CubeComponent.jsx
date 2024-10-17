@@ -189,12 +189,12 @@ export const CubeComponent = ({
               side: THREE.DoubleSide,
               color:
               configValuesStore.configValues.shelfType === "acrylic"
-                ? getColor(configValuesStore.colorRows[rawIndex + 1])
+                ? configValuesStore.colorRows[rawIndex + 1]
                 : configValuesStore.configValues.shelfType === "stainless"
-                ? getColor(configValuesStore.configValues.color)
+                ? configValuesStore.configValues.color
                 : "black",
               transparent: true,
-              opacity: configValuesStore.configValues.shelfType === "acrylic" ? 0.5 : 1,
+              opacity: (configValuesStore.configValues.shelfType === "acrylic" && configValuesStore.colorRows[rawIndex + 1] != "#ffffff") ? 0.5 : 1,
             })
           }
           visible={
@@ -226,12 +226,12 @@ export const CubeComponent = ({
                   side: THREE.DoubleSide,
                   color:
               configValuesStore.configValues.shelfType === "acrylic"
-                ? getColor(configValuesStore.colorRows[rawIndex ])
+                ? configValuesStore.colorRows[rawIndex ]
                 : configValuesStore.configValues.shelfType === "stainless"
-                ? getColor(configValuesStore.configValues.color)
+                ? configValuesStore.configValues.color
                 : "black",
                   transparent: true,
-                  opacity: configValuesStore.configValues.shelfType === "acrylic" ? 0.5 : 1,
+                  opacity: (configValuesStore.configValues.shelfType === "acrylic" && configValuesStore.colorRows[rawIndex] != "#ffffff") ? 0.5 : 1,
                 })
               }
               visible={
@@ -292,7 +292,7 @@ export const CubeComponent = ({
               key={index}
               start={edge[0]}
               end={edge[1]}
-              color={"blue"}
+              color={"#1E88E5"}
             />
           ))}
         </>
@@ -305,7 +305,7 @@ export const CubeComponent = ({
               key={index}
               start={edge[0]}
               end={edge[1]}
-              color={"green"}
+              color={"#64B5F6"}
               radius={0.65}
             />
           ))}
@@ -313,7 +313,7 @@ export const CubeComponent = ({
       )}
 
       {displayEdgesPanel.length > 0 &&
-        configValuesStore.selectionType === "panel" && ( // Corrected single & to &&
+        configValuesStore.selectionType === "panel" && configValuesStore.configValues.shelfType === "acrylic" && ( // Corrected single & to &&
           <>
             {displayEdgesPanel.map(({ indices, color }) =>
               indices.map((edgeIndex) => (
