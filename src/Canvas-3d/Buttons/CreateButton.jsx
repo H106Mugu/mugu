@@ -12,11 +12,12 @@ const CreateButton = ({ position, raw_index, col_index, onRight = true }) => {
     configValuesStore.addCuboidAtPosition(raw_index + 1, col_index);
     return;
   };
+  
 
   return (
     <Html
       position={position} // Position relative to 3D model
-      scale={5} // Adjust the size
+      scale={3.5} // Adjust the size
       center
       zIndexRange={[0, 0]}
     >

@@ -2,7 +2,7 @@
 import * as THREE from 'three';
 
 
-export const EdgeCylinder = ({ start, end, color, radius }) => {
+export const EdgeCylinder = ({ start, end, color, radius = 0.7 }) => {
     const direction = new THREE.Vector3().subVectors(end, start);
     const length = direction.length();
     const midPoint = new THREE.Vector3().addVectors(start, end).divideScalar(2);
@@ -15,4 +15,5 @@ export const EdgeCylinder = ({ start, end, color, radius }) => {
     cylinderMesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), direction.clone().normalize()); // Align with direction
 
     return <primitive object={cylinderMesh} />;
+
 };

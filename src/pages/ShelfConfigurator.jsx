@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import ShelfSidebar from "../components/ShelfSidebar";
 import { useStores } from "../mobx/context/StoreContext";
@@ -28,6 +30,18 @@ const ShelfConfigurator = observer(() => {
 
   const onConfigTypeChange = (e) => {
     configValuesStore.setCurrentConfigType(e.target.value);
+  };
+
+  // Handle removing cuboid using values from selectedCuboid
+  const handleRemoveCuboid = () => {
+    
+    const { rawIndex, colIndex } = configValuesStore.selectedCuboid;
+
+    if (rawIndex !== null && colIndex !== null) {
+      configValuesStore.removeCuboid(rawIndex, colIndex); // Call the store's removeCuboid function
+    } else {
+      console.warn("No cuboid is selected");
+    }
   };
 
   return (
@@ -76,10 +90,13 @@ const ShelfConfigurator = observer(() => {
           </div>
 
           <div className="absolute bottom-4 md:bottom-6 right-4 md:right-8 flex items-center gap-2 z-30">
-            <Button>
-              <RiDeleteBinLine className="text-theme-primary" />
-              Remove selected element{" "}
-            </Button>
+            {configValuesStore.selectedCuboid.rawIndex !== null &&
+                configValuesStore.selectedCuboid.colIndex !== null && (
+                  <Button onClick={handleRemoveCuboid}>
+                    <RiDeleteBinLine className="text-theme-primary" />
+                    Remove selected element{" "}
+                  </Button>
+                )}
           </div>
 
           <div
@@ -87,7 +104,9 @@ const ShelfConfigurator = observer(() => {
             ${checked ? "opacity-100" : "opacity-0"}
             `}
           >
-            W: 400/H:450/D:400
+            W: {configValuesStore.totalLength.width}/H:{" "}
+            {configValuesStore.totalLength.height}/D:{" "}
+            {configValuesStore.configValues[0][0].depth}
           </div>
           <Canvas_3d />
         </div>

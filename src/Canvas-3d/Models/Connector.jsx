@@ -1,9 +1,24 @@
 /* eslint-disable react/no-unknown-property */
-export const Connector = ({ position, material }) => {
-    return (
-      <mesh position={position}>
-        <sphereGeometry args={[0.55, 16, 16]} />
-        <meshStandardMaterial {...material} />
-      </mesh>
-    );
-  };
+import { useLoader } from "@react-three/fiber";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"; // Corrected the import path for GLTFLoader
+import { getAdjustRotation } from "../Utils/PositionsUtils";
+
+export const Connector = ({ position, uniqueKey, raw_index, col_index }) => {
+  uniqueKey = parseInt(uniqueKey);
+  const scale = [0.74, 0.74, 0.74];
+  
+  const {rotation, modelPath} = getAdjustRotation(uniqueKey, raw_index, col_index);
+
+  // Load the selected model
+  const { scene } = useLoader(GLTFLoader, modelPath);
+  const clonedScene = scene.clone(true);
+
+  return (
+    <primitive
+      object={clonedScene}
+      position={position}
+      scale={scale}
+      rotation={rotation}
+    />
+  );
+};

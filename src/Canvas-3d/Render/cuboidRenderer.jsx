@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 // CuboidRenderer.js
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Model from "../Models/Model";
 import CreateButton from "../Buttons/CreateButton";
 import { isOnRight, isOnTop, handleAddCuboid } from "../Utils/PositionsUtils";
@@ -9,14 +9,58 @@ import configValuesStore from "../../mobx/stores/configValuesStore";
 import { observer } from "mobx-react-lite"; // Import observer from mobx-react-lite
 
 const CuboidRenderer = observer(({ cuboidData }) => {
-  const { key, width, height, depth, startWidth, startHeight, raw_index, col_index } = cuboidData;
+  const { key, width, height, depth, startWidth, startHeight, raw_index, col_index} = cuboidData;
+  const [isVisible, setIsVisible] = useState(false);
+  const [isVisiblePanelTop, setIsVisiblePanelTop] = useState(false);
+  const [isVisiblePanelBottom, setIsVisiblePanelBottom] = useState(false);
 
-  const isVisible = configValuesStore.selectedCuboid.rawIndex === raw_index && configValuesStore.selectedCuboid.colIndex === col_index;
+  useEffect(() => {
+    const checkVisible = configValuesStore.selectedCuboid.rawIndex === raw_index && configValuesStore.selectedCuboid.colIndex === col_index;
+    setIsVisible(checkVisible);
+    const checkVisiblePanelTop = configValuesStore.selectedPanel.rawIndex === raw_index + 1;
+    setIsVisiblePanelTop(checkVisiblePanelTop);
+    const checkVisiblePanelBottom = configValuesStore.selectedPanel.rawIndex === raw_index;
+    setIsVisiblePanelBottom(checkVisiblePanelBottom);
+    if (configValuesStore.selectionType === "panel") {
+      setIsVisible(false);
+      // configValuesStore.setSelectedCuboid(null, null);
+    }
+    else if (configValuesStore.selectionType === "element") {
+      setIsVisiblePanelTop(false);
+      setIsVisiblePanelBottom(false);
+      // configValuesStore.setSelectedPanel(null);
+    }
+  }, [configValuesStore.selectedCuboid, configValuesStore.selectionType, configValuesStore.selectedPanel.rawIndex, raw_index, col_index]);
+
+  useEffect(() => {
+    if (configValuesStore.selectionType === "element") {
+      configValuesStore.setSelectedPanel(null);
+    }
+    else if (configValuesStore.selectionType === "panel") {
+      configValuesStore.setSelectedCuboid(null, null);
+    }
+  }, [configValuesStore.selectionType]);
+
 
   const handleCubeSelect = (rawIndex, colIndex) => {
-    configValuesStore.setSelectedCuboid(rawIndex, colIndex);
+    if (configValuesStore.selectionType === "element") {
+      configValuesStore.setSelectedCuboid(rawIndex, colIndex);      
+    }
+    else {
+      configValuesStore.setSelectedCuboid(null, null);
+    }
     console.log("indexes", configValuesStore.selectedCuboid.rawIndex, configValuesStore.selectedCuboid.colIndex);
   };
+
+  const handlePanelSelect = (rawIndex) => {
+    if (configValuesStore.selectionType === "panel") {
+      configValuesStore.setSelectedPanel(rawIndex);
+    }
+    else {
+      configValuesStore.setSelectedPanel(null);
+    }
+    console.log("selected panelIndex", configValuesStore.selectedPanel.rawIndex);      
+  }
 
   return (
     <React.Fragment key={key}>
@@ -30,21 +74,23 @@ const CuboidRenderer = observer(({ cuboidData }) => {
         raw_index={raw_index}
         col_index={col_index}
       />
-      {/* <CubeComponent
-        position={[startWidth + width / 20, startHeight + height / 20, 0]}
+      <CubeComponent
+        position={[startWidth + width / 20, startHeight + height / 20, depth / 20]}
         rotation={[0, 0, 0]}
         size={[width / 10, height / 10, depth / 10]}
         isVisible={isVisible}
+        isVisiblePanelTop={isVisiblePanelTop}
+        isVisiblePanelBottom={isVisiblePanelBottom}
         onCubeSelect={handleCubeSelect}
+        onPanelSelect={handlePanelSelect}
         rawIndex={raw_index}
         colIndex={col_index}
         width={width}
         height={height}
-        startHeight={startHeight}
-        startWidth={startWidth}
-      /> */}
+        depth={depth}
+      />
       {/* Show CreateButton for the right side only if this cube is selected */}
-      {isOnRight(raw_index, col_index) && (
+      {isVisible && isOnRight(raw_index, col_index) && (
           <CreateButton
               position={[startWidth + width / 10, startHeight + height / 20, depth / 20]}
               raw_index={raw_index}
@@ -55,7 +101,7 @@ const CuboidRenderer = observer(({ cuboidData }) => {
       )}
 
       {/* Show CreateButton for the top side only if this cube is selected */}
-      {isOnTop(raw_index, col_index) && (
+      {isVisible && isOnTop(raw_index, col_index) && (
           <CreateButton
               position={[startWidth + width / 20 , startHeight + height / 10, depth / 20]}
               raw_index={raw_index}

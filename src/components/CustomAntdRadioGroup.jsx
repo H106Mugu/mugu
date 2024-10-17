@@ -148,8 +148,6 @@ const CustomAntdRadioGroup = ({
   const [isVisible, setIsVisible] = useState(false);
   const breakpoint = useBreakpoints();
 
-  console.log("breakpoint", breakpoint);
-
   useEffect(() => {
     if (options.length > 0) {
       // Set to visible when options exist

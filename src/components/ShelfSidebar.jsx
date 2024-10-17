@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import CustomAntdRadioGroup from "./CustomAntdRadioGroup";
 import {
@@ -40,6 +41,8 @@ const ShelfSidebar = observer(() => {
   );
   const [changedKey, setChangedKey] = useState("0");
   const { configValuesStore, submitFormStore } = useStores();
+
+  const selectedCuboid = configValuesStore.getSelectedCuboid;
 
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -205,7 +208,7 @@ const ShelfSidebar = observer(() => {
         { label: "483", value: "483" },
         { label: "603", value: "603" },
       ];
-      handleChangeOnce(newHeightOptions[0].value, "height", "2");
+      handleChangeOnce(newHeightOptions[3].value, "height", "2");
 
       newDepthOptions = [...newWidthOptions];
       handleChangeOnce(newDepthOptions[0].value, "depth", "3");
@@ -398,6 +401,24 @@ const ShelfSidebar = observer(() => {
     }
   };
 
+  const getValuesFromSelectedCuboid = () => {
+
+    const { rawIndex, colIndex } = configValuesStore.getSelectedCuboid;
+
+    const widthValue = configValuesStore.hasCuboidAt(rawIndex, colIndex)
+      ? configValuesStore.getConfigValue("width", rawIndex, colIndex).toString()
+      : "0"; // Provide a default value if there is no cuboid at that index
+
+    const heightValue = configValuesStore.hasCuboidAt(rawIndex, colIndex)
+      ? configValuesStore.getConfigValue("height", rawIndex, colIndex).toString()
+      : "0"; // Provide a default value if there is no cuboid at that index 
+  
+    const depthValue = configValuesStore.hasCuboidAt(rawIndex, colIndex)
+      ? configValuesStore.getConfigValue("depth", rawIndex, colIndex).toString()
+      : "0"; // Provide a default value if there is no cuboid at that index
+
+    return [widthValue, heightValue, depthValue];
+  };
   useEffect(() => {
     // Update the previous shelf type whenever the current shelf type changes
     setPreviousShelfType(shelfType);
@@ -443,6 +464,38 @@ const ShelfSidebar = observer(() => {
       setHeightOptions(updatedOptions.heightOptions);
     }
   }, [structureElement, width, depth, shelfType]); // Added structureElement dependency
+
+  useEffect(() => {
+    const row = selectedCuboid.rawIndex
+    const column = selectedCuboid.colIndex
+    if (
+      row !== null &&
+      column !== null &&
+      configValuesStore.hasCuboidAt(row, column)
+    ) {
+      // Fetch height and width for the selected cuboid and update the state
+      const selectedHeight = configValuesStore.getConfigValue(
+        "height",
+        row,
+        column
+      );
+      const selectedWidth = configValuesStore.getConfigValue(
+        "width",
+        row,
+        column
+      );
+
+      const selectedDepth = configValuesStore.getConfigValue(
+        "depth",
+        row,
+        column
+      );
+
+      setHeight(selectedHeight);
+      setWidth(selectedWidth);
+      setDepth(selectedDepth);
+    }
+  }, [selectedCuboid, configValuesStore]);
 
   const resetSelections = () => {
     setWidth(null);
@@ -532,7 +585,7 @@ const ShelfSidebar = observer(() => {
         "To configure dimensions, please choose the element from the options and then select it in the 3D shelf.",
       component: (
         <CustomAntdRadioGroup
-          value={configValuesStore.getAllConfigValues[0][0]["width"].toString()}
+          value={getValuesFromSelectedCuboid()[0]}
           options={widthOptions}
           disabled={
             breakpoint === "xs" || breakpoint === "sm"
@@ -553,7 +606,7 @@ const ShelfSidebar = observer(() => {
         "To configure dimensions, please choose the element from the options and then select it in the 3D shelf.",
       component: (
         <CustomAntdRadioGroup
-          value={configValuesStore.getAllConfigValues[0][0]["depth"].toString()}
+          value={getValuesFromSelectedCuboid()[2]}
           options={depthOptions}
           disabled={
             breakpoint === "xs" || breakpoint === "sm"
@@ -574,9 +627,7 @@ const ShelfSidebar = observer(() => {
         "To configure dimensions, please choose the element from the options and then select it in the 3D shelf.",
       component: (
         <CustomAntdRadioGroup
-          value={configValuesStore.getAllConfigValues[0][0][
-            "height"
-          ].toString()}
+          value={getValuesFromSelectedCuboid()[1]}
           options={heightOptions}
           disabled={
             breakpoint === "xs" || breakpoint === "sm"

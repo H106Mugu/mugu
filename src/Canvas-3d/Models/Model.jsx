@@ -7,10 +7,11 @@ import { Connector } from "./Connector";
 import { Pipe } from "./Pipe";
 import {
   pipeConnections,
-  cornerOffsets,
-  bottomCornersIndices,
+  getCorners,
+  getLegPipes,
 } from "../Utils/ModelUtils";
 import { LegScrew } from "./LegScrew";
+import { Supporter } from "./Supporter";
 
 const Model = ({
   width,
@@ -19,6 +20,7 @@ const Model = ({
   startWidth,
   startHeight,
   raw_index,
+  col_index,
 }) => {
   const { scene } = useLoader(GLTFLoader, "/Models/Material.glb");
   const material = scene.getObjectByName("Plane").material;
@@ -28,20 +30,8 @@ const Model = ({
     material.needsUpdate = true;
   }
 
-  const corners = cornerOffsets.map(
-    ([x, y, z]) =>
-      new THREE.Vector3(
-        startWidth + (x * width) / 2,
-        startHeight + (y * height) / 2,
-        (z * depth) / 2
-      )
-  );
-
-  const legPipes = bottomCornersIndices.map((index) => {
-    const start = corners[index];
-    const end = new THREE.Vector3(start.x, start.y - 5, start.z); // 5 units below the corner
-    return { start, end };
-  });
+  const corners = getCorners(width, height, depth, startWidth, startHeight);
+  const legPipes = getLegPipes(corners);
 
   return (
     <>
@@ -70,6 +60,9 @@ const Model = ({
           key={`connector-${index}`}
           position={corner}
           material={material}
+          uniqueKey={`${index}`}
+          raw_index={raw_index}
+          col_index={col_index}
         />
       ))}
 
@@ -81,7 +74,15 @@ const Model = ({
             material={material}
           />
         ))}
-      {/* <LegScrew/> */}
+
+      {corners.map((corner, index) => (
+        <Supporter
+          key={`connector-${index}`}
+          position={corner}
+          material={material}
+          uniqueKey={`${index}`} 
+        />
+      ))}
     </>
   );
 };
