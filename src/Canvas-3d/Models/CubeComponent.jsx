@@ -62,16 +62,17 @@ export const CubeComponent = ({
 
   const getColor = (value) => {
     console.log("value", value);
-    console.log("configValuesStore.configValues.shelfType", configValuesStore.configValues.shelfType)
+    console.log(
+      "configValuesStore.configValues.shelfType",
+      configValuesStore.configValues.shelfType
+    );
     if (value === "transparentBlack") {
       return "black";
     } else if (value === "transparentOrange") {
       return "orange";
-    }
-    else if (value === "clear") {
+    } else if (value === "clear") {
       return "white";
-    }
-    else {
+    } else {
       return value;
     }
   };
@@ -188,13 +189,17 @@ export const CubeComponent = ({
             new THREE.MeshBasicMaterial({
               side: THREE.DoubleSide,
               color:
-              configValuesStore.configValues.shelfType === "acrylic"
-                ? configValuesStore.colorRows[rawIndex + 1]
-                : configValuesStore.configValues.shelfType === "stainless"
-                ? configValuesStore.configValues.color
-                : "black",
+                configValuesStore.configValues.shelfType === "acrylic"
+                  ? configValuesStore.colorRows[rawIndex + 1]
+                  : configValuesStore.configValues.shelfType === "stainless"
+                  ? configValuesStore.configValues.color
+                  : "black",
               transparent: true,
-              opacity: (configValuesStore.configValues.shelfType === "acrylic" && configValuesStore.colorRows[rawIndex + 1] != "#ffffff") ? 0.5 : 1,
+              opacity:
+                configValuesStore.configValues.shelfType === "acrylic" &&
+                configValuesStore.colorRows[rawIndex + 1] != "#ffffff"
+                  ? 0.5
+                  : 1,
             })
           }
           visible={
@@ -225,13 +230,17 @@ export const CubeComponent = ({
                 new THREE.MeshBasicMaterial({
                   side: THREE.DoubleSide,
                   color:
-              configValuesStore.configValues.shelfType === "acrylic"
-                ? configValuesStore.colorRows[rawIndex ]
-                : configValuesStore.configValues.shelfType === "stainless"
-                ? configValuesStore.configValues.color
-                : "black",
+                    configValuesStore.configValues.shelfType === "acrylic"
+                      ? configValuesStore.colorRows[rawIndex]
+                      : configValuesStore.configValues.shelfType === "stainless"
+                      ? configValuesStore.configValues.color
+                      : "black",
                   transparent: true,
-                  opacity: (configValuesStore.configValues.shelfType === "acrylic" && configValuesStore.colorRows[rawIndex] != "#ffffff") ? 0.5 : 1,
+                  opacity:
+                    configValuesStore.configValues.shelfType === "acrylic" &&
+                    configValuesStore.colorRows[rawIndex] != "#ffffff"
+                      ? 0.5
+                      : 1,
                 })
               }
               visible={
@@ -258,7 +267,12 @@ export const CubeComponent = ({
           args={[depth / 10, height / 10]}
           name={planeProps.face}
           onClick={(event) => handleClick(event, "cube")}
-          material={new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, color: getColor(configValuesStore.configValues.color) })}
+          material={
+            new THREE.MeshBasicMaterial({
+              side: THREE.DoubleSide,
+              color: getColor(configValuesStore.configValues.color),
+            })
+          }
           visible={
             configValuesStore.configValues.structureElements === "all" ||
             configValuesStore.configValues.structureElements === "withoutBack"
@@ -279,7 +293,12 @@ export const CubeComponent = ({
           args={[width / 10, height / 10]}
           name={planeProps.face}
           onClick={(event) => handleClick(event, "cube")}
-          material={new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, color:getColor(configValuesStore.configValues.color) })}
+          material={
+            new THREE.MeshBasicMaterial({
+              side: THREE.DoubleSide,
+              color: getColor(configValuesStore.configValues.color),
+            })
+          }
           visible={configValuesStore.configValues.structureElements === "all"} // Planes are invisible, but still interactable
         />
       ))}
@@ -298,7 +317,7 @@ export const CubeComponent = ({
         </>
       )}
 
-      {displayEdgesElement && configValuesStore.selectionType === "element" && (
+      {displayEdgesElement && (
         <>
           {edges.slice(0, 12).map((edge, index) => (
             <EdgeCylinder
@@ -313,7 +332,9 @@ export const CubeComponent = ({
       )}
 
       {displayEdgesPanel.length > 0 &&
-        configValuesStore.selectionType === "panel" && configValuesStore.configValues.shelfType === "acrylic" && ( // Corrected single & to &&
+        configValuesStore.configValues.shelfType === "acrylic" &&
+        configValuesStore.getAllConfigValues.structureElements !==
+          "withoutShelves" && ( // Corrected single & to &&
           <>
             {displayEdgesPanel.map(({ indices, color }) =>
               indices.map((edgeIndex) => (
@@ -328,34 +349,40 @@ export const CubeComponent = ({
           </>
         )}
 
-      {isVisiblePanelTop && ( // Corrected single & to &&
-        <>
-          {edgesTop.map(({ indices, color }) =>
-            indices.map((edgeIndex) => (
-              <EdgeCylinder
-                key={`hover-edge-${edgeIndex}`}
-                start={edges[edgeIndex][0]} // Use the stored indices to reference the edges
-                end={edges[edgeIndex][1]}
-                color={"yellow"} // Use the color from displayEdges array
-              />
-            ))
-          )}
-        </>
-      )}
-      {isVisiblePanelBottom && ( // Corrected single & to &&
-        <>
-          {edgesBottom.map(({ indices, color }) =>
-            indices.map((edgeIndex) => (
-              <EdgeCylinder
-                key={`hover-edge-${edgeIndex}`}
-                start={edges[edgeIndex][0]} // Use the stored indices to reference the edges
-                end={edges[edgeIndex][1]}
-                color={"yellow"} // Use the color from displayEdges array
-              />
-            ))
-          )}
-        </>
-      )}
+      {isVisiblePanelTop &&
+        configValuesStore.configValues.shelfType === "acrylic" &&
+        configValuesStore.getAllConfigValues.structureElements !==
+          "withoutShelves" && ( // Corrected single & to &&
+          <>
+            {edgesTop.map(({ indices, color }) =>
+              indices.map((edgeIndex) => (
+                <EdgeCylinder
+                  key={`hover-edge-${edgeIndex}`}
+                  start={edges[edgeIndex][0]} // Use the stored indices to reference the edges
+                  end={edges[edgeIndex][1]}
+                  color={"yellow"} // Use the color from displayEdges array
+                />
+              ))
+            )}
+          </>
+        )}
+      {isVisiblePanelBottom &&
+        configValuesStore.configValues.shelfType === "acrylic" &&
+        configValuesStore.getAllConfigValues.structureElements !==
+          "withoutShelves" && ( // Corrected single & to &&
+          <>
+            {edgesBottom.map(({ indices, color }) =>
+              indices.map((edgeIndex) => (
+                <EdgeCylinder
+                  key={`hover-edge-${edgeIndex}`}
+                  start={edges[edgeIndex][0]} // Use the stored indices to reference the edges
+                  end={edges[edgeIndex][1]}
+                  color={"yellow"} // Use the color from displayEdges array
+                />
+              ))
+            )}
+          </>
+        )}
     </>
   );
 };

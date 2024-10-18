@@ -43,6 +43,10 @@ const ShelfSidebar = observer(() => {
   const { configValuesStore, submitFormStore } = useStores();
 
   const selectedCuboid = configValuesStore.getSelectedCuboid;
+  const selectedCuboidIndex = {
+    rowIndex: configValuesStore.getSelectedCuboid.rawIndex,
+    colIndex: configValuesStore.getSelectedCuboid.colIndex,
+  };
 
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -281,7 +285,7 @@ const ShelfSidebar = observer(() => {
         selectedStructureElement === "all" ||
         selectedStructureElement === "withoutBack"
       ) {
-        if (selectedWidth === "121") {
+        if (selectedWidth.toString() === "121") {
           newDepthOptions = [{ label: "313", value: "313" }];
           handleChangeOnce(newDepthOptions[0].value, "depth", "6");
 
@@ -290,27 +294,33 @@ const ShelfSidebar = observer(() => {
             value: h,
           }));
           handleChangeOnce(newHeightOptions[0].value, "height", "7");
-        } else if (selectedWidth === "313") {
+        } else if (selectedWidth.toString() === "313") {
           newDepthOptions = ["121", "313", "483", "603"].map((d) => ({
             label: d,
             value: d,
           }));
           handleChangeOnce(newDepthOptions[1].value, "depth", "8");
 
-          if (selectedDepth === "121") {
+          if (selectedDepth.toString() === "121") {
             newHeightOptions = [{ label: "313", value: "313" }];
             handleChangeOnce(newHeightOptions[0].value, "height", "9");
-          } else if (selectedDepth === "313") {
+          } else if (selectedDepth.toString() === "313") {
             newHeightOptions = ["121", "313", "483", "603"].map((h) => ({
               label: h,
               value: h,
             }));
             handleChangeOnce(newHeightOptions[0].value, "height", "10");
-          } else if (selectedDepth === "483" || selectedDepth === "603") {
+          } else if (
+            selectedDepth.toString() === "483" ||
+            selectedDepth.toString() === "603"
+          ) {
             newHeightOptions = [{ label: "313", value: "313" }];
             handleChangeOnce(newHeightOptions[0].value, "height", "11");
           }
-        } else if (selectedWidth === "483" || selectedWidth === "603") {
+        } else if (
+          selectedWidth.toString() === "483" ||
+          selectedWidth.toString() === "603"
+        ) {
           newDepthOptions = [{ label: "313", value: "313" }];
           handleChangeOnce(newDepthOptions[0].value, "depth", "12");
 
@@ -322,9 +332,9 @@ const ShelfSidebar = observer(() => {
         }
       } else if (selectedStructureElement === "withTopAndBottomOnly") {
         if (
-          selectedWidth === "121" ||
-          selectedWidth === "483" ||
-          selectedWidth === "603"
+          selectedWidth.toString() === "121" ||
+          selectedWidth.toString() === "483" ||
+          selectedWidth.toString() === "603"
         ) {
           newDepthOptions = [{ label: "313", value: "313" }];
           handleChangeOnce(newDepthOptions[0].value, "depth", "14");
@@ -340,7 +350,7 @@ const ShelfSidebar = observer(() => {
             "603",
           ].map((h) => ({ label: h, value: h }));
           handleChangeOnce(newHeightOptions[0].value, "height", "15");
-        } else if (selectedWidth === "313") {
+        } else if (selectedWidth.toString() === "313") {
           newDepthOptions = ["121", "313", "483", "603"].map((d) => ({
             label: d,
             value: d,
@@ -402,7 +412,6 @@ const ShelfSidebar = observer(() => {
   };
 
   const getValuesFromSelectedCuboid = () => {
-
     const { rawIndex, colIndex } = configValuesStore.getSelectedCuboid;
 
     const widthValue = configValuesStore.hasCuboidAt(rawIndex, colIndex)
@@ -410,13 +419,14 @@ const ShelfSidebar = observer(() => {
       : "0"; // Provide a default value if there is no cuboid at that index
 
     const heightValue = configValuesStore.hasCuboidAt(rawIndex, colIndex)
-      ? configValuesStore.getConfigValue("height", rawIndex, colIndex).toString()
-      : "0"; // Provide a default value if there is no cuboid at that index 
-  
+      ? configValuesStore
+          .getConfigValue("height", rawIndex, colIndex)
+          .toString()
+      : "0"; // Provide a default value if there is no cuboid at that index
+
     const depthValue = configValuesStore.hasCuboidAt(rawIndex, colIndex)
       ? configValuesStore.getConfigValue("depth", rawIndex, colIndex).toString()
       : "0"; // Provide a default value if there is no cuboid at that index
-
     return [widthValue, heightValue, depthValue];
   };
   useEffect(() => {
@@ -466,8 +476,8 @@ const ShelfSidebar = observer(() => {
   }, [structureElement, width, depth, shelfType]); // Added structureElement dependency
 
   useEffect(() => {
-    const row = selectedCuboid.rawIndex
-    const column = selectedCuboid.colIndex
+    const row = selectedCuboid.rawIndex;
+    const column = selectedCuboid.colIndex;
     if (
       row !== null &&
       column !== null &&
@@ -502,6 +512,15 @@ const ShelfSidebar = observer(() => {
     setDepth(null);
     setHeight(null);
   };
+
+  const isDimensionDisabled =
+    configValuesStore.getSelectedCuboid.rawIndex === null ||
+    configValuesStore.getSelectedCuboid.colIndex === null;
+
+  const isColorDisabled =
+    (configValuesStore.getAllConfigValues.shelfType !== "stainless" &&
+      configValuesStore.getSelectedPanel === null) ||
+    configValuesStore.getAllConfigValues.structureElements === "withoutShelves";
 
   const sidebarOptionsData = [
     {
@@ -580,18 +599,14 @@ const ShelfSidebar = observer(() => {
     {
       title: "Width (mm)",
       category: "structure",
-      isDisabled: configValuesStore.selectionType === "panel",
+      isDisabled: isDimensionDisabled,
       disabledMessage:
-        "To configure dimensions, please choose the element from the options and then select it in the 3D shelf.",
+        "To configure dimensions, please select any element within the 3D shelf.",
       component: (
         <CustomAntdRadioGroup
           value={getValuesFromSelectedCuboid()[0]}
           options={widthOptions}
-          disabled={
-            breakpoint === "xs" || breakpoint === "sm"
-              ? false
-              : configValuesStore.selectionType === "panel"
-          }
+          disabled={isDimensionDisabled}
           onChange={(ev) =>
             handleSidebarOptionsChange(ev.target.value, "width", "3")
           }
@@ -601,18 +616,14 @@ const ShelfSidebar = observer(() => {
     {
       title: "Depth (mm)",
       category: "structure",
-      isDisabled: configValuesStore.selectionType === "panel",
+      isDisabled: isDimensionDisabled,
       disabledMessage:
-        "To configure dimensions, please choose the element from the options and then select it in the 3D shelf.",
+        "To configure dimensions, please select any element within the 3D shelf.",
       component: (
         <CustomAntdRadioGroup
           value={getValuesFromSelectedCuboid()[2]}
           options={depthOptions}
-          disabled={
-            breakpoint === "xs" || breakpoint === "sm"
-              ? false
-              : configValuesStore.selectionType === "panel"
-          }
+          disabled={isDimensionDisabled}
           onChange={(ev) =>
             handleSidebarOptionsChange(ev.target.value, "depth", "4")
           }
@@ -622,18 +633,14 @@ const ShelfSidebar = observer(() => {
     {
       title: "Height (mm)",
       category: "structure",
-      isDisabled: configValuesStore.selectionType === "panel",
+      isDisabled: isDimensionDisabled,
       disabledMessage:
-        "To configure dimensions, please choose the element from the options and then select it in the 3D shelf.",
+        "To configure dimensions, please select any element within the 3D shelf.",
       component: (
         <CustomAntdRadioGroup
           value={getValuesFromSelectedCuboid()[1]}
           options={heightOptions}
-          disabled={
-            breakpoint === "xs" || breakpoint === "sm"
-              ? false
-              : configValuesStore.selectionType === "panel"
-          }
+          disabled={isDimensionDisabled}
           onChange={(ev) =>
             handleSidebarOptionsChange(ev.target.value, "height", "5")
           }
@@ -674,16 +681,22 @@ const ShelfSidebar = observer(() => {
         </div>
       ),
       category: "color",
-      isDisabled:
-        configValuesStore.selectionType === "element" ||
-        configValuesStore.configValues.structureElements === "withoutShelves",
+      isDisabled: isColorDisabled,
       disabledMessage:
-        configValuesStore.selectionType === "element"
-          ? "To configure the colour, please choose the panel from the options and then select it in the 3D shelf."
+        configValuesStore.getSelectedPanel === null
+          ? "To configure the colour, please select any panel from the 3D shelf."
           : "As the selected element is without shelves, there are no panels available to configure their colour.",
       component: (
         <CustomAntdRadioGroup
-          value={configValuesStore.getAllConfigValues.color}
+          value={
+            configValuesStore.getAllConfigValues.shelfType === "acrylic"
+              ? configValuesStore.getColorRows[
+                  configValuesStore.getSelectedPanel
+                ]
+              : configValuesStore.getAllConfigValues.shelfType === "stainless"
+              ? configValuesStore.getAllConfigValues.color
+              : []
+          }
           options={
             configValuesStore.getAllConfigValues.shelfType === "acrylic"
               ? acrylicColorOptions
@@ -691,14 +704,7 @@ const ShelfSidebar = observer(() => {
               ? stainlessColorOptions
               : []
           }
-          disabled={
-            breakpoint === "xs" || breakpoint === "sm"
-              ? configValuesStore.configValues.structureElements ===
-                "withoutShelves"
-              : configValuesStore.selectionType === "element" ||
-                configValuesStore.configValues.structureElements ===
-                  "withoutShelves"
-          }
+          disabled={isColorDisabled}
           onChange={(ev) =>
             handleSidebarOptionsChange(ev.target.value, "color", "6")
           }
@@ -706,6 +712,20 @@ const ShelfSidebar = observer(() => {
       ),
     },
   ];
+
+  console.log(
+    "colorRowsxxxxxxxxuiopuio",
+    // configValuesStore.getAllConfigValues[
+    //   configValuesStore.getSelectedCuboid.rawIndex === null
+    //     ? 0
+    //     : configValuesStore.getSelectedCuboid.rawIndex
+    // ][
+    //   configValuesStore.getSelectedCuboid.colIndex === null
+    //     ? 0
+    //     : configValuesStore.getSelectedCuboid.colIndex
+    // ]["depth"]
+    configValuesStore.getAllConfigValues
+  );
 
   return (
     <>

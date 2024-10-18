@@ -43,9 +43,7 @@ const MobileShelfBottombar = observer(({ sidebarOptionsData, changedKey }) => {
               duration: 5,
               content: (
                 <div className="bg-theme-primary text-white text-sm flex items-center">
-                  {
-                    "As the selected element is without shelves, there are no panels available to configure their colour."
-                  }
+                  {option.disabledMessage}
                   <IoCloseOutline
                     className="text-white text-lg min-w-4 ms-3 cursor-pointer"
                     onClick={() => messageApi.destroy()}

@@ -68,12 +68,13 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   logo: {
-    width: 35,
+    width: 20,
     height: 20,
   },
   section1Text: {
-    fontSize: 14,
+    fontSize: 11,
     fontWeight: "bold",
+    paddingTop: 5,
   },
 
   tableContainer: {
@@ -183,17 +184,21 @@ const PDFDocument = ({ data }) => (
             <Image src={muguLogo} style={styles.logo} />
           </View>
           <View style={styles.rightColumn}>
-            <Text style={styles.section1Text}>"Your Home, Your Story"</Text>
+            <Text style={styles.section1Text}>
+              "Modular designs, unique utility in every grid."
+            </Text>
           </View>
         </View>
       </View>
       <View style={{ ...styles.section, height: `${sectionHeights[1]}%` }}>
         <View style={styles.sectionFlexRow}>
           <View style={styles.leftColumn}>
-            <Text style={styles.title}>Your info</Text>
-            <Text style={styles.text}>{data.name}</Text>
-            <Text style={styles.text}>{data.email}</Text>
-            <Text style={styles.text}>Postal Code: {data.postcode}</Text>
+            <Text style={styles.title}>Quote for</Text>
+            <Text style={styles.text}>{data.basicInfo.name}</Text>
+            <Text style={styles.text}>{data.basicInfo.email}</Text>
+            <Text style={styles.text}>
+              Postal Code: {data.basicInfo.postcode}
+            </Text>
           </View>
           <View style={styles.rightColumn}>
             <Text style={styles.title}>Request for Quotation</Text>
@@ -312,7 +317,7 @@ const PDFDocument = ({ data }) => (
         >
           <Text style={styles.title}>Unit Material info</Text>
           <View style={styles.tableContainer}>
-            {tableData.map((item, index) => (
+            {data?.materialInfo?.map((item, index) => (
               <View
                 style={
                   index === tableData.length - 1
