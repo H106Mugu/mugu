@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import configValuesStore from "../../mobx/stores/configValuesStore";
 
 // Static pipe connections
 export const pipeConnections = [
@@ -34,3 +35,15 @@ export const getLegPipes = (corners) => {
     return { start, end };
   });
 };
+
+  // Function to check if the remove button should be displayed
+  export const shouldDisplayRemoveButton = () => {
+    const { rawIndex, colIndex } = configValuesStore.selectedCuboid;
+
+    // Check if a cuboid is selected and if the cuboid above the current one exists
+    if (rawIndex !== null && colIndex !== null) {
+      return !configValuesStore.hasCuboidAt(rawIndex + 1, colIndex);
+    }
+
+    return false;
+  };

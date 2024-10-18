@@ -12,6 +12,7 @@ import {
 } from "../Utils/ModelUtils";
 import { LegScrew } from "./LegScrew";
 import { Supporter } from "./Supporter";
+import configValuesStore from "../../mobx/stores/configValuesStore";
 
 const Model = ({
   width,
@@ -75,7 +76,7 @@ const Model = ({
           />
         ))}
 
-      {corners.map((corner, index) => (
+      {configValuesStore.configValues.structureElements != "withoutShelves" && corners.map((corner, index) => (
         <Supporter
           key={`connector-${index}`}
           position={corner}
