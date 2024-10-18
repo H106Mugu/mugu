@@ -62,8 +62,9 @@ class ConfigValuesStore {
     autorun(() => {
       const lastCuboid = getLastCuboidOfFirstRow(this.configValues);
       if (lastCuboid) {
-        this.totalLength.width =
-          (lastCuboid.startWidth + 20) * 10 + lastCuboid.width;
+        this.totalLength.width = parseInt(
+          (lastCuboid.startWidth + 20) * 10 + lastCuboid.width
+        );
       }
     });
 
@@ -73,9 +74,10 @@ class ConfigValuesStore {
         this.configValues
       );
       if (lastCuboidInTallestColumn) {
-        this.totalLength.height =
+        this.totalLength.height = parseInt(
           (lastCuboidInTallestColumn.startHeight + 25) * 10 +
-          lastCuboidInTallestColumn.height;
+            lastCuboidInTallestColumn.height
+        );
       }
     });
   }
@@ -149,17 +151,20 @@ class ConfigValuesStore {
         if (this.totalLength.width + value - oldValue > 2500) {
           return;
         }
-      }
-      Object.keys(this.configValues).forEach((rowIndex) => {
-        if (typeof this.configValues[rowIndex] === "object") {
-          if (this.configValues[rowIndex][col_index]) {
-            this.configValues[rowIndex][col_index][key] = value; // Update width
+        Object.keys(this.configValues).forEach((rowIndex) => {
+          if (typeof this.configValues[rowIndex] === "object") {
+            if (this.configValues[rowIndex][col_index]) {
+              this.configValues[rowIndex][col_index][key] = value; // Update width
+            }
           }
-        }
-      });
-      this.recalculateStartWidthHeight(col_index, parseInt(value));
-      this.configValues = { ...this.configValues };
-      return;
+        });
+        this.recalculateStartWidthHeight(col_index, parseInt(value));
+        this.configValues = { ...this.configValues };
+        return;
+      }
+      // else {
+      //   alert("Please select a cuboid first");
+      // }
     }
 
     // Handle height: update the value in all columns of a particular row (raw_index)
@@ -172,34 +177,35 @@ class ConfigValuesStore {
           return;
         }
       }
-      if (raw_index === null) {
-        raw_index = 0;
+      if (raw_index !== null) {
+        Object.keys(this.configValues[raw_index]).forEach((colIndex) => {
+          this.configValues[raw_index][colIndex][key] = value;
+        });
+        this.recalculateStartWidthHeight(col_index, parseInt(value));
+        this.configValues = { ...this.configValues };
+        return;
       }
-      Object.keys(this.configValues[raw_index]).forEach((colIndex) => {
-        this.configValues[raw_index][colIndex][key] = value;
-      });
-      this.recalculateStartWidthHeight(col_index, parseInt(value));
-      this.configValues = { ...this.configValues };
-      return;
     }
 
     // Handle depth: update the value in all cells (all rows and columns)
     if (key === "depth") {
       value = parseInt(value);
 
-      Object.keys(this.configValues).forEach((configKey) => {
-        const row = this.configValues[configKey];
-        if (row && typeof row === "object" && !Array.isArray(row)) {
-          Object.keys(row).forEach((colIndex) => {
-            const cuboid = row[colIndex];
-            if (cuboid && typeof cuboid === "object") {
-              cuboid[key] = value;
-            }
-          });
-        }
-      });
-      this.configValues = { ...this.configValues };
-      return;
+      if (raw_index != null) {
+        Object.keys(this.configValues).forEach((configKey) => {
+          const row = this.configValues[configKey];
+          if (row && typeof row === "object" && !Array.isArray(row)) {
+            Object.keys(row).forEach((colIndex) => {
+              const cuboid = row[colIndex];
+              if (cuboid && typeof cuboid === "object") {
+                cuboid[key] = value;
+              }
+            });
+          }
+        });
+        this.configValues = { ...this.configValues };
+        return;
+      }
     }
   }
 

@@ -13,6 +13,7 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import Canvas_3d from "../Canvas-3d/Canvas_3d";
 import { IoArrowBackOutline } from "react-icons/io5";
 import SubmitFormModal from "../components/SubmitFormModal";
+import { shouldDisplayRemoveButton } from "../Canvas-3d/Utils/ModelUtils";
 
 const ShelfConfigurator = observer(() => {
   const { modalStore, submitFormStore, configValuesStore } = useStores();
@@ -74,13 +75,12 @@ const ShelfConfigurator = observer(() => {
           </div>
 
           <div className="absolute bottom-4 md:bottom-6 right-4 md:right-8 flex items-center gap-2 z-30">
-            {configValuesStore.selectedCuboid.rawIndex !== null &&
-              configValuesStore.selectedCuboid.colIndex !== null && (
-                <Button onClick={handleRemoveCuboid}>
-                  <RiDeleteBinLine className="text-theme-primary" />
-                  Remove selected element{" "}
-                </Button>
-              )}
+            {shouldDisplayRemoveButton() && (
+              <Button onClick={handleRemoveCuboid}>
+                <RiDeleteBinLine className="text-theme-primary" />
+                Remove selected element{" "}
+              </Button>
+            )}
           </div>
 
           <div
