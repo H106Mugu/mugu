@@ -7,9 +7,53 @@ import { useStores } from "../mobx/context/StoreContext";
 import { pdf } from "@react-pdf/renderer";
 import PDFDocument from "./PDFDocument";
 
-const SubmitFormModal = ({ open, onClose }) => {
+import { observer } from "mobx-react-lite";
+import { acrylicColorOptions, stainlessColorOptions } from "../data/optionData";
+
+function convertToSentenceCase(str) {
+  // Insert a space before all capital letters and convert the string to lowercase
+  let result = str.replace(/([A-Z])/g, " $1").toLowerCase();
+
+  // Capitalize the first letter
+  result = result.charAt(0).toUpperCase() + result.slice(1);
+
+  return result;
+}
+
+function getColorNameFromHex(hex, type) {
+  if (type === "acrylic") {
+    return acrylicColorOptions.find((option) => option.value === hex).label
+      .props.children[1].props.children;
+  } else if (type === "stainless") {
+    return stainlessColorOptions.find((option) => option.value === hex).label
+      .props.children[1].props.children;
+  }
+}
+
+function getPanelColors(colorRows, type) {
+  const colorPanelMap = {};
+
+  // Loop through colorRows to build a map of colors and their panel numbers
+  Object.keys(colorRows).forEach((panel) => {
+    const hex = colorRows[panel];
+    const colorName = getColorNameFromHex(hex, type);
+
+    if (colorPanelMap[colorName]) {
+      colorPanelMap[colorName].push(Number(panel) + 1); // +1 because panels are 1-indexed
+    } else {
+      colorPanelMap[colorName] = [Number(panel) + 1];
+    }
+  });
+
+  // Build the desired string format
+  return Object.entries(colorPanelMap)
+    .map(([colorName, panels]) => `${colorName}(Panel ${panels.join(",")})`)
+    .join(", ");
+}
+
+const SubmitFormModal = observer(({ open, onClose }) => {
   const [form] = Form.useForm();
-  const { submitFormStore } = useStores();
+  const { submitFormStore, configValuesStore } = useStores();
   const [loading, setLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -19,7 +63,45 @@ const SubmitFormModal = ({ open, onClose }) => {
     setLoading(true);
 
     // Create the PDF
-    const doc = <PDFDocument data={values} />;
+    const doc = (
+      <PDFDocument
+        data={{
+          basicInfo: values,
+          materialInfo: [
+            {
+              key: "Base shelf type",
+              value:
+                configValuesStore.getAllConfigValues.shelfType
+                  .charAt(0)
+                  .toUpperCase() +
+                configValuesStore.getAllConfigValues.shelfType.slice(1) +
+                " Panel",
+            },
+            {
+              key: "Structure element",
+              value: convertToSentenceCase(
+                configValuesStore.getAllConfigValues.structureElements
+              ),
+            },
+            {
+              key: "Total Dimensions (W*H*D)",
+              value: `${configValuesStore.totalLength.width}mm x ${configValuesStore.totalLength.height}mm x ${configValuesStore.configValues[0][0].depth}mm`,
+            },
+            {
+              key: "Panel Colour",
+              value:
+                configValuesStore.getAllConfigValues.shelfType === "acrylic"
+                  ? getPanelColors(configValuesStore.getColorRows, "acrylic")
+                  : getColorNameFromHex(
+                      configValuesStore.getAllConfigValues.color,
+                      "stainless"
+                    ),
+            },
+          ],
+          // configValues: submitFormStore.configValues,
+        }}
+      />
+    );
     const blob = await pdf(doc).toBlob();
 
     // Trigger download
@@ -144,6 +226,6 @@ const SubmitFormModal = ({ open, onClose }) => {
       </Form>
     </Modal>
   );
-};
+});
 
 export default SubmitFormModal;

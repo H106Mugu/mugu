@@ -61,11 +61,13 @@ const CuboidRenderer = observer(({ cuboidData }) => {
   }, [configValuesStore.selectionType]);
 
   const handleCubeSelect = (rawIndex, colIndex) => {
-    if (configValuesStore.selectionType === "element") {
-      configValuesStore.setSelectedCuboid(rawIndex, colIndex);
-    } else {
-      configValuesStore.setSelectedCuboid(null, null);
-    }
+    configValuesStore.setSelectedCuboid(rawIndex, colIndex);
+    configValuesStore.setSelectedPanel(null);
+    // if (configValuesStore.selectionType === "element") {
+    // }
+    // else {
+    //   configValuesStore.setSelectedCuboid(null, null);
+    // }
     console.log(
       "indexes",
       configValuesStore.selectedCuboid.rawIndex,
@@ -74,48 +76,49 @@ const CuboidRenderer = observer(({ cuboidData }) => {
   };
 
   const handlePanelSelect = (rawIndex) => {
-    if (configValuesStore.selectionType === "panel") {
-      configValuesStore.setSelectedPanel(rawIndex);
-    } else {
-      configValuesStore.setSelectedPanel(null);
-    }
-    console.log(
-      "selected panelIndex",
-      configValuesStore.selectedPanel.rawIndex
-    );
+    configValuesStore.setSelectedPanel(rawIndex);
+    configValuesStore.setSelectedCuboid(null, null);
+    // if (configValuesStore.selectionType === "panel") {
+    // } else {
+    //   configValuesStore.setSelectedPanel(null);
+    // }
+    // console.log(
+    //   "selected panelIndex",
+    //   configValuesStore.selectedPanel.rawIndex
+    // );
   };
 
   return (
     <React.Fragment key={key}>
-        <Model
-          keyCuboid={key}
-          width={width / 10}
-          height={height / 10}
-          depth={depth / 10}
-          startWidth={startWidth}
-          startHeight={startHeight}
-          raw_index={raw_index}
-          col_index={col_index}
-        />
-        <CubeComponent
-          position={[
-            startWidth + width / 20,
-            startHeight + height / 20,
-            depth / 20,
-          ]}
-          rotation={[0, 0, 0]}
-          size={[width / 10, height / 10, depth / 10]}
-          isVisible={isVisible}
-          isVisiblePanelTop={isVisiblePanelTop}
-          isVisiblePanelBottom={isVisiblePanelBottom}
-          onCubeSelect={handleCubeSelect}
-          onPanelSelect={handlePanelSelect}
-          rawIndex={raw_index}
-          colIndex={col_index}
-          width={width}
-          height={height}
-          depth={depth}
-        />
+      <Model
+        keyCuboid={key}
+        width={width / 10}
+        height={height / 10}
+        depth={depth / 10}
+        startWidth={startWidth}
+        startHeight={startHeight}
+        raw_index={raw_index}
+        col_index={col_index}
+      />
+      <CubeComponent
+        position={[
+          startWidth + width / 20,
+          startHeight + height / 20,
+          depth / 20,
+        ]}
+        rotation={[0, 0, 0]}
+        size={[width / 10, height / 10, depth / 10]}
+        isVisible={isVisible}
+        isVisiblePanelTop={isVisiblePanelTop}
+        isVisiblePanelBottom={isVisiblePanelBottom}
+        onCubeSelect={handleCubeSelect}
+        onPanelSelect={handlePanelSelect}
+        rawIndex={raw_index}
+        colIndex={col_index}
+        width={width}
+        height={height}
+        depth={depth}
+      />
       {/* Show CreateButton for the right side only if this cube is selected */}
       {isVisible && isOnRight(raw_index, col_index) && (
         <CreateButton

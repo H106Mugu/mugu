@@ -1,6 +1,11 @@
 /* eslint-disable no-unused-vars */
 import { autorun, makeAutoObservable, observable } from "mobx";
-import { getCuboidParameters, getLastCuboidInTallestColumn, getLastCuboidOfFirstRow } from "../../Canvas-3d/Utils/CuboidUtils";
+import {
+  getCuboidParameters,
+  getLastCuboidInTallestColumn,
+  getLastCuboidOfFirstRow,
+} from "../../Canvas-3d/Utils/CuboidUtils";
+import { message } from "antd";
 
 class ConfigValuesStore {
   currentConfigType = "type"; // Initialize currentConfigType with a default value
@@ -14,27 +19,12 @@ class ConfigValuesStore {
 
   selectedPanel = {
     rawIndex: null,
-  }
+  };
 
   totalLength = {
     width: 270,
     height: 330,
-  }
-  selectionType = "element"; // Initialize selectionType with a default value
-
-  get getSelectionType() {
-    return this.selectionType;
-  }
-
-  setSelectionType(value) {
-    if (value === "element" || value === "panel") {
-      this.selectionType = value;
-    } else {
-      console.warn(
-        "Invalid value for selectionType. Must be 'cuboid' or 'panel'."
-      );
-    }
-  }
+  };
 
   colorRows = {
     0: "#f7531d",
@@ -69,24 +59,31 @@ class ConfigValuesStore {
     makeAutoObservable(this, {
       configValues: observable, // Mark configValues explicitly as observable
     });
-  
+
     // Automatically update totalLength.width whenever configValues changes
     autorun(() => {
       const lastCuboid = getLastCuboidOfFirstRow(this.configValues);
       if (lastCuboid) {
-        this.totalLength.width = parseInt((lastCuboid.startWidth + 20) * 10 + lastCuboid.width);
+        this.totalLength.width = parseInt(
+          (lastCuboid.startWidth + 20) * 10 + lastCuboid.width
+        );
       }
     });
 
     // Automatically update totalLength.height based on the column with the most rows
     autorun(() => {
-      const lastCuboidInTallestColumn = getLastCuboidInTallestColumn(this.configValues);
+      const lastCuboidInTallestColumn = getLastCuboidInTallestColumn(
+        this.configValues
+      );
       if (lastCuboidInTallestColumn) {
-        this.totalLength.height = parseInt((lastCuboidInTallestColumn.startHeight + 25) * 10 + lastCuboidInTallestColumn.height);
-        }
-      });
-    }
-    
+        this.totalLength.height = parseInt(
+          (lastCuboidInTallestColumn.startHeight + 25) * 10 +
+            lastCuboidInTallestColumn.height
+        );
+      }
+    });
+  }
+
   // Setter for currentConfigType
   setCurrentConfigType(value) {
     if (value === "structure" || value === "color" || value === "type") {
@@ -115,24 +112,39 @@ class ConfigValuesStore {
 
   // Define a single action to set values based on key
   setConfigValue(key, value) {
-
     let raw_index = this.selectedCuboid.rawIndex;
     let col_index = this.selectedCuboid.colIndex;
 
     if (key === "shelfType" || key === "structureElements" || key === "color") {
-      this.configValues[key] = value;
-      console.log("value", value)
+      if (key !== "color") {
+        this.configValues[key] = value;
+      }
+      console.log("valuefbsfgsdfsdf", value);
 
       if (key === "structureElements" && value === "withoutShelves") {
-        // reset color to null if structureElements is withoutShelves
-        this.configValues.color = "";
+        // reset all the colorRows
+        Object.keys(this.colorRows).forEach((key) => {
+          this.colorRows[key] = "";
+        });
       }
-      if (key === "color") {    
+
+      if (key === "structureElements" && value === "withTopAndBottomOnly") {
+        // reset all the colorRows
+        Object.keys(this.colorRows).forEach((key) => {
+          if (this.colorRows[key] === "") {
+            this.colorRows[key] = "#f7531d";
+          }
+        });
+      }
+
+      if (key === "color") {
         if (this.configValues.shelfType === "acrylic") {
-          this.colorRows[this.selectedPanel.rawIndex] = value;   
-          console.log("inside set config value in", this.colorRows[this.selectedPanel.rawIndex]); 
-        }
-        else if (this.shelfType === "stainless") {
+          this.colorRows[this.selectedPanel.rawIndex] = value;
+          console.log(
+            "inside set config value in",
+            this.colorRows[this.selectedPanel.rawIndex]
+          );
+        } else if (this.configValues.shelfType === "stainless") {
           this.configValues.color = value;
           console.log("inside set config value in", this.configValues.color);
         }
@@ -146,7 +158,7 @@ class ConfigValuesStore {
       value = parseInt(value);
       if (raw_index != null) {
         const oldValue = this.configValues[raw_index][col_index][key];
-        console.log("old value", oldValue)
+        console.log("old value", oldValue);
         if (this.totalLength.width + value - oldValue > 2500) {
           return;
         }
@@ -171,12 +183,12 @@ class ConfigValuesStore {
       value = parseInt(value);
       if (raw_index != null) {
         const oldValue = this.configValues[raw_index][col_index][key];
-        console.log("old value", oldValue)
+        console.log("old value", oldValue);
         if (this.totalLength.height + value - oldValue > 2500) {
           return;
         }
       }
-      if (raw_index !== null) {  
+      if (raw_index !== null) {
         Object.keys(this.configValues[raw_index]).forEach((colIndex) => {
           this.configValues[raw_index][colIndex][key] = value;
         });
@@ -185,7 +197,7 @@ class ConfigValuesStore {
         return;
       }
     }
-  
+
     // Handle depth: update the value in all cells (all rows and columns)
     if (key === "depth") {
       value = parseInt(value);
@@ -206,7 +218,6 @@ class ConfigValuesStore {
         return;
       }
     }
-    
   }
 
   // Function to recalculate startWidth for all cuboids in the specified column
@@ -284,11 +295,11 @@ class ConfigValuesStore {
       raw_index,
       col_index
     );
-    if ((startHeight * 10 + 250) + height > 2500) {
+    if (startHeight * 10 + 250 + height > 2500) {
       return;
     }
-    if ((startWidth * 10 + 200) + width > 2500) {
-      return;      
+    if (startWidth * 10 + 200 + width > 2500) {
+      return;
     }
 
     // Insert the new cuboid into the configValues store
@@ -303,18 +314,27 @@ class ConfigValuesStore {
     };
 
     if (!this.colorRows[raw_index + 1]) {
-      this.colorRows[raw_index + 1] = "#f7531d";      
+      this.colorRows[raw_index + 1] = "#f7531d";
     }
 
     this.configValues = { ...this.configValues };
   }
 
   removeCuboid(raw_index, col_index) {
-    if (this.configValues[raw_index] && this.configValues[raw_index][col_index]) {
+    if (
+      this.configValues[raw_index] &&
+      this.configValues[raw_index][col_index]
+    ) {
       const nextRow = this.configValues[parseInt(raw_index) + 1];
       const nextColumn = this.configValues[raw_index][parseInt(col_index) + 1];
-      if ((nextRow && nextRow[col_index]) || (raw_index === 0 && nextColumn) || (raw_index === 0 && col_index === 0)) {
-        this.errorMessage = `Cannot be deleted: There is a cuboid above at row ${raw_index + 1}, column ${col_index} or a cuboid to the right.`;
+      if (
+        (nextRow && nextRow[col_index]) ||
+        (raw_index === 0 && nextColumn) ||
+        (raw_index === 0 && col_index === 0)
+      ) {
+        this.errorMessage = `Cannot be deleted: There is a cuboid above at row ${
+          raw_index + 1
+        }, column ${col_index} or a cuboid to the right.`;
         return; // Exit without deleting
       }
       delete this.configValues[raw_index][col_index];
