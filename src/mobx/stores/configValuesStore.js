@@ -91,7 +91,6 @@ class ConfigValuesStore {
   setCurrentConfigType(value) {
     if (value === "structure" || value === "color" || value === "type") {
       this.currentConfigType = value;
-      console.log(this.currentConfigType);
     } else {
       console.warn(
         "Invalid value for currentConfigType. Must be 'structure' or 'color'."
@@ -133,7 +132,6 @@ class ConfigValuesStore {
       if (key !== "color") {
         this.configValues[key] = value;
       }
-      console.log("valuefbsfgsdfsdf", value);
 
       if (key === "structureElements" && value === "withoutShelves") {
         // reset all the colorRows
@@ -154,13 +152,8 @@ class ConfigValuesStore {
       if (key === "color") {
         if (this.configValues.shelfType === "acrylic") {
           this.colorRows[this.selectedPanel.rawIndex] = value;
-          console.log(
-            "inside set config value in",
-            this.colorRows[this.selectedPanel.rawIndex]
-          );
         } else if (this.configValues.shelfType === "stainless") {
           this.configValues.color = value;
-          console.log("inside set config value in", this.configValues.color);
         }
       }
       this.configValues = { ...this.configValues };
@@ -172,7 +165,6 @@ class ConfigValuesStore {
       value = parseInt(value);
       if (raw_index != null) {
         const oldValue = this.configValues[raw_index][col_index][key];
-        console.log("old value", oldValue);
         if (this.totalLength.width + value - oldValue > 2500) {
           return;
         }
@@ -197,7 +189,6 @@ class ConfigValuesStore {
       value = parseInt(value);
       if (raw_index != null) {
         const oldValue = this.configValues[raw_index][col_index][key];
-        console.log("old value", oldValue);
         if (this.totalLength.height + value - oldValue > 2500) {
           return;
         }

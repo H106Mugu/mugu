@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import ShelfSidebar from "../components/ShelfSidebar";
 import { useStores } from "../mobx/context/StoreContext";
-import { Modal, Button, Radio, Switch } from "antd";
+import { Modal, Button, Radio } from "antd";
 import useBreakpoints from "../hooks/useBreakpoints";
 import { observer } from "mobx-react-lite";
 import CustomCheckbox from "../components/CustomCheckbox";
@@ -15,9 +15,11 @@ import { IoArrowBackOutline } from "react-icons/io5";
 import SubmitFormModal from "../components/SubmitFormModal";
 import { shouldDisplayRemoveButton } from "../Canvas-3d/Utils/ModelUtils";
 import { fitCameraToReset } from "../Canvas-3d/Utils/CameraUtils";
+import Loader from "../components/Loader";
 
 const ShelfConfigurator = observer(() => {
-  const { modalStore, submitFormStore, configValuesStore } = useStores();
+  const { modalStore, submitFormStore, configValuesStore, loadingStore } =
+    useStores();
   const breakpoint = useBreakpoints();
   const [isMobile, setIsMobile] = useState(false);
   const [checked, setChecked] = useState(false);
@@ -50,9 +52,22 @@ const ShelfConfigurator = observer(() => {
     console.log("handleFitCamera");
     fitCameraToReset();
   };
+  useEffect(() => {
+    loadingStore.setLoader(true, "Loading...");
+
+    setTimeout(() => {
+      loadingStore.setLoader(false, "Loading...");
+    }, 2000);
+  }, []);
 
   return (
     <>
+      <Loader
+        loader={{
+          isLoading: loadingStore.getLoader.isLoading,
+          message: loadingStore.getLoader.message,
+        }}
+      />
       <div className="flex flex-col md:flex-row h-[100dvh] relative">
         <div className="relative bg-gray-100 w-full md:w-[66%] h-[75%] md:h-full flex justify-center items-center">
           <div className="absolute top-3 left-2 flex items-center z-30">
@@ -116,7 +131,7 @@ const ShelfConfigurator = observer(() => {
           </div>
           <Canvas_3d />
         </div>
-        <div className="w-full md:w-[34%] h-[240px] md:h-full md:min-w-[450px] p-0 md:p-6 bg-[#fbfbfc] overflow-auto">
+        <div className="w-full md:w-[34%] h-[240px] md:h-full md:min-w-[450px] p-0 md:p-6 bg-[#fbfbfc] overflow-auto select-none">
           <ShelfSidebar />
         </div>
         <div

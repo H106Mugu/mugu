@@ -58,7 +58,6 @@ const SubmitFormModal = observer(({ open, onClose }) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const onFinish = async (values) => {
-    console.log("Received values from form: ", values);
     submitFormStore.setFields(values);
     setLoading(true);
 
@@ -91,7 +90,8 @@ const SubmitFormModal = observer(({ open, onClose }) => {
               key: "Panel Colour",
               value:
                 configValuesStore.getAllConfigValues.shelfType === "acrylic"
-                  ? getPanelColors(configValuesStore.getColorRows, "acrylic")
+                  ? "From bottom: " +
+                    getPanelColors(configValuesStore.getColorRows, "acrylic")
                   : getColorNameFromHex(
                       configValuesStore.getAllConfigValues.color,
                       "stainless"
