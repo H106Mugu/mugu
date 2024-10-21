@@ -42,7 +42,8 @@ export const getLegPipes = (corners) => {
 
     // Check if a cuboid is selected and if the cuboid above the current one exists
     if (rawIndex !== null && colIndex !== null) {
-      return !configValuesStore.hasCuboidAt(rawIndex + 1, colIndex);
+      return !configValuesStore.hasCuboidAt(rawIndex + 1, colIndex) && 
+        !configValuesStore.hasCuboidAt(rawIndex, colIndex + 1);
     }
 
     return false;

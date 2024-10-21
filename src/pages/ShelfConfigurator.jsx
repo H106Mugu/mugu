@@ -14,6 +14,7 @@ import Canvas_3d from "../Canvas-3d/Canvas_3d";
 import { IoArrowBackOutline } from "react-icons/io5";
 import SubmitFormModal from "../components/SubmitFormModal";
 import { shouldDisplayRemoveButton } from "../Canvas-3d/Utils/ModelUtils";
+import { fitCameraToReset } from "../Canvas-3d/Utils/CameraUtils";
 
 const ShelfConfigurator = observer(() => {
   const { modalStore, submitFormStore, configValuesStore } = useStores();
@@ -27,6 +28,7 @@ const ShelfConfigurator = observer(() => {
 
   const handleCheckboxChange = () => {
     setChecked((prevChecked) => !prevChecked); // Toggle the checked state
+    configValuesStore.setResetCamera();
   };
 
   const onConfigTypeChange = (e) => {
@@ -46,6 +48,7 @@ const ShelfConfigurator = observer(() => {
 
   const handleFitCamera = () => {
     console.log("handleFitCamera");
+    fitCameraToReset();
   };
 
   return (
@@ -78,43 +81,38 @@ const ShelfConfigurator = observer(() => {
             </Button>
           </div>
 
+          <div className="absolute top-[5px] lg:top-[75px] right-4 flex flex-col lg:flex-row items-center gap-0 z-30 transition-top duration-200 pointer-events-none opacity-0 md:opacity-100 md:pointer-events-auto">
+            <div className="me-4">Options:</div>
+            <Radio.Group
+              value={configValuesStore.selectionType}
+              onChange={(e) =>
+                configValuesStore.setSelectionType(e.target.value)
+              }
+              optionType="default"
+              className="flex flex-row justify-center items-start  gap-1"
+            >
+              <Radio.Button value="element">Element</Radio.Button>
+              <Radio.Button value="panel">Panel</Radio.Button>
+            </Radio.Group>
+          </div>
+
           <div className="absolute bottom-4 md:bottom-6 right-4 md:right-8 flex items-center gap-2 z-30">
             {shouldDisplayRemoveButton() && (
-              <Button onClick={handleRemoveCuboid}>
-                <RiDeleteBinLine className="text-theme-primary" />
-                Remove selected element{" "}
-              </Button>
-            )}
+                <Button onClick={handleRemoveCuboid}>
+                  <RiDeleteBinLine className="text-theme-primary" />
+                  Remove selected element{" "}
+                </Button>
+              )}
           </div>
 
           <div
-            className={`absolute  z-30 left-4 flex items-center gap-3 transition-all duration-500
-            ${checked ? "opacity-100 top-[110px]" : "opacity-0 top-[100px]"}
+            className={`absolute top-[110px] z-30 left-4 flex items-center gap-3 transition-all duration-500 ease-in-out
+            ${checked ? "opacity-100" : "opacity-0"}
             `}
           >
-            {/* W:{configValuesStore.totalLength.width}
-            {"mm "}/ H:
-            {configValuesStore.totalLength.height}
-            {"mm "}/ D:
+            W: {configValuesStore.totalLength.width}/H:{" "}
+            {configValuesStore.totalLength.height}/D:{" "}
             {configValuesStore.configValues[0][0].depth}
-            {"mm"} */}
-            <div className="flex shadow">
-              <div className="border border-gray-300 bg-white p-1 px-2 rounded-l-md text-sm border-r-0">
-                <span className="">W</span>:{" "}
-                {configValuesStore.totalLength.width.toFixed(0)}
-                {" mm "}
-              </div>
-              <div className="border border-gray-300 bg-white p-1 px-2 text-sm border-r-0">
-                <span className="">H</span>:{" "}
-                {configValuesStore.totalLength.height.toFixed(0)}
-                {" mm "}
-              </div>
-              <div className="border border-gray-300 bg-white p-1 px-2 rounded-r-md text-sm">
-                <span className="">D</span>:{" "}
-                {configValuesStore.configValues[0][0].depth.toFixed(0)}
-                {" mm"}
-              </div>
-            </div>
           </div>
           <Canvas_3d />
         </div>

@@ -5,33 +5,36 @@ import * as THREE from 'three';
 
 const LoadCamera = () => {
   // Start with the initial camera position
-  const [position, setPosition] = useState([-7, 0, 150]);
+  const [position, setPosition] = useState([-88, 45, 135]);
   const cameraRef = useRef();
-  const controlsRef = useRef();
-
+  const controlsRef = configValuesStore.controlRef;
+  const [childCount, setChildCount] = useState(0); 
+  
   const fitCameraToGroup = () => {
-
+    
     const groupRef = configValuesStore.groupRef?.current;
     if (!groupRef) {
       return;
     }
-
+    
     const box = new THREE.Box3().setFromObject(groupRef);
     const size = box.getSize(new THREE.Vector3());
+    console.log('size', size);
+    console.log('box', groupRef.children);
     const center = box.getCenter(new THREE.Vector3());
-
+    
     const maxDim = Math.max(size.x, size.y, size.z);
     const fov = 50 * (Math.PI / 180);
     const cameraDistance = maxDim / (1.5 * Math.tan(fov / 2));
-
+    
     const newPosition = [
       center.x,
-      center.y,
+      center.y + size.y / 1.5,
       center.z + cameraDistance + size.z,
     ];
-
+    
     setPosition(newPosition);
-
+    
     if (controlsRef.current) {
       controlsRef.current.setLookAt(
         newPosition[0],
@@ -46,8 +49,25 @@ const LoadCamera = () => {
   };
 
   useEffect(() => {
-    fitCameraToGroup();
-  }, [configValuesStore.groupRef.current]);
+    if (childCount != 41) {
+      fitCameraToGroup();
+    }
+  }, [childCount]); // Run when childCount changes
+
+  useEffect(() => {
+    const groupRef = configValuesStore.groupRef?.current;
+
+    if (groupRef) {
+      // Update child count when children change
+      const updateChildCount = () => {
+        setChildCount(groupRef.children.length);
+      };
+
+      // Initial count
+      updateChildCount();
+
+    }
+  }, [configValuesStore.groupRef]); // Run when groupRef changes
 
   return (
     <>
@@ -67,3 +87,6 @@ const LoadCamera = () => {
 };
 
 export default LoadCamera;
+
+
+

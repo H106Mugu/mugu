@@ -12,6 +12,7 @@ import LoadCamera from "./LoadCamera";
 export default function Canvas_3d() {
 
   configValuesStore.setgroupRef(useRef());
+  configValuesStore.setControlRef(useRef());
 
   return (
     <>
