@@ -10,6 +10,8 @@ class ConfigValuesStore {
     colIndex: 0,
   };
 
+  groupRef = null;
+
   selectedPanel = {
     rawIndex: null,
   }
@@ -95,6 +97,15 @@ class ConfigValuesStore {
         "Invalid value for currentConfigType. Must be 'structure' or 'color'."
       );
     }
+  }
+
+  setgroupRef(value) {
+    this.groupRef = value;
+  }
+
+  // Getter for groupRef
+  get getgroupRef() {
+    return this.groupRef;
   }
 
   // Getter for currentConfigType

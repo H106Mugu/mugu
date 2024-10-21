@@ -46,11 +46,11 @@ const Render = observer(() => {
 
   // Render cuboids and pass them to the CuboidRenderer component
   return (
-    <>
+    <group name="group" ref={configValuesStore.groupRef}>
       {cuboids.map((cuboidData) => (
         <CuboidRenderer key={cuboidData.key} cuboidData={cuboidData} />
       ))}
-    </>
+    </group>
   );
 });
 

@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ShelfSidebar from "../components/ShelfSidebar";
 import { useStores } from "../mobx/context/StoreContext";
 import { Modal, Button, Radio, Switch } from "antd";
@@ -44,6 +44,10 @@ const ShelfConfigurator = observer(() => {
     }
   };
 
+  const handleFitCamera = () => {
+    console.log("handleFitCamera");
+  };
+
   return (
     <>
       <div className="flex flex-col md:flex-row h-[100dvh] relative">
@@ -68,7 +72,7 @@ const ShelfConfigurator = observer(() => {
               label="Dimensions"
               icon={<RxRulerHorizontal />}
             />
-            <Button>
+            <Button onClick={handleFitCamera} >
               <TbCube3dSphere className="text-theme-primary" />
               Reset cam
             </Button>

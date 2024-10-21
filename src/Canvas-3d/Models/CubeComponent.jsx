@@ -60,22 +60,6 @@ export const CubeComponent = ({
     }
   };
 
-  const getColor = (value) => {
-    console.log("value", value);
-    console.log("configValuesStore.configValues.shelfType", configValuesStore.configValues.shelfType)
-    if (value === "transparentBlack") {
-      return "black";
-    } else if (value === "transparentOrange") {
-      return "orange";
-    }
-    else if (value === "clear") {
-      return "white";
-    }
-    else {
-      return value;
-    }
-  };
-
   const planeRefsCube = useRef(
     Array.from({ length: 6 }, () => React.createRef())
   );
@@ -181,7 +165,7 @@ export const CubeComponent = ({
             position[2] + planeProps.position[2],
           ]}
           rotation={planeProps.rotation}
-          args={[width / 10, depth / 10]}
+          args={[(width / 10) - 1.3, (depth / 10) - 1.3]}
           name={planeProps.face}
           onClick={(event) => handleClick(event, "top")}
           material={
@@ -218,7 +202,7 @@ export const CubeComponent = ({
                 position[2] + planeProps.position[2],
               ]}
               rotation={planeProps.rotation}
-              args={[width / 10, depth / 10]}
+              args={[(width / 10) - 1.3, (depth / 10) - 1.3]}
               name={planeProps.face}
               onClick={(event) => handleClick(event, "bottom")}
               material={
@@ -255,10 +239,10 @@ export const CubeComponent = ({
             position[2] + planeProps.position[2],
           ]}
           rotation={planeProps.rotation}
-          args={[depth / 10, height / 10]}
+          args={[(depth / 10) - 1.3, (height / 10) - 1.3]}
           name={planeProps.face}
           onClick={(event) => handleClick(event, "cube")}
-          material={new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, color: getColor(configValuesStore.configValues.color) })}
+          material={new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, color: (configValuesStore.configValues.color) })}
           visible={
             configValuesStore.configValues.structureElements === "all" ||
             configValuesStore.configValues.structureElements === "withoutBack"
@@ -276,10 +260,10 @@ export const CubeComponent = ({
             position[2] + planeProps.position[2],
           ]}
           rotation={planeProps.rotation}
-          args={[width / 10, height / 10]}
+          args={[(width / 10) - 1.3, (height / 10) - 1.3]}
           name={planeProps.face}
           onClick={(event) => handleClick(event, "cube")}
-          material={new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, color:getColor(configValuesStore.configValues.color) })}
+          material={new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, color: (configValuesStore.configValues.color) })}
           visible={configValuesStore.configValues.structureElements === "all"} // Planes are invisible, but still interactable
         />
       ))}
