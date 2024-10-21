@@ -60,8 +60,6 @@ const MobileShelfBottombar = observer(({ sidebarOptionsData, changedKey }) => {
     // disabled: parseInt(changedKey) < index, // Disable tabs if they are not unlocked yet
   }));
 
-  console.log("Changedkey", configValuesStore.currentConfigType);
-
   useEffect(() => {
     if (
       configValuesStore.currentConfigType === "color" &&
@@ -70,8 +68,6 @@ const MobileShelfBottombar = observer(({ sidebarOptionsData, changedKey }) => {
       setIsColorTabVisitedOnce(true);
     }
   }, [configValuesStore.currentConfigType]);
-
-  console.log("isColorTabVisitedOnce", isColorTabVisitedOnce);
 
   return (
     <>
