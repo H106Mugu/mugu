@@ -5,8 +5,6 @@ import {
   getLastCuboidInTallestColumn,
   getLastCuboidOfFirstRow,
 } from "../../Canvas-3d/Utils/CuboidUtils";
-import { message } from "antd";
-import { useRef } from "react";
 
 class ConfigValuesStore {
   currentConfigType = "type"; // Initialize currentConfigType with a default value

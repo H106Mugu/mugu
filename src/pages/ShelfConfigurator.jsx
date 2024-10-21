@@ -30,7 +30,6 @@ const ShelfConfigurator = observer(() => {
 
   const handleCheckboxChange = () => {
     setChecked((prevChecked) => !prevChecked); // Toggle the checked state
-    configValuesStore.setResetCamera();
   };
 
   const onConfigTypeChange = (e) => {
@@ -96,7 +95,7 @@ const ShelfConfigurator = observer(() => {
             </Button>
           </div>
 
-          <div className="absolute top-[5px] lg:top-[75px] right-4 flex flex-col lg:flex-row items-center gap-0 z-30 transition-top duration-200 pointer-events-none opacity-0 md:opacity-100 md:pointer-events-auto">
+          {/* <div className="absolute top-[5px] lg:top-[75px] right-4 flex flex-col lg:flex-row items-center gap-0 z-30 transition-top duration-200 pointer-events-none opacity-0 md:opacity-100 md:pointer-events-auto">
             <div className="me-4">Options:</div>
             <Radio.Group
               value={configValuesStore.selectionType}
@@ -109,7 +108,7 @@ const ShelfConfigurator = observer(() => {
               <Radio.Button value="element">Element</Radio.Button>
               <Radio.Button value="panel">Panel</Radio.Button>
             </Radio.Group>
-          </div>
+          </div> */}
 
           <div className="absolute bottom-4 md:bottom-6 right-4 md:right-8 flex items-center gap-2 z-30">
             {shouldDisplayRemoveButton() && (
