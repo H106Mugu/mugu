@@ -23,20 +23,16 @@
 
 /* Custom scrollbar */
 /* For all scrollbars in the document */
-* {
-  scrollbar-width: thin; /* Firefox - Makes the scrollbar thinner */
-  scrollbar-color: #c2c2c2 #edf2f7; /* Firefox - Thumb color and Track color */
-}
 
 /* For Chrome, Safari, and Edge */
 *::-webkit-scrollbar {
-  width: 8px; /* Scrollbar width */
-  height: 8px; /* Scrollbar height */
+  width: 4px; /* Scrollbar width */
+  height: 5px; /* Scrollbar height */
 }
 
 *::-webkit-scrollbar-thumb {
   background-color: #c2c2c2; /* Scrollbar thumb color */
-  border-radius: 10px; /* Rounded corners for the thumb */
+  border-radius: 9999px; /* Rounded corners for the thumb */
 }
 
 *::-webkit-scrollbar-track {

@@ -723,7 +723,9 @@ const ShelfSidebar = observer(() => {
                 {option.title}
               </div>
               <div
-                className="mb-2 font-medium w-full overflow-x-auto overflow-y-hidden md:min-h-9"
+                className={`mb-2 font-medium w-full overflow-x-auto overflow-y-hidden md:min-h-9 ${
+                  option?.title === "Height (mm)" ? "pb-1" : ""
+                }`}
                 onClick={() => {
                   if (!option.isDisabled) return;
 
