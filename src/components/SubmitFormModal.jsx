@@ -135,7 +135,7 @@ const SubmitFormModal = observer(({ open, onClose }) => {
         information below, and one of our friendly team members will reach out
         to you shortly with the quote.
       </div>
-      <button
+      {/* <button
         className="border mt-4 rounded-md p-2 bg-theme-primary text-white"
         onClick={() =>
           form.setFieldsValue({
@@ -147,7 +147,7 @@ const SubmitFormModal = observer(({ open, onClose }) => {
         }
       >
         Fill Form
-      </button>
+      </button> */}
       <p className="my-4 font-semibold">Your info</p>
       <Form
         disabled={isSubmitted}
