@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     width: "100%",
-    height: "33px",
+    height: "45px",
     borderBottom: "1px solid #DFDCDC",
   },
   tableCell: {
@@ -136,8 +136,11 @@ const styles = StyleSheet.create({
   },
 });
 
+const PAGE_HEIGHT = 297; // A4 page height in mm
+
 // Heights for each section in percentage of the page height
-const sectionHeights = [7.1, 12.1, 41.8, 22.8, 9, 7.1];
+// const sectionHeights = [7.1, 12.1, 41.8, 22.8, 9, 7.1];
+const sectionHeights = [7.1, 12.1, 41.8, 28, 10, 7.1];
 
 function formatDate(date) {
   const options = { day: "numeric", month: "long", year: "numeric" };
@@ -179,7 +182,12 @@ const tableData = [
 const PDFDocument = ({ data }) => (
   <Document>
     <Page size="A4" style={styles.page}>
-      <View style={{ ...styles.section, height: `${sectionHeights[0]}%` }}>
+      <View
+        style={{
+          ...styles.section,
+          height: `${(sectionHeights[0] * PAGE_HEIGHT) / 100}mm`,
+        }}
+      >
         <View style={styles.sectionFlexRow}>
           <View style={styles.leftColumn}>
             <Image src={muguLogo} style={styles.logo} />
@@ -191,7 +199,12 @@ const PDFDocument = ({ data }) => (
           </View>
         </View>
       </View>
-      <View style={{ ...styles.section, height: `${sectionHeights[1]}%` }}>
+      <View
+        style={{
+          ...styles.section,
+          height: `${(sectionHeights[1] * PAGE_HEIGHT) / 100}mm`,
+        }}
+      >
         <View style={styles.sectionFlexRow}>
           <View style={styles.leftColumn}>
             <Text style={styles.title}>Quote for</Text>
@@ -211,7 +224,12 @@ const PDFDocument = ({ data }) => (
           </View>
         </View>
       </View>
-      <View style={{ ...styles.section, height: `${sectionHeights[2]}%` }}>
+      <View
+        style={{
+          ...styles.section,
+          height: `${(sectionHeights[2] * PAGE_HEIGHT) / 100}mm`,
+        }}
+      >
         <View
           style={{
             padding: 2,
@@ -325,7 +343,12 @@ const PDFDocument = ({ data }) => (
           </View>
         </View>
       </View>
-      <View style={{ ...styles.section, height: `${sectionHeights[3]}%` }}>
+      <View
+        style={{
+          ...styles.section,
+          height: `${(sectionHeights[3] * PAGE_HEIGHT) / 100}mm`,
+        }}
+      >
         <View
           style={{
             padding: 20,
@@ -335,11 +358,12 @@ const PDFDocument = ({ data }) => (
           <View style={styles.tableContainer}>
             {data?.materialInfo?.map((item, index) => (
               <View
-                style={
-                  index === tableData.length - 1
-                    ? [styles.tableRow, styles.lastRow]
-                    : styles.tableRow
-                }
+                style={[
+                  styles.tableRow, // Default row style
+                  index === tableData.length - 1 && styles.lastRow, // Add lastRow style if it's the last row
+                  index === 2 && { height: "120px" }, // Apply a height of 45px for the row with index 2
+                  index === 3 && { height: "80px" }, // Apply a height of 45px for the row with index 2
+                ]}
                 key={index}
               >
                 <View style={[styles.tableCell, styles.leftTableColumn]}>
@@ -353,7 +377,12 @@ const PDFDocument = ({ data }) => (
           </View>
         </View>
       </View>
-      <View style={{ ...styles.section, height: `${sectionHeights[4]}%` }}>
+      <View
+        style={{
+          ...styles.section,
+          height: `${(sectionHeights[4] * PAGE_HEIGHT) / 100}mm`,
+        }}
+      >
         <View
           style={{
             padding: 20,
@@ -369,7 +398,7 @@ const PDFDocument = ({ data }) => (
       <View
         style={{
           ...styles.sectionWithoutBorder,
-          height: `${sectionHeights[5]}%`,
+          height: `${(sectionHeights[5] * PAGE_HEIGHT) / 100}mm`,
         }}
       >
         <View style={styles.rowContainer}>
