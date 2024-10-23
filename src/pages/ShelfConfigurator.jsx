@@ -312,8 +312,12 @@ const ShelfConfigurator = observer(() => {
           </div>
 
           <div
-            className={`absolute top-[110px] z-30 left-4 flex items-center gap-3 transition-all duration-500 ease-in-out
-            ${checked ? "opacity-100" : "opacity-0"}
+            className={`absolute z-30 left-4 flex items-center gap-3 transition-all duration-500 ease-in-out
+            ${
+              checked
+                ? "opacity-100 top-[110px] md:top-[90px]"
+                : "opacity-0 top-[100px] md:top-[80px]"
+            }
             `}
           >
             <div className="flex shadow">
