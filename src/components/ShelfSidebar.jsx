@@ -780,7 +780,10 @@ const ShelfSidebar = observer(() => {
               size="large"
               type="default"
               className="w-full py-6 rounded-full"
-              onClick={() => submitFormStore.setModalOpen(true)}
+              onClick={() => {
+                addImage("frontView");
+                submitFormStore.setModalOpen(true);
+              }}
             >
               <span className="text-[16px]">Submit</span>
             </Button>
