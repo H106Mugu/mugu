@@ -79,7 +79,6 @@ const ShelfConfigurator = observer(() => {
   };
 
   const handleFitCamera = () => {
-    console.log("handleFitCamera");
     fitCameraToReset();
   };
   useEffect(() => {
@@ -256,6 +255,7 @@ const ShelfConfigurator = observer(() => {
             <Button
               type="link"
               className="gap-1 group !px-0 !py-0 text-theme-primary/70 hover:!text-theme-primary"
+              onClick={() => (window.location.href = "https://mugu.com.au")}
             >
               <IoArrowBackOutline className="text-lg group-hover:-ms-px transition-all" />
               <span className="text-[14px] group-hover:ms-px transition-all">
