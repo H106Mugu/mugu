@@ -773,16 +773,18 @@ const ShelfSidebar = observer(() => {
             </div>
           ))}
 
-          <div className="text-sm">Submit the design for a quote</div>
-          <Button
-            // disabled={parseInt(changedKey) < sidebarOptionsData.length}
-            size="large"
-            type="default"
-            className="w-full py-6 rounded-full"
-            onClick={() => submitFormStore.setModalOpen(true)}
-          >
-            <span className="text-[16px]">Submit</span>
-          </Button>
+          <div className="tour-btn-submit-desktop py-2 px-6">
+            <div className="text-sm mb-2">Submit the design for a quote</div>
+            <Button
+              // disabled={parseInt(changedKey) < sidebarOptionsData.length}
+              size="large"
+              type="default"
+              className="w-full py-6 rounded-full"
+              onClick={() => submitFormStore.setModalOpen(true)}
+            >
+              <span className="text-[16px]">Submit</span>
+            </Button>
+          </div>
         </div>
       )}
       {contextHolder}
