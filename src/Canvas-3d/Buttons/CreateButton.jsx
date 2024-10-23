@@ -81,6 +81,7 @@ const CreateButton = ({ position, raw_index, col_index, onRight = true }) => {
       scale={3.5} // Adjust the size
       center
       zIndexRange={[0, 0]}
+      name = "Button"
     >
       <div
         className="add-icon-container"

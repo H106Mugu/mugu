@@ -1,5 +1,5 @@
 .add-icon-container {
-    background-color: rgb(255, 255, 255);
+    background-color: rgb(255, 255, 255, 0.8);
     width: 50px;
     height: 50px;
     border-radius: 50%;
@@ -12,3 +12,27 @@
 .add-icon-container:hover {
     background-color: rgb(153, 153, 153);
 }
+
+.HtmlContent {
+    position: absolute;
+    width: auto;
+    height: auto;
+    padding: 1px 2px; /* Padding */
+    color: #777777; /* Text color */
+    /* background: rgb(255, 255, 255, 0.6); */
+    /* border-radius: 20px;  */
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    text-align: center; /* Center text */
+    font-family: Arial, sans-serif; /* Font family */
+    font-size: 12px; /* Font size */
+    transform: translate(-50%, -50%); /* Center the content */
+    left: 50%;
+    top: 50%;
+    cursor: pointer; /* Default cursor */
+    z-index: 1;
+    white-space: nowrap;
+}
+

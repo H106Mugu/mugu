@@ -35,7 +35,6 @@ export const getCuboidParameters = (configValues, raw_index, col_index) => {
 
 // Function to find the last cuboid in the tallest column for height
 export function getLastCuboidInTallestColumn(configValues) {
-
   let highestRowIndex = -1;
 
   // Find the highest row index
@@ -55,28 +54,31 @@ export function getLastCuboidInTallestColumn(configValues) {
     if (highestRow && typeof highestRow === 'object') { // Ensure the highest row exists and is an object
       for (const colIndex in highestRow) {
         if (highestRow[colIndex]) { // Check if the column exists
-          return highestRow[colIndex]; // Return the first existing cuboid in that row
+          return [highestRow[colIndex], highestRowIndex]; // Return cuboid and row index
         }
       }
     }
   }
 
+  // Check the row above the highest row if no cuboid is found in the highest row
   if (highestRowIndex > 0) {
     const previousRow = configValues[highestRowIndex - 1];
     if (previousRow && typeof previousRow === 'object') {
       for (const colIndex in previousRow) {
         if (previousRow[colIndex]) { // Check if the cuboid exists in the row above
-          return previousRow[colIndex]; // Return the cuboid from the row above
+          return [previousRow[colIndex], highestRowIndex - 1]; // Return cuboid and row index of the row above
         }
       }
     }
   }
 
-  return null; // If no cuboid is found, return null
+  return [null, null]; // If no cuboid is found, return null for both cuboid and row index
 }
+
 
 export function getLastCuboidOfFirstRow(configValues) {
   const row = configValues[0]; // First row
   const lastColumnIndex = Object.keys(row).length - 1; // Last column
-  return row[lastColumnIndex]; // Return the cuboid in the last column
+  const lastCuboid = row[lastColumnIndex]; 
+  return [lastCuboid, lastColumnIndex]; // Return the cuboid in the last column
 }

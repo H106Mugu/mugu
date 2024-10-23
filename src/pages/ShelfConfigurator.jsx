@@ -30,6 +30,7 @@ const ShelfConfigurator = observer(() => {
 
   const handleCheckboxChange = () => {
     setChecked((prevChecked) => !prevChecked); // Toggle the checked state
+    configValuesStore.setShowDimensions();
   };
 
   const onConfigTypeChange = (e) => {
@@ -120,13 +121,27 @@ const ShelfConfigurator = observer(() => {
           </div>
 
           <div
-            className={`absolute top-[110px] z-30 left-4 flex items-center gap-3 transition-all duration-500 ease-in-out
-            ${checked ? "opacity-100" : "opacity-0"}
+            className={`absolute  z-30 left-4 flex items-center gap-3 transition-all duration-500
+            ${checked ? "opacity-100 top-[110px]" : "opacity-0 top-[100px]"}
             `}
           >
-            W: {configValuesStore.totalLength.width}/H:{" "}
-            {configValuesStore.totalLength.height}/D:{" "}
-            {configValuesStore.configValues[0][0].depth}
+            <div className="flex shadow">
+              <div className="border border-gray-300 bg-white p-1 px-2 rounded-l-md text-sm border-r-0">
+                <span className="">W</span>:{" "}
+                {configValuesStore.totalLength.width.toFixed(0)}
+                {" mm "}
+              </div>
+              <div className="border border-gray-300 bg-white p-1 px-2 text-sm border-r-0">
+                <span className="">H</span>:{" "}
+                {configValuesStore.totalLength.height.toFixed(0)}
+                {" mm "}
+              </div>
+              <div className="border border-gray-300 bg-white p-1 px-2 rounded-r-md text-sm">
+                <span className="">D</span>:{" "}
+                {configValuesStore.totalDepth.toFixed(0)}
+                {" mm"}
+              </div>
+            </div>
           </div>
           <Canvas_3d />
         </div>

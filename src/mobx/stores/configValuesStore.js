@@ -23,9 +23,19 @@ class ConfigValuesStore {
   };
 
   totalLength = {
-    width: 270,
-    height: 330,
+    width: 300,
+    height: 350,
   };
+
+  showDimensions = false;
+
+  totalDepth = 300;
+
+  imageUrl = {
+    frontView : null,
+    topView : null,
+    isometricView : null
+  }
 
   colorRows = {
     0: "#f7531d",
@@ -63,23 +73,23 @@ class ConfigValuesStore {
 
     // Automatically update totalLength.width whenever configValues changes
     autorun(() => {
-      const lastCuboid = getLastCuboidOfFirstRow(this.configValues);
+      const [lastCuboid, lastColumnIndex] = getLastCuboidOfFirstRow(this.configValues);
       if (lastCuboid) {
         this.totalLength.width = parseInt(
-          (lastCuboid.startWidth + 20) * 10 + lastCuboid.width
+          (lastCuboid.startWidth + 20) * 10 + lastCuboid.width + (15 * (lastColumnIndex + 2))
         );
       }
     });
 
     // Automatically update totalLength.height based on the column with the most rows
     autorun(() => {
-      const lastCuboidInTallestColumn = getLastCuboidInTallestColumn(
+      const [cuboid, rowIndex] = getLastCuboidInTallestColumn(
         this.configValues
       );
-      if (lastCuboidInTallestColumn) {
+      if (cuboid) {
         this.totalLength.height = parseInt(
-          (lastCuboidInTallestColumn.startHeight + 25) * 10 +
-            lastCuboidInTallestColumn.height
+          (cuboid.startHeight + 25) * 10 +
+            cuboid.height - 10 + (15 * (rowIndex + 2))
         );
       }
     });
@@ -94,6 +104,11 @@ class ConfigValuesStore {
         "Invalid value for currentConfigType. Must be 'structure' or 'color'."
       );
     }
+  }
+
+  setShowDimensions() {
+    this.showDimensions = !this.showDimensions;
+    console.log("setShowDimensions", this.showDimensions);
   }
 
   setgroupRef(value) {
@@ -217,6 +232,7 @@ class ConfigValuesStore {
             });
           }
         });
+        this.totalDepth = value + 30;
         this.configValues = { ...this.configValues };
         return;
       }

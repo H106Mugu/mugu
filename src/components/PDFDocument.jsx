@@ -20,6 +20,7 @@ import instagramIcon from "../assets/icons/instagramIcon.png";
 // Import font files directly
 import InterRegular from "../assets/fonts/Inter/static/Inter_18pt-Regular.ttf";
 import InterBold from "../assets/fonts/Inter/static/Inter_18pt-Bold.ttf";
+import configValuesStore from "../mobx/stores/configValuesStore";
 
 // Register the Inter font from local files
 Font.register({

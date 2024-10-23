@@ -1,41 +1,49 @@
-import { CameraControls, PerspectiveCamera } from '@react-three/drei';
-import { useEffect, useRef, useState } from 'react';
-import configValuesStore from '../mobx/stores/configValuesStore';
-import * as THREE from 'three';
+/* eslint-disable no-unused-vars */
+import { CameraControls, PerspectiveCamera } from "@react-three/drei";
+import { useEffect, useRef, useState } from "react";
+import configValuesStore from "../mobx/stores/configValuesStore";
+import * as THREE from "three";
 
 const LoadCamera = () => {
   // Start with the initial camera position
   const [position, setPosition] = useState([-88, 45, 135]);
   const cameraRef = useRef();
   const controlsRef = configValuesStore.controlRef;
-  const [childCount, setChildCount] = useState(0); 
-  
+  const [childCount, setChildCount] = useState(0);
+
   const fitCameraToGroup = () => {
-    
-    const groupRef = configValuesStore.groupRef?.current;
+    const groupRef = configValuesStore.groupRef.current;
+
     if (!groupRef) {
       return;
     }
-    
+
     const box = new THREE.Box3().setFromObject(groupRef);
     const size = box.getSize(new THREE.Vector3());
-    console.log('size', size);
-    console.log('box', groupRef.children);
+    // console.log("size", size);
+    // console.log("box", groupRef.children);
     const center = box.getCenter(new THREE.Vector3());
-    
+
     const maxDim = Math.max(size.x, size.y, size.z);
     const fov = 50 * (Math.PI / 180);
-    const cameraDistance = maxDim / (1.5 * Math.tan(fov / 2));
-    
+    const cameraDistance = maxDim / (2.5 * Math.tan(fov / 2));
+
     const newPosition = [
       center.x,
-      center.y + size.y / 1.5,
-      center.z + cameraDistance + size.z,
+      center.y,
+      center.z + cameraDistance * 1.5 + size.z,
     ];
-    
+
     setPosition(newPosition);
-    
+
     if (controlsRef.current) {
+      const padding = {
+        paddingTop: 30,
+        paddingBottom: 10,
+        paddingLeft: 20,
+        paddingRight: 20,
+      };
+      // controlsRef.current.fitToBox(groupRef, true, padding);
       controlsRef.current.setLookAt(
         newPosition[0],
         newPosition[1],
@@ -43,7 +51,7 @@ const LoadCamera = () => {
         center.x,
         center.y,
         center.z,
-        true 
+        true
       );
     }
   };
@@ -65,16 +73,20 @@ const LoadCamera = () => {
 
       // Initial count
       updateChildCount();
-
     }
-  }, [configValuesStore.groupRef]); // Run when groupRef changes
+  }, [configValuesStore.configValues]); // Run when groupRef changes
 
   return (
     <>
-      <PerspectiveCamera position={position} fov={50} ref={cameraRef} makeDefault />
+      <PerspectiveCamera
+        position={[-88, 45, 135]}
+        fov={50}
+        ref={cameraRef}
+        makeDefault
+      />
       <CameraControls
         ref={controlsRef}
-        minDistance={50}
+        minDistance={1}
         maxDistance={400}
         dollyToCursor={true}
         maxPolarAngle={Math.PI / 2}
@@ -87,6 +99,3 @@ const LoadCamera = () => {
 };
 
 export default LoadCamera;
-
-
-

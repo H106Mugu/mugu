@@ -70,7 +70,7 @@ export const adjustPositionAndGetRotation = (key, originalPosition) => {
 export const getAdjustRotation = (uniqueKey, raw_index, col_index) => {
   let rotation;
   let modelPath;
-  const modalPath3TConnector = "/Models/3TConnectorV1.0.glb";
+  const modalPath3TConnector = "/Models/3TConnectorV1.2.glb";
   const modalPath4TConnector = "/Models/4TConnectorV1.0.glb";
   const modalPath5TConnector = "/Models/5TConnectorV1.0.glb";
 

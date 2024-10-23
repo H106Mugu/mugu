@@ -8,6 +8,9 @@ import { Plane } from "./Models/Plane";
 import { useRef } from "react";
 import configValuesStore from "../mobx/stores/configValuesStore";
 import LoadCamera from "./LoadCamera";
+import AllDimensionLines from "./Dimentions/AllDimensionLines";
+import { Button } from "antd";
+import { addImage } from "./Utils/ImageUtils";
 
 export default function Canvas_3d() {
 
@@ -16,16 +19,14 @@ export default function Canvas_3d() {
 
   return (
     <>
-      <Canvas 
-      // camera={{ position: [-88, 45, 135], fov: 50 }}
-      >
+      <Canvas id="canvas">
         <ambientLight intensity={1} />
         <color attach="background" args={["#f0f0f0"]} />
         {/* <axesHelper args={[100]} position={[0, 0, 0]} /> */}
         <Plane />
-        {/* <Silhouette /> */}
         <Render />
         <LoadCamera />
+        <AllDimensionLines />
         <Environment preset="sunset" />
       </Canvas>
     </>

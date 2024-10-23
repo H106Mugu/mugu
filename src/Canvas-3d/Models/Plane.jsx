@@ -12,11 +12,11 @@ export const Plane = () => {
     <>
       <mesh rotation={[0, 0, 0]} position={[0, 0, -5]} onDoubleClick={handleDoubleClick}>
         <planeGeometry args={args} />
-        <meshBasicMaterial color={new THREE.Color("#f3f3f3")}  />
+        <meshBasicMaterial color={new THREE.Color("#F5F1EB")}  />
       </mesh>
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -25, 0]} onDoubleClick={handleDoubleClick}>
         <planeGeometry args={args} />
-        <meshBasicMaterial color={new THREE.Color("#cfc8c8")}  />
+        <meshBasicMaterial color={new THREE.Color("#EBE3D7")}  />
       </mesh>
     </>
   );

@@ -9,6 +9,7 @@ import PDFDocument from "./PDFDocument";
 
 import { observer } from "mobx-react-lite";
 import { acrylicColorOptions, stainlessColorOptions } from "../data/optionData";
+import { addImage } from "../Canvas-3d/Utils/ImageUtils";
 
 function convertToSentenceCase(str) {
   // Insert a space before all capital letters and convert the string to lowercase
@@ -60,6 +61,9 @@ const SubmitFormModal = observer(({ open, onClose }) => {
   const onFinish = async (values) => {
     submitFormStore.setFields(values);
     setLoading(true);
+    addImage("frontView");
+
+
 
     // Create the PDF
     const doc = (
@@ -84,7 +88,7 @@ const SubmitFormModal = observer(({ open, onClose }) => {
             },
             {
               key: "Total Dimensions (W*H*D)",
-              value: `${configValuesStore.totalLength.width}mm x ${configValuesStore.totalLength.height}mm x ${configValuesStore.configValues[0][0].depth}mm`,
+              value: `${configValuesStore.totalLength.width}mm x ${configValuesStore.totalLength.height}mm x ${(configValuesStore.configValues[0][0].depth)}mm`,
             },
             {
               key: "Panel Colour",
