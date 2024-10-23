@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ShelfSidebar from "../components/ShelfSidebar";
 import { useStores } from "../mobx/context/StoreContext";
 import { Modal, Button, Radio } from "antd";
@@ -14,6 +14,7 @@ import Canvas_3d from "../Canvas-3d/Canvas_3d";
 import { IoArrowBackOutline } from "react-icons/io5";
 import SubmitFormModal from "../components/SubmitFormModal";
 import { shouldDisplayRemoveButton } from "../Canvas-3d/Utils/ModelUtils";
+import { fitCameraToReset } from "../Canvas-3d/Utils/CameraUtils";
 import Loader from "../components/Loader";
 import Tour from "reactour";
 
@@ -77,6 +78,10 @@ const ShelfConfigurator = observer(() => {
     }
   };
 
+  const handleFitCamera = () => {
+    console.log("handleFitCamera");
+    fitCameraToReset();
+  };
   useEffect(() => {
     loadingStore.setLoader(true, "Loading");
 
@@ -267,7 +272,7 @@ const ShelfConfigurator = observer(() => {
               label="Dimensions"
               icon={<RxRulerHorizontal />}
             />
-            <Button className="textinghghik">
+            <Button onClick={handleFitCamera}>
               <TbCube3dSphere className="text-theme-primary" />
               Reset cam
             </Button>
@@ -282,6 +287,20 @@ const ShelfConfigurator = observer(() => {
               Tour
             </Button>
           </div>
+          {/* <div className="absolute top-[5px] lg:top-[75px] right-4 flex flex-col lg:flex-row items-center gap-0 z-30 transition-top duration-200 pointer-events-none opacity-0 md:opacity-100 md:pointer-events-auto">
+            <div className="me-4">Options:</div>
+            <Radio.Group
+              value={configValuesStore.selectionType}
+              onChange={(e) =>
+                configValuesStore.setSelectionType(e.target.value)
+              }
+              optionType="default"
+              className="flex flex-row justify-center items-start  gap-1"
+            >
+              <Radio.Button value="element">Element</Radio.Button>
+              <Radio.Button value="panel">Panel</Radio.Button>
+            </Radio.Group>
+          </div> */}
 
           <div className="absolute bottom-4 md:bottom-6 right-4 md:right-8 flex items-center gap-2 z-30">
             {shouldDisplayRemoveButton() && (
@@ -293,8 +312,8 @@ const ShelfConfigurator = observer(() => {
           </div>
 
           <div
-            className={`absolute  z-30 left-4 flex items-center gap-3 transition-all duration-500
-            ${checked ? "opacity-100 top-[110px]" : "opacity-0 top-[100px]"}
+            className={`absolute top-[110px] z-30 left-4 flex items-center gap-3 transition-all duration-500 ease-in-out
+            ${checked ? "opacity-100" : "opacity-0"}
             `}
           >
             <div className="flex shadow">

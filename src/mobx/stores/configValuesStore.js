@@ -10,9 +10,13 @@ class ConfigValuesStore {
   currentConfigType = "type"; // Initialize currentConfigType with a default value
 
   selectedCuboid = {
-    rawIndex: 0,
-    colIndex: 0,
+    rawIndex: null,
+    colIndex: null,
   };
+
+  groupRef = null;
+
+  controlRef = null;
 
   selectedPanel = {
     rawIndex: null,
@@ -92,11 +96,31 @@ class ConfigValuesStore {
     }
   }
 
+  setgroupRef(value) {
+    this.groupRef = value;
+  }
+
+  setResetCamera () {
+    this.ResetCam.value = !this.ResetCam.value;
+    console.log("setResetCamera", this.ResetCam);
+  }
+
+  // Getter for groupRef
+  get getgroupRef() {
+    return this.groupRef;
+  }
+
   // Getter for currentConfigType
   get getCurrentConfigType() {
     return this.currentConfigType;
   }
+  get getControlRef() {
+    return this.controlRef;
+  }
 
+  setControlRef(value) {
+    this.controlRef = value;
+  }
   // Define a single action to set values based on key
   setConfigValue(key, value) {
     let raw_index = this.selectedCuboid.rawIndex;

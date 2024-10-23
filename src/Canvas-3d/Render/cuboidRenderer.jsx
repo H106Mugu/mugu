@@ -50,6 +50,8 @@ const CuboidRenderer = observer(({ cuboidData }) => {
     col_index,
   ]);
 
+
+
   useEffect(() => {
     if (configValuesStore.selectionType === "element") {
       configValuesStore.setSelectedPanel(null);

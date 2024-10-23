@@ -13,6 +13,7 @@ export const EdgeCylinder = ({ start, end, color, radius = 0.7 }) => {
     // Position and rotate the cylinder
     cylinderMesh.position.copy(midPoint);
     cylinderMesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), direction.clone().normalize()); // Align with direction
+    cylinderMesh.name = "edge-cylinder";
 
     return <primitive object={cylinderMesh} />;
 
