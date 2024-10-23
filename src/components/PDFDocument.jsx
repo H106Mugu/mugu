@@ -262,7 +262,7 @@ const PDFDocument = ({ data }) => (
                   flexDirection: "column",
                   justifyContent: "center",
                   alignItems: "center",
-                  padding: 20,
+                  padding: 2,
                 }}
               >
                 <View
@@ -273,11 +273,16 @@ const PDFDocument = ({ data }) => (
                     alignItems: "center",
                   }}
                 >
-                  <Text style={styles.title}>Front view</Text>
+                  {/* <Text style={styles.title}>Front view</Text>
                   <Text style={styles.text}>
                     This will indicate the width of each column and height of
                     the each row.
-                  </Text>
+                  </Text> */}
+                  <Image
+                    src={data?.images?.front}
+                    style={{ height: 300 }} // Specify dimensions as numbers
+                    alt="Front view"
+                  />
                 </View>
               </View>
               <View

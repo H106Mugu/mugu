@@ -32,9 +32,13 @@ class ConfigValuesStore {
   totalDepth = 300;
 
   imageUrl = {
-    frontView : null,
-    topView : null,
-    isometricView : null
+    frontView: null,
+    topView: null,
+    isometricView: null,
+  };
+
+  get getAllImagesUrl() {
+    return { ...this.imageUrl };
   }
 
   colorRows = {
@@ -73,10 +77,14 @@ class ConfigValuesStore {
 
     // Automatically update totalLength.width whenever configValues changes
     autorun(() => {
-      const [lastCuboid, lastColumnIndex] = getLastCuboidOfFirstRow(this.configValues);
+      const [lastCuboid, lastColumnIndex] = getLastCuboidOfFirstRow(
+        this.configValues
+      );
       if (lastCuboid) {
         this.totalLength.width = parseInt(
-          (lastCuboid.startWidth + 20) * 10 + lastCuboid.width + (15 * (lastColumnIndex + 2))
+          (lastCuboid.startWidth + 20) * 10 +
+            lastCuboid.width +
+            15 * (lastColumnIndex + 2)
         );
       }
     });
@@ -89,7 +97,9 @@ class ConfigValuesStore {
       if (cuboid) {
         this.totalLength.height = parseInt(
           (cuboid.startHeight + 25) * 10 +
-            cuboid.height - 10 + (15 * (rowIndex + 2))
+            cuboid.height -
+            10 +
+            15 * (rowIndex + 2)
         );
       }
     });
@@ -115,7 +125,7 @@ class ConfigValuesStore {
     this.groupRef = value;
   }
 
-  setResetCamera () {
+  setResetCamera() {
     this.ResetCam.value = !this.ResetCam.value;
     console.log("setResetCamera", this.ResetCam);
   }

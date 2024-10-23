@@ -61,10 +61,11 @@ const SubmitFormModal = observer(({ open, onClose }) => {
   const onFinish = async (values) => {
     submitFormStore.setFields(values);
     setLoading(true);
-    addImage("frontView");
 
-
-
+    console.log(
+      "configValuesStore.getAllImagesUrl.frontView",
+      configValuesStore.getAllImagesUrl.frontView
+    );
     // Create the PDF
     const doc = (
       <PDFDocument
@@ -88,7 +89,7 @@ const SubmitFormModal = observer(({ open, onClose }) => {
             },
             {
               key: "Total Dimensions (W*H*D)",
-              value: `${configValuesStore.totalLength.width}mm x ${configValuesStore.totalLength.height}mm x ${(configValuesStore.configValues[0][0].depth)}mm`,
+              value: `${configValuesStore.totalLength.width}mm x ${configValuesStore.totalLength.height}mm x ${configValuesStore.configValues[0][0].depth}mm`,
             },
             {
               key: "Panel Colour",
@@ -102,6 +103,11 @@ const SubmitFormModal = observer(({ open, onClose }) => {
                     ),
             },
           ],
+          images: {
+            front: configValuesStore.getAllImagesUrl.frontView,
+            top: configValuesStore.getAllImagesUrl.frontView,
+            isometric: configValuesStore.getAllImagesUrl.frontView,
+          },
           // configValues: submitFormStore.configValues,
         }}
       />
@@ -139,7 +145,7 @@ const SubmitFormModal = observer(({ open, onClose }) => {
         information below, and one of our friendly team members will reach out
         to you shortly with the quote.
       </div>
-      {/* <button
+      <button
         className="border mt-4 rounded-md p-2 bg-theme-primary text-white"
         onClick={() =>
           form.setFieldsValue({
@@ -151,7 +157,7 @@ const SubmitFormModal = observer(({ open, onClose }) => {
         }
       >
         Fill Form
-      </button> */}
+      </button>
       <p className="my-4 font-semibold">Your info</p>
       <Form
         disabled={isSubmitted}
@@ -219,6 +225,9 @@ const SubmitFormModal = observer(({ open, onClose }) => {
           <Form.Item className="w-full pb-[32px]">
             <Button
               loading={loading}
+              disabled={
+                Object.values(configValuesStore.getAllImagesUrl)[0] === null
+              }
               type="default"
               htmlType="submit"
               className="w-full"

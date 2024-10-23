@@ -19,6 +19,7 @@ import { IoMdInformation } from "react-icons/io";
 import { IoCloseOutline } from "react-icons/io5";
 import withTopAndBottomOnly from "../assets/images/structure/withTopAndBottomOnly.png";
 import withTopAndBottomOnlyAcrylic from "../assets/images/structure/withTopAndBottomOnlyAcrylic.png";
+import { addImage } from "../Canvas-3d/Utils/ImageUtils";
 
 // Set to track called changes
 const calledChanges = new Set();
@@ -599,7 +600,11 @@ const ShelfSidebar = observer(() => {
         "To configure dimensions, please select any element within the 3D shelf.",
       component: (
         <CustomAntdRadioGroup
-          value={getValuesFromSelectedCuboid()[0]}
+          value={configValuesStore.getAllConfigValues[
+            parseInt(configValuesStore.getSelectedCuboidIndex.rawIndex) || 0
+          ][parseInt(configValuesStore.getSelectedCuboidIndex.colIndex) || 0][
+            "width"
+          ].toString()}
           options={widthOptions}
           disabled={isDimensionDisabled}
           onChange={(ev) =>
@@ -708,6 +713,15 @@ const ShelfSidebar = observer(() => {
     },
   ];
 
+  console.log(
+    "widthNew",
+    configValuesStore.getAllConfigValues[
+      parseInt(configValuesStore.getSelectedCuboidIndex.rawIndex) || 0
+    ][parseInt(configValuesStore.getSelectedCuboidIndex.colIndex) || 0][
+      "width"
+    ]?.toString()
+  );
+
   return (
     <>
       {breakpoint === "xs" || breakpoint === "sm" ? (
@@ -758,7 +772,10 @@ const ShelfSidebar = observer(() => {
             size="large"
             type="default"
             className="w-full py-6 rounded-full"
-            onClick={() => submitFormStore.setModalOpen(true)}
+            onClick={() => {
+              addImage("frontView");
+              submitFormStore.setModalOpen(true);
+            }}
           >
             <span className="text-[16px]">Submit</span>
           </Button>
