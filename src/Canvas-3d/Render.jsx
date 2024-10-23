@@ -42,7 +42,13 @@ const Render = observer(() => {
     };
 
     initializeCuboids(); // Call to initialize cuboids
-  }, [configValuesStore.configValues, configValuesStore.selectionType]); // Depend on the store's observable object
+  }, [
+    configValuesStore.configValues,
+    configValuesStore.selectionType,
+    configValuesStore.selectedCuboid,
+    configValuesStore.selectedPanel,
+  ]); // Depend on the store's observable object
+  // Depend on the store's observable object
 
   // Render cuboids and pass them to the CuboidRenderer component
   return (

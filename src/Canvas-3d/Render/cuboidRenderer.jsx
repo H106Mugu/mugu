@@ -50,8 +50,6 @@ const CuboidRenderer = observer(({ cuboidData }) => {
     col_index,
   ]);
 
-
-
   useEffect(() => {
     if (configValuesStore.selectionType === "element") {
       configValuesStore.setSelectedPanel(null);
@@ -68,11 +66,6 @@ const CuboidRenderer = observer(({ cuboidData }) => {
     // else {
     //   configValuesStore.setSelectedCuboid(null, null);
     // }
-    console.log(
-      "indexes",
-      configValuesStore.selectedCuboid.rawIndex,
-      configValuesStore.selectedCuboid.colIndex
-    );
   };
 
   const handlePanelSelect = (rawIndex) => {
@@ -82,10 +75,6 @@ const CuboidRenderer = observer(({ cuboidData }) => {
     // } else {
     //   configValuesStore.setSelectedPanel(null);
     // }
-    // console.log(
-    //   "selected panelIndex",
-    //   configValuesStore.selectedPanel.rawIndex
-    // );
   };
 
   return (

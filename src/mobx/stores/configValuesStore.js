@@ -127,7 +127,6 @@ class ConfigValuesStore {
 
   setResetCamera() {
     this.ResetCam.value = !this.ResetCam.value;
-    console.log("setResetCamera", this.ResetCam);
   }
 
   // Getter for groupRef

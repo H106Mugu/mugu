@@ -72,7 +72,10 @@ const CustomAntdRadioGroup = ({
             !isSmallScreen ? "transition-all duration-200 ease-in-out" : ""
           } ${
             typeof option.label === "string"
-              ? "border hover:border-theme-primary before:hover:!bg-theme-transparent hover:!border-l-theme-primary min-w-12"
+              ? `border ${
+                  !disabled &&
+                  "hover:border-theme-primary before:hover:!bg-theme-transparent hover:!border-l-theme-primary"
+                } min-w-12`
               : "custom-radio-btn border-none !bg-transparent before:!bg-transparent !border-l-transparent h-fit w-fit"
           }`}
           style={{

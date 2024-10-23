@@ -280,13 +280,13 @@ const ShelfSidebar = observer(() => {
         { label: "483", value: "483" },
         { label: "603", value: "603" },
       ];
-      handleChangeOnce(newWidthOptions[0].value, "width", "5");
+      handleChangeOnce(newWidthOptions[1].value, "width", "5");
 
       if (
         selectedStructureElement === "all" ||
         selectedStructureElement === "withoutBack"
       ) {
-        if (selectedWidth.toString() === "121") {
+        if (selectedWidth?.toString() === "121") {
           newDepthOptions = [{ label: "313", value: "313" }];
           handleChangeOnce(newDepthOptions[0].value, "depth", "6");
 
@@ -295,32 +295,32 @@ const ShelfSidebar = observer(() => {
             value: h,
           }));
           handleChangeOnce(newHeightOptions[0].value, "height", "7");
-        } else if (selectedWidth.toString() === "313") {
+        } else if (selectedWidth?.toString() === "313") {
           newDepthOptions = ["121", "313", "483", "603"].map((d) => ({
             label: d,
             value: d,
           }));
           handleChangeOnce(newDepthOptions[1].value, "depth", "8");
 
-          if (selectedDepth.toString() === "121") {
+          if (selectedDepth?.toString() === "121") {
             newHeightOptions = [{ label: "313", value: "313" }];
             handleChangeOnce(newHeightOptions[0].value, "height", "9");
-          } else if (selectedDepth.toString() === "313") {
+          } else if (selectedDepth?.toString() === "313") {
             newHeightOptions = ["121", "313", "483", "603"].map((h) => ({
               label: h,
               value: h,
             }));
-            handleChangeOnce(newHeightOptions[0].value, "height", "10");
+            handleChangeOnce(newHeightOptions[1].value, "height", "10");
           } else if (
-            selectedDepth.toString() === "483" ||
-            selectedDepth.toString() === "603"
+            selectedDepth?.toString() === "483" ||
+            selectedDepth?.toString() === "603"
           ) {
             newHeightOptions = [{ label: "313", value: "313" }];
             handleChangeOnce(newHeightOptions[0].value, "height", "11");
           }
         } else if (
-          selectedWidth.toString() === "483" ||
-          selectedWidth.toString() === "603"
+          selectedWidth?.toString() === "483" ||
+          selectedWidth?.toString() === "603"
         ) {
           newDepthOptions = [{ label: "313", value: "313" }];
           handleChangeOnce(newDepthOptions[0].value, "depth", "12");
@@ -333,9 +333,9 @@ const ShelfSidebar = observer(() => {
         }
       } else if (selectedStructureElement === "withTopAndBottomOnly") {
         if (
-          selectedWidth.toString() === "121" ||
-          selectedWidth.toString() === "483" ||
-          selectedWidth.toString() === "603"
+          selectedWidth?.toString() === "121" ||
+          selectedWidth?.toString() === "483" ||
+          selectedWidth?.toString() === "603"
         ) {
           newDepthOptions = [{ label: "313", value: "313" }];
           handleChangeOnce(newDepthOptions[0].value, "depth", "14");
@@ -351,7 +351,7 @@ const ShelfSidebar = observer(() => {
             "603",
           ].map((h) => ({ label: h, value: h }));
           handleChangeOnce(newHeightOptions[0].value, "height", "15");
-        } else if (selectedWidth.toString() === "313") {
+        } else if (selectedWidth?.toString() === "313") {
           newDepthOptions = ["121", "313", "483", "603"].map((d) => ({
             label: d,
             value: d,
@@ -368,7 +368,7 @@ const ShelfSidebar = observer(() => {
             "483",
             "603",
           ].map((h) => ({ label: h, value: h }));
-          handleChangeOnce(newHeightOptions[0].value, "height", "17");
+          handleChangeOnce(newHeightOptions[4].value, "height", "17");
         }
       }
     }
@@ -425,6 +425,7 @@ const ShelfSidebar = observer(() => {
       : "0"; // Provide a default value if there is no cuboid at that index
     return [widthValue, heightValue, depthValue];
   };
+
   useEffect(() => {
     // Update the previous shelf type whenever the current shelf type changes
     setPreviousShelfType(shelfType);
@@ -574,6 +575,7 @@ const ShelfSidebar = observer(() => {
           }
         />
       ),
+      tourClass: "tour-btn-type-desktop",
     },
     {
       title: "Structure Elements",
@@ -591,6 +593,7 @@ const ShelfSidebar = observer(() => {
           }
         />
       ),
+      tourClass: "tour-btn-structure-desktop",
     },
     {
       title: "Width (mm)",
@@ -612,6 +615,7 @@ const ShelfSidebar = observer(() => {
           }
         />
       ),
+      tourClass: "tour-btn-dimension-desktop-width",
     },
     {
       title: "Depth (mm)",
@@ -629,6 +633,7 @@ const ShelfSidebar = observer(() => {
           }
         />
       ),
+      tourClass: "tour-btn-dimension-desktop-depth",
     },
     {
       title: "Height (mm)",
@@ -646,6 +651,7 @@ const ShelfSidebar = observer(() => {
           }
         />
       ),
+      tourClass: "tour-btn-dimension-desktop-height",
     },
     {
       title: (
@@ -710,6 +716,7 @@ const ShelfSidebar = observer(() => {
           }
         />
       ),
+      tourClass: "tour-btn-color-desktop",
     },
   ];
 
@@ -732,12 +739,12 @@ const ShelfSidebar = observer(() => {
       ) : (
         <div className="flex flex-col gap-6 w-full">
           {sidebarOptionsData.map((option, index) => (
-            <div key={index}>
+            <div key={index} className={`${option.tourClass || ""} md:px-6`}>
               <div className="mb-2 text-sm font-medium w-full">
                 {option.title}
               </div>
               <div
-                className={`mb-2 font-medium w-full overflow-x-auto overflow-y-hidden md:min-h-9 ${
+                className={`mb-2 font-medium w-full overflow-x-auto overflow-y-hidden md:min-h-9  ${
                   option?.title === "Height (mm)" ? "pb-1" : ""
                 }`}
                 onClick={() => {
@@ -772,10 +779,7 @@ const ShelfSidebar = observer(() => {
             size="large"
             type="default"
             className="w-full py-6 rounded-full"
-            onClick={() => {
-              addImage("frontView");
-              submitFormStore.setModalOpen(true);
-            }}
+            onClick={() => submitFormStore.setModalOpen(true)}
           >
             <span className="text-[16px]">Submit</span>
           </Button>

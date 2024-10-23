@@ -84,7 +84,7 @@ const CreateButton = ({ position, raw_index, col_index, onRight = true }) => {
       name = "Button"
     >
       <div
-        className="add-icon-container"
+        className="add-icon-container tour-btn-add-cuboid"
         onClick={onClick}
         style={{ cursor: "pointer" }}
       >

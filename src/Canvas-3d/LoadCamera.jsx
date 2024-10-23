@@ -12,8 +12,7 @@ const LoadCamera = () => {
   const [childCount, setChildCount] = useState(0);
 
   const fitCameraToGroup = () => {
-    const groupRef = configValuesStore.groupRef.current;
-
+    const groupRef = configValuesStore.groupRef?.current;
     if (!groupRef) {
       return;
     }
