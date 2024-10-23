@@ -75,7 +75,7 @@ const MobileShelfBottombar = observer(({ sidebarOptionsData, changedKey }) => {
       <div>
         <Tabs defaultActiveKey="1" items={tabItems} className="h-[177px]" />
         <div
-          className={`fixed right-0 left-0 py-1 px-3 flex items-center bg-white shadow-xl transition-all duration-1000 ease-in-out ${
+          className={`fixed right-0 left-0 py-1 px-3 flex items-center bg-white shadow-xl transition-all duration-1000 ease-in-out tour-btn-submit ${
             breakpoint === "xs" || breakpoint === "sm"
               ? "bottom-0 opacity-100"
               : "-bottom-3 opacity-0"
@@ -88,7 +88,7 @@ const MobileShelfBottombar = observer(({ sidebarOptionsData, changedKey }) => {
             disabled={!isColorTabVisitedOnce}
             size="middle"
             type="default"
-            className="ms-auto rounded-full border-theme-primary hover:!bg-[#d9d9d9] tour-btn-submit"
+            className="ms-auto rounded-full border-theme-primary hover:!bg-[#d9d9d9]"
             onClick={() => {
               addImage("frontView");
               submitFormStore.setModalOpen(true);

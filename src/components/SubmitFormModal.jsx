@@ -52,6 +52,40 @@ function getPanelColors(colorRows, type) {
     .join(", ");
 }
 
+const getUnitDimensions = (configValuesStore) => {
+  const totalWidth = configValuesStore.totalLength.width;
+  const totalHeight = configValuesStore.totalLength.height;
+  const totalDepth = configValuesStore.configValues[0][0].depth;
+
+  // Get unique column widths (assumes all rows have the same number of columns)
+  const columnWidths = Object.keys(configValuesStore.configValues[0]).map(
+    (colIndex) => configValuesStore.configValues[0][colIndex].width
+  );
+
+  // Get row heights
+  const rowHeights = Object.keys(configValuesStore.configValues).map(
+    (rowIndex) => configValuesStore.configValues[rowIndex][0].height
+  );
+
+  // Format column width string (only once for all columns)
+  const columnWidthString = columnWidths
+    .filter((width) => width !== undefined)
+    .map((width, index) => `C${index + 1}: ${width}mm`)
+    .join(", ");
+
+  // Format row height string (once per row, from bottom to top)
+  const rowHeightString = rowHeights
+    .filter((height) => height !== undefined)
+    .map((height, index) => `R${index + 1}: ${height}mm`)
+    .join(", ");
+
+  return [
+    `${totalWidth}mm x ${totalHeight}mm x ${totalDepth}mm, Depth: ${totalDepth}mm`,
+    `Column Width: From left (${columnWidthString})`,
+    `Row Height: From bottom (${rowHeightString})`,
+  ].join("\n");
+};
+
 const SubmitFormModal = observer(({ open, onClose }) => {
   const [form] = Form.useForm();
   const { submitFormStore, configValuesStore } = useStores();
@@ -88,8 +122,8 @@ const SubmitFormModal = observer(({ open, onClose }) => {
               ),
             },
             {
-              key: "Total Dimensions (W*H*D)",
-              value: `${configValuesStore.totalLength.width}mm x ${configValuesStore.totalLength.height}mm x ${configValuesStore.configValues[0][0].depth}mm`,
+              key: "Unit Dimensions",
+              value: getUnitDimensions(configValuesStore),
             },
             {
               key: "Panel Colour",
@@ -145,7 +179,7 @@ const SubmitFormModal = observer(({ open, onClose }) => {
         information below, and one of our friendly team members will reach out
         to you shortly with the quote.
       </div>
-      {/* <button
+      <button
         className="border mt-4 rounded-md p-2 bg-theme-primary text-white"
         onClick={() =>
           form.setFieldsValue({
@@ -157,7 +191,7 @@ const SubmitFormModal = observer(({ open, onClose }) => {
         }
       >
         Fill Form
-      </button> */}
+      </button>
       <p className="my-4 font-semibold">Your info</p>
       <Form
         disabled={isSubmitted}
