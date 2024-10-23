@@ -184,7 +184,7 @@ export const stainlessColorOptions = [
     label: (
       <div className="w-full h-[70px] flex flex-col justify-start items-center">
         <div
-          style={{ backgroundColor: "#f7531d" }}
+          style={{ backgroundColor: "#EB5300" }}
           className="w-8 h-8 rounded-full border mt-1 hover:border-theme-primary transition-all duration-300 ease-in-out"
         />
         <div className="text-[12px] text-center font-normal leading-3 mt-1">
@@ -192,13 +192,13 @@ export const stainlessColorOptions = [
         </div>
       </div>
     ),
-    value: "#f7531d",
+    value: "#EB5300",
   },
   {
     label: (
       <div className="w-full h-[70px] flex flex-col justify-start items-center">
         <div
-          style={{ backgroundColor: "#e4ad42" }}
+          style={{ backgroundColor: "#FFC525" }}
           className="w-8 h-8 rounded-full border mt-1 hover:border-theme-primary transition-all duration-300 ease-in-out"
         />
         <div className="text-[12px] text-center font-normal leading-3 mt-1">
@@ -206,7 +206,7 @@ export const stainlessColorOptions = [
         </div>
       </div>
     ),
-    value: "#e4ad42",
+    value: "#FFC525",
   },
   {
     label: (
@@ -240,7 +240,7 @@ export const stainlessColorOptions = [
     label: (
       <div className="w-full h-[70px] flex flex-col justify-start items-center">
         <div
-          style={{ backgroundColor: "#d8bcb1" }}
+          style={{ backgroundColor: "#F2D8D7" }}
           className="w-8 h-8 rounded-full border mt-1 hover:border-theme-primary transition-all duration-300 ease-in-out"
         />
         <div className="text-[12px] text-center font-normal leading-3 mt-1">
@@ -248,13 +248,13 @@ export const stainlessColorOptions = [
         </div>
       </div>
     ),
-    value: "#d8bcb1",
+    value: "#F2D8D7",
   },
   {
     label: (
       <div className="w-full h-[70px] flex flex-col justify-start items-center">
         <div
-          style={{ backgroundColor: "#8faabc" }}
+          style={{ backgroundColor: "#B0D0E7" }}
           className="w-8 h-8 rounded-full border mt-1 hover:border-theme-primary transition-all duration-300 ease-in-out"
         />
         <div className="text-[12px] text-center font-normal leading-3 mt-1">
@@ -262,7 +262,7 @@ export const stainlessColorOptions = [
         </div>
       </div>
     ),
-    value: "#8faabc",
+    value: "#B0D0E7",
   },
 ];
 

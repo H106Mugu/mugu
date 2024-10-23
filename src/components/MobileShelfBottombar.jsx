@@ -87,7 +87,7 @@ const MobileShelfBottombar = observer(({ sidebarOptionsData, changedKey }) => {
             disabled={!isColorTabVisitedOnce}
             size="middle"
             type="default"
-            className="ms-auto rounded-full border-theme-primary hover:!bg-[#d9d9d9]"
+            className="ms-auto rounded-full border-theme-primary hover:!bg-[#d9d9d9] tour-btn-submit"
             onClick={() => submitFormStore.setModalOpen(true)}
           >
             <span className="text-sm">Submit</span>
