@@ -88,7 +88,7 @@ const MobileShelfBottombar = observer(({ sidebarOptionsData, changedKey }) => {
             disabled={!isColorTabVisitedOnce}
             size="middle"
             type="default"
-            className="ms-auto rounded-full border-theme-primary hover:!bg-[#d9d9d9]"
+            className="ms-auto rounded-full border-theme-primary hover:!bg-[#d9d9d9] tour-btn-submit"
             onClick={() => {
               addImage("frontView");
               submitFormStore.setModalOpen(true);
