@@ -214,7 +214,7 @@ const PDFDocument = ({ data }) => (
       <View style={{ ...styles.section, height: `${sectionHeights[2]}%` }}>
         <View
           style={{
-            padding: 20,
+            padding: 2,
           }}
         >
           <Text style={styles.title}>Your configuration</Text>
@@ -237,11 +237,16 @@ const PDFDocument = ({ data }) => (
                   alignItems: "center",
                 }}
               >
-                <Text style={styles.title}>3D view</Text>
+                {/* <Text style={styles.title}>3D view</Text>
                 <Text style={styles.text}>
                   This will showcase the how the configuration has been made for
                   the customized unit.
-                </Text>
+                </Text> */}
+                <Image
+                    src={data?.images?.isometric}
+                    style={{ height: 300 }} // Specify dimensions as numbers
+                    alt="isometric view"
+                  />
               </View>
             </View>
             <View
@@ -294,7 +299,7 @@ const PDFDocument = ({ data }) => (
                   flexDirection: "column",
                   justifyContent: "center",
                   alignItems: "center",
-                  padding: 20,
+                  padding: 2,
                 }}
               >
                 <View
@@ -305,10 +310,15 @@ const PDFDocument = ({ data }) => (
                     alignItems: "center",
                   }}
                 >
-                  <Text style={styles.title}>Top view</Text>
+                  {/* <Text style={styles.title}>Top view</Text>
                   <Text style={styles.text}>
                     This will indicate the depth of the unit.
-                  </Text>
+                  </Text> */}
+                  <Image
+                    src={data?.images?.top}
+                    style={{ height: 300 }} // Specify dimensions as numbers
+                    alt="Top view"
+                  />
                 </View>
               </View>
             </View>

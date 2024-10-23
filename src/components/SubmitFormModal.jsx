@@ -9,7 +9,6 @@ import PDFDocument from "./PDFDocument";
 
 import { observer } from "mobx-react-lite";
 import { acrylicColorOptions, stainlessColorOptions } from "../data/optionData";
-import { addImage } from "../Canvas-3d/Utils/ImageUtils";
 
 function convertToSentenceCase(str) {
   // Insert a space before all capital letters and convert the string to lowercase
@@ -105,8 +104,8 @@ const SubmitFormModal = observer(({ open, onClose }) => {
           ],
           images: {
             front: configValuesStore.getAllImagesUrl.frontView,
-            top: configValuesStore.getAllImagesUrl.frontView,
-            isometric: configValuesStore.getAllImagesUrl.frontView,
+            top: configValuesStore.getAllImagesUrl.topView,
+            isometric: configValuesStore.getAllImagesUrl.isometricView,
           },
           // configValues: submitFormStore.configValues,
         }}
@@ -226,7 +225,7 @@ const SubmitFormModal = observer(({ open, onClose }) => {
             <Button
               loading={loading}
               disabled={
-                Object.values(configValuesStore.getAllImagesUrl)[0] === null
+                Object.values(configValuesStore.getAllImagesUrl)[2] === null
               }
               type="default"
               htmlType="submit"

@@ -4,12 +4,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { useStores } from "../mobx/context/StoreContext";
 import "./css/Three.css";
 import CuboidRenderer from "./Render/cuboidRenderer";
-import { addImage } from "./Utils/ImageUtils";
 
 const Render = observer(() => {
   const { configValuesStore } = useStores();
   const [cuboids, setCuboids] = useState([]);
-  const planeRefs = useRef({});
 
   useEffect(() => {
     const initializeCuboids = () => {

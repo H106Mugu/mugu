@@ -5,7 +5,7 @@ import { useStores } from "../mobx/context/StoreContext";
 import { observer } from "mobx-react-lite";
 import { IoMdInformation } from "react-icons/io";
 import { IoCloseOutline } from "react-icons/io5";
-import { addImage } from "../Canvas-3d/Utils/ImageUtils";
+import { addImages } from "../Canvas-3d/Utils/ImageUtils";
 
 const MobileShelfBottombar = observer(({ sidebarOptionsData, changedKey }) => {
   const [isColorTabVisitedOnce, setIsColorTabVisitedOnce] = useState(false);
@@ -90,7 +90,7 @@ const MobileShelfBottombar = observer(({ sidebarOptionsData, changedKey }) => {
             type="default"
             className="ms-auto rounded-full border-theme-primary hover:!bg-[#d9d9d9] tour-btn-submit"
             onClick={() => {
-              addImage("frontView");
+              addImages();
               submitFormStore.setModalOpen(true);
             }}
           >

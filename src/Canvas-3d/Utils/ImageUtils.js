@@ -1,61 +1,57 @@
-import domtoimage from 'dom-to-image';
-import configValuesStore from '../../mobx/stores/configValuesStore';
+/* eslint-disable no-async-promise-executor */
+import domtoimage from "dom-to-image";
+import configValuesStore from "../../mobx/stores/configValuesStore";
+import { fitCameraToReset, fitCameraToTopView } from "./CameraUtils";
 
-export async function addImage(view) {
-    const camera = configValuesStore.controlRef;
-    const groupRef = configValuesStore.groupRef;
-    // eslint-disable-next-line no-async-promise-executor
-    return new Promise(async () => {
-        const canvas = document.querySelector('#canvas');
-        console.log('canvas', canvas);
-        const parent = canvas.parentElement;
-        console.log('parent', parent);
+export async function addImages() {
+  const camera = configValuesStore.controlRef;
+  const groupRef = configValuesStore.groupRef;
 
-        // if (camera && groupRef) {
-        //     parent.style.height = IMG_HEIGHT;
-        //     parent.style.width = IMG_WIDTH;
-        //     // parent.style.transform = 'translate (50%, 50%)';
+  return new Promise(async (resolve) => {
+    const canvas = document.querySelector("#canvas");
+    if (!canvas || !camera || !groupRef) {
+      console.error("Canvas, camera, or groupRef not found");
+      return;
+    }
 
-        //     await wait(100);
-        // }
-        const fitToOptions = {
-            cover: false,
-            paddingLeft: 10,
-            paddingRight: 10,
-            paddingBottom: 5,
-            paddingTop: 5,
-        };
+    const fitToOptions = {
+      cover: false,
+      paddingLeft: 10,
+      paddingRight: 10,
+      paddingBottom: 5,
+      paddingTop: 5,
+    };
 
-        // Fit the camera to the groupRef's bounding box
-        if (camera && groupRef) {
-            await camera.current.fitToBox(groupRef.current, true, fitToOptions);
-            console.log('camera', camera);
-        }
-        const img = await getBlobURL(canvas);
+    // Function to capture a single view and store in the configValuesStore
+    const captureView = async (view) => {
+      const img = await getBlobURL(canvas);
+      configValuesStore.imageUrl[view] = img;
+      console.log(`Image captured for ${view}:`, configValuesStore.imageUrl[view]);
+    };
 
-        // Store.imageURL = [...Store.imageURL, img];
-        configValuesStore.imageUrl[view] = img;
-        console.log('img', configValuesStore.imageUrl[view]);
-        // if (camera && groupRef) {
-        //     parent.style.width = CANVAS_WIDTH;
-        //     parent.style.height = CANVAS_HEIGHT;
-        //     resolve();
-        // }
-    });
+    // Step 1: Capture frontView
+    await camera.current.fitToBox(groupRef.current, true, fitToOptions);  // Fit camera to frontView
+    await captureView('frontView');  // Capture frontView
+
+    // Step 2: Capture isometricView
+    await fitCameraToReset();  // Adjust camera for isometric view
+    await captureView('isometricView');  // Capture isometricView
+
+
+    // Step 3: Capture sideView
+    await fitCameraToTopView();  // Adjust camera for Top view
+    await captureView('topView');  // Capture topView
+
+    // Resolve when both views have been captured
+    resolve();
+  });
 }
+
 function getBlobURL(inNode) {
-    return new Promise((resolve) => {
-        domtoimage.toBlob(inNode).then((data) => {
-            const dataUrl = URL.createObjectURL(data);
-            resolve(dataUrl); // Resolve the promise with the Blob URL
-        });
+  return new Promise((resolve) => {
+    domtoimage.toBlob(inNode).then((data) => {
+      const dataUrl = URL.createObjectURL(data);
+      resolve(dataUrl); // Resolve the promise with the Blob URL
     });
+  });
 }
-
-// function wait(inWaitTime) {
-//     return new Promise((resolve) => {
-//         setTimeout(() => {
-//             resolve();
-//         }, inWaitTime);
-//     });
-// }

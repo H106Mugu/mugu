@@ -19,7 +19,7 @@ import { IoMdInformation } from "react-icons/io";
 import { IoCloseOutline } from "react-icons/io5";
 import withTopAndBottomOnly from "../assets/images/structure/withTopAndBottomOnly.png";
 import withTopAndBottomOnlyAcrylic from "../assets/images/structure/withTopAndBottomOnlyAcrylic.png";
-import { addImage } from "../Canvas-3d/Utils/ImageUtils";
+import { addImages } from "../Canvas-3d/Utils/ImageUtils";
 
 // Set to track called changes
 const calledChanges = new Set();
@@ -720,14 +720,14 @@ const ShelfSidebar = observer(() => {
     },
   ];
 
-  console.log(
-    "widthNew",
-    configValuesStore.getAllConfigValues[
-      parseInt(configValuesStore.getSelectedCuboidIndex.rawIndex) || 0
-    ][parseInt(configValuesStore.getSelectedCuboidIndex.colIndex) || 0][
-      "width"
-    ]?.toString()
-  );
+  // console.log(
+  //   "widthNew",
+  //   configValuesStore.getAllConfigValues[
+  //     parseInt(configValuesStore.getSelectedCuboidIndex.rawIndex) || 0
+  //   ][parseInt(configValuesStore.getSelectedCuboidIndex.colIndex) || 0][
+  //     "width"
+  //   ]?.toString()
+  // );
 
   return (
     <>
@@ -781,7 +781,7 @@ const ShelfSidebar = observer(() => {
               type="default"
               className="w-full py-6 rounded-full"
               onClick={() => {
-                addImage("frontView");
+                addImages();
                 submitFormStore.setModalOpen(true);
               }}
             >

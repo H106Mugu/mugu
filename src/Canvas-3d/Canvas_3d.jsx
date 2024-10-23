@@ -9,8 +9,6 @@ import { useRef } from "react";
 import configValuesStore from "../mobx/stores/configValuesStore";
 import LoadCamera from "./LoadCamera";
 import AllDimensionLines from "./Dimentions/AllDimensionLines";
-import { Button } from "antd";
-import { addImage } from "./Utils/ImageUtils";
 
 export default function Canvas_3d() {
 
