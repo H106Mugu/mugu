@@ -76,7 +76,7 @@ const Model = ({
           />
         ))}
 
-      {configValuesStore.configValues.structureElements != "withoutShelves" && corners.map((corner, index) => (
+      {configValuesStore.configValues.structureElements === "acrylic" && configValuesStore.configValues.structureElements === "withTopAndBottomOnly" && corners.map((corner, index) => (
         <Supporter
           key={`connector-${index}`}
           position={corner}

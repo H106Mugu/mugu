@@ -62,6 +62,8 @@ const ShelfConfigurator = observer(() => {
   const handleCheckboxChange = () => {
     setChecked((prevChecked) => !prevChecked); // Toggle the checked state
     configValuesStore.setShowDimensions();
+    console.log("inside shelf");
+
   };
 
   const onConfigTypeChange = (e) => {

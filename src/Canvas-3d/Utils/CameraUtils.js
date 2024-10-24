@@ -36,7 +36,7 @@ export const fitCameraToReset = () => {
   });
 };
 
-export const fitCameraToTopView = () => {
+export const fitCameraToSideView = () => {
   return new Promise((resolve) => {
     const groupRef = configValuesStore.groupRef?.current;
     if (!groupRef) {
@@ -51,8 +51,8 @@ export const fitCameraToTopView = () => {
     
     if (configValuesStore.controlRef.current) {
       configValuesStore.controlRef.current.setLookAt(
-        center.x,
-      center.y + 3 * size.y,
+        center.x + 5 * size.x,
+      center.y,
       center.z,
       center.x,
       center.y,

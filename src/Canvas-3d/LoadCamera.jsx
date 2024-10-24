@@ -1,15 +1,23 @@
 /* eslint-disable no-unused-vars */
-import { CameraControls, PerspectiveCamera } from "@react-three/drei";
+import {
+  CameraControls,
+  OrthographicCamera,
+  PerspectiveCamera,
+} from "@react-three/drei";
 import { useEffect, useRef, useState } from "react";
 import configValuesStore from "../mobx/stores/configValuesStore";
 import * as THREE from "three";
+import { observer } from "mobx-react-lite";
 
-const LoadCamera = () => {
+const LoadCamera = observer(() => {
   // Start with the initial camera position
   const [position, setPosition] = useState([-88, 45, 135]);
   const cameraRef = useRef();
   const controlsRef = configValuesStore.controlRef;
   const [childCount, setChildCount] = useState(0);
+  // const [isOrthographic, setIsOrthographic] = useState(
+  //   configValuesStore.getIs2d
+  // );
 
   const fitCameraToGroup = () => {
     const groupRef = configValuesStore.groupRef?.current;
@@ -75,26 +83,54 @@ const LoadCamera = () => {
     }
   }, [configValuesStore.configValues]); // Run when groupRef changes
 
+  // useEffect(() => {
+  //   console.log("useEffect");
+  //   if (configValuesStore.getIs2d) {
+  //     setIsOrthographic(true);
+  //     console.log("is2D", configValuesStore.getIs2d);
+  //   } else {
+  //     setIsOrthographic(false);
+  //   }
+  // }, [configValuesStore.getIs2d]);
+
   return (
     <>
-      <PerspectiveCamera
-        position={[-88, 45, 135]}
-        fov={50}
-        ref={cameraRef}
-        makeDefault
-      />
-      <CameraControls
-        ref={controlsRef}
-        minDistance={1}
-        maxDistance={400}
-        dollyToCursor={true}
-        maxPolarAngle={Math.PI / 2}
-        minPolarAngle={Math.PI / 8}
-        maxAzimuthAngle={Math.PI / 4}
-        minAzimuthAngle={-Math.PI / 4}
-      />
+      {!configValuesStore.getIs2d ? (
+        <>
+          <PerspectiveCamera
+            position={[-88, 45, 135]}
+            fov={50}
+            ref={cameraRef}
+            makeDefault
+          />
+          <CameraControls
+            ref={controlsRef}
+            minDistance={1}
+            maxDistance={400}
+            dollyToCursor={true}
+            // maxPolarAngle={Math.PI / 2}
+            // minPolarAngle={Math.PI / 8}
+            // maxAzimuthAngle={Math.PI / 4}
+            // minAzimuthAngle={-Math.PI / 4}
+          />
+        </>
+      ) : (
+        <>
+          <OrthographicCamera position={[-88, 45, 135]} ref={cameraRef} makeDefault/>
+          <CameraControls
+            ref={controlsRef}
+            minDistance={1}
+            maxDistance={400}
+            dollyToCursor={true}
+            // maxPolarAngle={Math.PI / 2}
+            // minPolarAngle={Math.PI / 8}
+            // maxAzimuthAngle={Math.PI / 4}
+            // minAzimuthAngle={-Math.PI / 4}
+          />
+        </>
+      )}
     </>
   );
-};
+});
 
 export default LoadCamera;

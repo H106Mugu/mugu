@@ -26,7 +26,6 @@ export const CubeComponent = ({
   const [displayEdgesElement, setDisplayEdgesElement] = useState(false);
   const [displayEdgesPanel, setDisplayEdgesPanel] = useState([]);
   const offset = 2;
-  // const
 
   const handleClick = (event, type) => {
     event.stopPropagation();

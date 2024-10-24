@@ -9,8 +9,9 @@ import { useRef } from "react";
 import configValuesStore from "../mobx/stores/configValuesStore";
 import LoadCamera from "./LoadCamera";
 import AllDimensionLines from "./Dimentions/AllDimensionLines";
+import { observer } from "mobx-react-lite";
 
-export default function Canvas_3d() {
+ const Canvas_3d = observer(() => {
 
   configValuesStore.setgroupRef(useRef());
   configValuesStore.setControlRef(useRef());
@@ -29,4 +30,7 @@ export default function Canvas_3d() {
       </Canvas>
     </>
   );
-}
+});
+
+export default Canvas_3d;
+

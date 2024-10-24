@@ -18,6 +18,7 @@ class ConfigValuesStore {
 
   controlRef = null;
 
+  is2D = observable.box(false);
   selectedPanel = {
     rawIndex: null,
   };
@@ -27,7 +28,7 @@ class ConfigValuesStore {
     height: 350,
   };
 
-  showDimensions = false;
+  showDimensions = observable.box(false);
 
   totalDepth = 300;
 
@@ -45,6 +46,14 @@ class ConfigValuesStore {
     0: "#f7531d",
     1: "#f7531d",
   };
+
+  get getIs2d() {
+    return this.is2D.get();
+  }
+
+  get getShowDimensions() {
+    return this.showDimensions.get();
+  }
 
   // Define your observable state as an object
   configValues = observable(
@@ -70,9 +79,11 @@ class ConfigValuesStore {
   );
 
   constructor() {
+    console.log("class initialized");
     // Automatically make properties observable
     makeAutoObservable(this, {
       configValues: observable, // Mark configValues explicitly as observable
+      is2D: observable,
     });
 
     // Automatically update totalLength.width whenever configValues changes
@@ -117,12 +128,16 @@ class ConfigValuesStore {
   }
 
   setShowDimensions() {
-    this.showDimensions = !this.showDimensions;
-    console.log("setShowDimensions", this.showDimensions);
+    this.showDimensions.set(!this.showDimensions.get());
+    console.log("inside store", this.showDimensions.get());
   }
 
   setgroupRef(value) {
     this.groupRef = value;
+  }
+
+  setIs2D(value) {
+    this.is2D.set(value);
   }
 
   setResetCamera() {

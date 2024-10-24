@@ -18,6 +18,10 @@ export const Plane = () => {
         <planeGeometry args={args} />
         <meshBasicMaterial color={new THREE.Color("#EBE3D7")}  />
       </mesh>
+      <mesh rotation={[0, Math.PI / 2, 0]} position={[-1000, 0, 0]} onDoubleClick={handleDoubleClick}>
+        <planeGeometry args={args} />
+        <meshBasicMaterial color={new THREE.Color("#EBE3D7")}  />
+      </mesh>
     </>
   );
 };

@@ -18,9 +18,9 @@ const AllDimensionLines = () => {
     const [cuboid] = getLastCuboidInTallestColumn(
       configValuesStore.configValues
     );
-    const depth = configValuesStore.configValues[0][0].depth / 10;
-    const width = ((lastCuboid.startWidth + 20) * 10 + lastCuboid.width) / 10;
-    const height = ((cuboid.startHeight + 25) * 10 + cuboid.height - 10) / 10;
+    const depth = parseInt(configValuesStore.configValues[0][0].depth / 10);
+    const width = parseInt(((lastCuboid.startWidth + 20) * 10 + lastCuboid.width) / 10);
+    const height = parseInt(((cuboid.startHeight + 25) * 10 + cuboid.height - 10) / 10);
 
     // Logic to generate dimension lines based on configValues
     const newDimensionLinesData = [
@@ -51,7 +51,7 @@ const AllDimensionLines = () => {
 
   return (
     <>
-      {configValuesStore.showDimensions &&
+      {configValuesStore.getShowDimensions &&
         dimensionLinesData.map((line, index) => (
           <DimensionLine key={index} line={line} />
         ))}

@@ -7,6 +7,7 @@ import { isOnRight, isOnTop, handleAddCuboid } from "../Utils/PositionsUtils";
 import { CubeComponent } from "../Models/CubeComponent";
 import configValuesStore from "../../mobx/stores/configValuesStore";
 import { observer } from "mobx-react-lite"; // Import observer from mobx-react-lite
+import useBreakpoints from "../../hooks/useBreakpoints";
 
 const CuboidRenderer = observer(({ cuboidData }) => {
   const {
@@ -22,17 +23,23 @@ const CuboidRenderer = observer(({ cuboidData }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isVisiblePanelTop, setIsVisiblePanelTop] = useState(false);
   const [isVisiblePanelBottom, setIsVisiblePanelBottom] = useState(false);
+  const breakpoint = useBreakpoints();
+
 
   useEffect(() => {
     const checkVisible =
-      configValuesStore.selectedCuboid.rawIndex === raw_index &&
-      configValuesStore.selectedCuboid.colIndex === col_index;
+    configValuesStore.selectedCuboid.rawIndex === raw_index &&
+    configValuesStore.selectedCuboid.colIndex === col_index &&
+    (breakpoint !== "xs" && breakpoint !== "sm" || configValuesStore.currentConfigType === "structure");
+  
     setIsVisible(checkVisible);
     const checkVisiblePanelTop =
-      configValuesStore.selectedPanel.rawIndex === raw_index + 1;
+      configValuesStore.selectedPanel.rawIndex === raw_index + 1 &&
+      (breakpoint !== "xs" && breakpoint !== "sm" || configValuesStore.currentConfigType === "color");
     setIsVisiblePanelTop(checkVisiblePanelTop);
     const checkVisiblePanelBottom =
-      configValuesStore.selectedPanel.rawIndex === raw_index;
+      configValuesStore.selectedPanel.rawIndex === raw_index &&
+      (breakpoint !== "xs" && breakpoint !== "sm" || configValuesStore.currentConfigType === "color");;
     setIsVisiblePanelBottom(checkVisiblePanelBottom);
     if (configValuesStore.selectionType === "panel") {
       setIsVisible(false);
@@ -46,6 +53,7 @@ const CuboidRenderer = observer(({ cuboidData }) => {
     configValuesStore.selectedCuboid,
     configValuesStore.selectionType,
     configValuesStore.selectedPanel.rawIndex,
+    configValuesStore.currentConfigType,
     raw_index,
     col_index,
   ]);
