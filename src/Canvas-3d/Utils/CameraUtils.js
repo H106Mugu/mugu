@@ -5,7 +5,7 @@ export const fitCameraToReset = () => {
   return new Promise((resolve) => {
     const groupRef = configValuesStore.groupRef?.current;
     if (!groupRef) {
-      console.error('groupRef not found');
+      // console.error('groupRef not found');
       resolve();
       return;
     }
@@ -40,7 +40,7 @@ export const fitCameraToSideView = () => {
   return new Promise((resolve) => {
     const groupRef = configValuesStore.groupRef?.current;
     if (!groupRef) {
-      console.error('groupRef not found');
+      // console.error('groupRef not found');
       resolve();
       return;
     }
@@ -48,10 +48,12 @@ export const fitCameraToSideView = () => {
     const box = new THREE.Box3().setFromObject(groupRef);
     const size = box.getSize(new THREE.Vector3());
     const center = box.getCenter(new THREE.Vector3());
-    
+
+    // console.log("size", size, "center", center);
+
     if (configValuesStore.controlRef.current) {
       configValuesStore.controlRef.current.setLookAt(
-        center.x + 5 * size.x,
+      center.x + 8 * size.x,
       center.y,
       center.z,
       center.x,

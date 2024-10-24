@@ -4,7 +4,7 @@ function Arrow({
     dir,
     length,
     color,
-    arrowLength = 5,
+    arrowLength = 2,
     arrowWidth = 2,
 }) {
     return (

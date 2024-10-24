@@ -67,7 +67,7 @@ const LoadCamera = observer(() => {
     if (childCount != 41) {
       fitCameraToGroup();
     }
-  }, [childCount]); // Run when childCount changes
+  }, [childCount, configValuesStore.configValues]); // Run when childCount changes
 
   useEffect(() => {
     const groupRef = configValuesStore.groupRef?.current;
@@ -105,13 +105,13 @@ const LoadCamera = observer(() => {
           />
           <CameraControls
             ref={controlsRef}
-            minDistance={1}
+            minDistance={50}
             maxDistance={400}
             dollyToCursor={true}
-            // maxPolarAngle={Math.PI / 2}
-            // minPolarAngle={Math.PI / 8}
-            // maxAzimuthAngle={Math.PI / 4}
-            // minAzimuthAngle={-Math.PI / 4}
+            maxPolarAngle={Math.PI / 2}
+            minPolarAngle={Math.PI / 8}
+            maxAzimuthAngle={Math.PI / 4}
+            minAzimuthAngle={-Math.PI / 4}
           />
         </>
       ) : (
@@ -119,13 +119,13 @@ const LoadCamera = observer(() => {
           <OrthographicCamera position={[-88, 45, 135]} ref={cameraRef} makeDefault/>
           <CameraControls
             ref={controlsRef}
-            minDistance={1}
+            minDistance={50}
             maxDistance={400}
             dollyToCursor={true}
-            // maxPolarAngle={Math.PI / 2}
-            // minPolarAngle={Math.PI / 8}
-            // maxAzimuthAngle={Math.PI / 4}
-            // minAzimuthAngle={-Math.PI / 4}
+            maxPolarAngle={Math.PI / 2}
+            minPolarAngle={Math.PI / 8}
+            maxAzimuthAngle={Math.PI / 4}
+            minAzimuthAngle={-Math.PI / 4}
           />
         </>
       )}

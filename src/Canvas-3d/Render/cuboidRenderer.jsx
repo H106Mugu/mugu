@@ -124,7 +124,16 @@ const CuboidRenderer = observer(({ cuboidData }) => {
       }
     }
 
-    configValuesStore.setSelectedCuboid(rawIndex, colIndex);
+    if (
+      configValuesStore.selectedCuboid.rawIndex === rawIndex &&
+      configValuesStore.selectedCuboid.colIndex === colIndex
+    ) {
+      // If the current selection is the same as before, null the selected cuboid
+      configValuesStore.setSelectedCuboid(null);
+    } else {
+      // Otherwise, update with the new rawIndex and colIndex
+      configValuesStore.setSelectedCuboid(rawIndex, colIndex);
+    }
     configValuesStore.setSelectedPanel(null);
     // if (configValuesStore.selectionType === "element") {
     // }

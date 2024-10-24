@@ -5,8 +5,9 @@ import {
   getLastCuboidInTallestColumn,
   getLastCuboidOfFirstRow,
 } from "../Utils/CuboidUtils";
+import { observer } from "mobx-react-lite";
 
-const AllDimensionLines = () => {
+const AllDimensionLines = observer(() => {
   // Define an array of points for the dimension lines
   const [dimensionLinesData, setDimensionLinesData] = useState([]);
 
@@ -57,6 +58,6 @@ const AllDimensionLines = () => {
         ))}
     </>
   );
-};
+});
 
 export default AllDimensionLines;

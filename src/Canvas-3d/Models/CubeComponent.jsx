@@ -6,8 +6,9 @@ import { getEdgePoints } from "../Utils/EdgePointsUtils";
 import { EdgeCylinder } from "./EdgeCylinder";
 import * as THREE from "three";
 import configValuesStore from "../../mobx/stores/configValuesStore";
+import { observer } from "mobx-react-lite";
 
-export const CubeComponent = ({
+export const CubeComponent = observer(({
   position,
   rotation,
   size,
@@ -310,7 +311,7 @@ export const CubeComponent = ({
         </>
       )}
 
-      {displayEdgesElement && (
+      {displayEdgesElement && configValuesStore.getShowHoveredEdges && (
         <>
           {edges.slice(0, 12).map((edge, index) => (
             <EdgeCylinder
@@ -327,7 +328,7 @@ export const CubeComponent = ({
       {displayEdgesPanel.length > 0 &&
         configValuesStore.configValues.shelfType === "acrylic" &&
         configValuesStore.getAllConfigValues.structureElements !==
-          "withoutShelves" && ( // Corrected single & to &&
+          "withoutShelves" && configValuesStore.getShowHoveredEdges && ( // Corrected single & to &&
           <>
             {displayEdgesPanel.map(({ indices, color }) =>
               indices.map((edgeIndex) => (
@@ -378,4 +379,4 @@ export const CubeComponent = ({
         )}
     </>
   );
-};
+});

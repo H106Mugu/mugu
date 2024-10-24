@@ -119,10 +119,10 @@ const SubmitFormModal = observer(({ open, onClose }) => {
     submitFormStore.setFields(values);
     setLoading(true);
 
-    console.log(
-      "configValuesStore.getAllImagesUrl.frontView",
-      configValuesStore.getAllImagesUrl.frontView
-    );
+    // console.log(
+    //   "configValuesStore.getAllImagesUrl.frontView",
+    //   configValuesStore.getAllImagesUrl.frontView
+    // );
     // Create the PDF
     const doc = (
       <PDFDocument
