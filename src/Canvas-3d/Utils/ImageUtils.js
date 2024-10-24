@@ -12,9 +12,18 @@ export async function addImages() {
   const parent = canvas.parentElement;
 
   if (!canvas || !camera || !groupRef) {
-    console.error("Canvas, camera, or groupRef not found");
+    // console.error("Canvas, camera, or groupRef not found");
     return;
   }
+
+  configValuesStore.selectedCuboid = {
+    rawIndex: null,
+    colIndex: null,
+  };
+
+  configValuesStore.setShowDimensions();
+
+  configValuesStore.setShowHoveredEdges();
 
   // Step 1: Capture isometricView
   await captureSingleView(
@@ -25,6 +34,10 @@ export async function addImages() {
     parent,
     0.92
   );
+
+  configValuesStore.setShowDimensions();
+
+  configValuesStore.setShowHoveredEdges();
 
   // 2.8 for 3 images
   // 0.92 for 1 image
@@ -76,13 +89,13 @@ async function captureSingleView(
       await fitCameraToSideView(); // Adjust camera for top view
       break;
     default:
-      console.error("Invalid view type");
+      // console.error("Invalid view type");
       return;
   }
 
   const img = await getBlobURL(canvas);
   configValuesStore.imageUrl[view] = img;
-  console.log(`Image captured for ${view}:`, configValuesStore.imageUrl[view]);
+  // console.log(`Image captured for ${view}:`, configValuesStore.imageUrl[view]);
 
   // Reset parent size to full window after capturing
   parent.style.width = "100%";
@@ -111,7 +124,7 @@ function wait(inWaitTime) {
 function getCanvasSize(aspectRatio = 1.4) {
   const windowWidth = window.innerWidth;
   const windowHeight = window.innerHeight;
-  console.log(windowWidth, windowHeight);
+  // console.log(windowWidth, windowHeight);
 
   // Check if the window's width or height should be used based on the aspect ratio
   if (windowWidth / windowHeight > aspectRatio) {

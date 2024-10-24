@@ -28,7 +28,11 @@ class ConfigValuesStore {
     height: 350,
   };
 
+  // showHoverEdges = observable.box(false);
+
   showDimensions = observable.box(false);
+
+  showHoveredEdges = observable.box(true);
 
   totalDepth = 300;
 
@@ -55,6 +59,10 @@ class ConfigValuesStore {
     return this.showDimensions.get();
   }
 
+  get getShowHoveredEdges() {
+    return this.showHoveredEdges.get();
+  }
+
   // Define your observable state as an object
   configValues = observable(
     {
@@ -79,7 +87,7 @@ class ConfigValuesStore {
   );
 
   constructor() {
-    console.log("class initialized");
+    // console.log("class initialized");
     // Automatically make properties observable
     makeAutoObservable(this, {
       configValues: observable, // Mark configValues explicitly as observable
@@ -127,9 +135,12 @@ class ConfigValuesStore {
     }
   }
 
-  setShowDimensions() {
-    this.showDimensions.set(!this.showDimensions.get());
-    console.log("inside store", this.showDimensions.get());
+  setShowDimensions(value) {
+    this.showDimensions.set(value);
+  }
+
+  setShowHoveredEdges() {
+    this.showHoveredEdges.set(!this.showHoveredEdges.get());
   }
 
   setgroupRef(value) {
