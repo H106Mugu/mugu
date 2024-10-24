@@ -23,19 +23,22 @@ export async function addImages() {
     camera,
     groupRef,
     parent,
-    2.8
+    0.92
   );
 
-  configValuesStore.setIs2D(true);
-  await wait(50);
+  // 2.8 for 3 images
+  // 0.92 for 1 image
 
-  // Step 2: Capture frontView
-  await captureSingleView("frontView", canvas, camera, groupRef, parent, 1.8);
+  // configValuesStore.setIs2D(true);
+  // await wait(50);
 
-  // Step 3: Capture sideView
-  await captureSingleView("sideView", canvas, camera, groupRef, parent, 0.6);
+  // // Step 2: Capture frontView
+  // await captureSingleView("frontView", canvas, camera, groupRef, parent, 1.8);
 
-  configValuesStore.setIs2D(false);
+  // // Step 3: Capture sideView
+  // await captureSingleView("sideView", canvas, camera, groupRef, parent, 0.6);
+
+  // configValuesStore.setIs2D(false);
 }
 
 // New function that handles capturing a specific view

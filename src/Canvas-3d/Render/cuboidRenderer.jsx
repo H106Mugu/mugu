@@ -25,24 +25,26 @@ const CuboidRenderer = observer(({ cuboidData }) => {
   const [isVisiblePanelBottom, setIsVisiblePanelBottom] = useState(false);
   const breakpoint = useBreakpoints();
 
-
   // Local state to store previous shelfType
   // const [prevShelfType, setPrevShelfType] = useState(null);
 
   useEffect(() => {
     const checkVisible =
-    configValuesStore.selectedCuboid.rawIndex === raw_index &&
-    configValuesStore.selectedCuboid.colIndex === col_index &&
-    (breakpoint !== "xs" && breakpoint !== "sm" || configValuesStore.currentConfigType === "structure");
-  
+      configValuesStore.selectedCuboid.rawIndex === raw_index &&
+      configValuesStore.selectedCuboid.colIndex === col_index &&
+      ((breakpoint !== "xs" && breakpoint !== "sm") ||
+        configValuesStore.currentConfigType === "structure");
+
     setIsVisible(checkVisible);
     const checkVisiblePanelTop =
       configValuesStore.selectedPanel.rawIndex === raw_index + 1 &&
-      (breakpoint !== "xs" && breakpoint !== "sm" || configValuesStore.currentConfigType === "color");
+      ((breakpoint !== "xs" && breakpoint !== "sm") ||
+        configValuesStore.currentConfigType === "color");
     setIsVisiblePanelTop(checkVisiblePanelTop);
     const checkVisiblePanelBottom =
       configValuesStore.selectedPanel.rawIndex === raw_index &&
-      (breakpoint !== "xs" && breakpoint !== "sm" || configValuesStore.currentConfigType === "color");;
+      ((breakpoint !== "xs" && breakpoint !== "sm") ||
+        configValuesStore.currentConfigType === "color");
     setIsVisiblePanelBottom(checkVisiblePanelBottom);
     if (configValuesStore.selectionType === "panel") {
       setIsVisible(false);
@@ -79,6 +81,16 @@ const CuboidRenderer = observer(({ cuboidData }) => {
 
     // // Update the previous shelfType
     // setPrevShelfType(currentShelfType);
+
+    // if (configValuesStore.getAllConfigValues.shelfType === "stainless") {
+    //   configValuesStore.setConfigValue("width", 313);
+    //   configValuesStore.setConfigValue("height", 313);
+    //   configValuesStore.setConfigValue("depth", 313);
+    // } else if (configValuesStore.getAllConfigValues.shelfType === "acrylic") {
+    //   configValuesStore.setConfigValue("width", 270);
+    //   configValuesStore.setConfigValue("height", 270);
+    //   configValuesStore.setConfigValue("depth", 270);
+    // }
 
     configValuesStore.setSelectedCuboid(rawIndex, colIndex);
     configValuesStore.setSelectedPanel(null);

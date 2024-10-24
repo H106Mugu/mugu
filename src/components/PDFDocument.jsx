@@ -251,7 +251,7 @@ const PDFDocument = ({ data }) => (
             }}
           />
         </View>
-        <View style={styles.frontAndSideImage}>
+        {/* <View style={styles.frontAndSideImage}>
           <View style={styles.frontImage}>
             <Image
               style={{
@@ -270,7 +270,7 @@ const PDFDocument = ({ data }) => (
               src={data.images.side}
             />
           </View>
-        </View>
+        </View> */}
       </View>
     </Page>
     <Page size="A4" style={styles.page}>

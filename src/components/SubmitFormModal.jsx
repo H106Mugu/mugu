@@ -294,9 +294,9 @@ const SubmitFormModal = observer(({ open, onClose }) => {
           <Form.Item className="w-full pb-[32px]">
             <Button
               loading={loading}
-              disabled={Object.values(configValuesStore.getAllImagesUrl).some(
-                (image) => image === null
-              )}
+              disabled={
+                configValuesStore.getAllImagesUrl.isometricView === null
+              }
               type="default"
               htmlType="submit"
               className="w-full"
