@@ -54,35 +54,57 @@ function getPanelColors(colorRows, type) {
 const getUnitDimensions = (configValuesStore) => {
   const totalWidth = configValuesStore.totalLength.width;
   const totalHeight = configValuesStore.totalLength.height;
-  const totalDepth = configValuesStore.configValues[0][0].depth;
+  const totalDepth = configValuesStore.getAllConfigValues[0][0].depth;
 
   // Get unique column widths (assumes all rows have the same number of columns)
-  const columnWidths = Object.keys(configValuesStore.configValues[0]).map(
-    (colIndex) => configValuesStore.configValues[0][colIndex].width
+  const columnWidths = Object.keys(configValuesStore.getAllConfigValues[0]).map(
+    (colIndex) => configValuesStore.getAllConfigValues[0][colIndex]?.width
   );
 
+  // // Get row heights
+  // const rowHeights = Object.keys(configValuesStore.getAllConfigValues).map(
+  //   (rowIndex) => configValuesStore.getAllConfigValues[rowIndex][0]?.height
+  // );
+
   // Get row heights
-  const rowHeights = Object.keys(configValuesStore.configValues).map(
-    (rowIndex) => configValuesStore.configValues[rowIndex][0].height
+  const rowHeights = Object.keys(configValuesStore.getAllConfigValues).map(
+    (rowIndex) => {
+      const row = configValuesStore.getAllConfigValues[rowIndex];
+
+      // Ensure that row is an object
+      if (typeof row === "object" && row !== null) {
+        // Find the first cuboid with a height in the row object
+        const firstValidCuboid = Object.values(row).find(
+          (cuboid) => cuboid && cuboid.height
+        );
+
+        // Return the height if a valid cuboid is found, otherwise null
+        return firstValidCuboid ? firstValidCuboid.height : null;
+      }
+
+      // If row is not an object, return null or handle as needed
+      return null;
+    }
   );
 
   // Format column width string (only once for all columns)
   const columnWidthString = columnWidths
-    .filter((width) => width !== undefined)
+    .filter((width) => width !== undefined && width !== null)
     .map((width, index) => `C${index + 1}: ${width}mm`)
     .join(", ");
 
   // Format row height string (once per row, from bottom to top)
   const rowHeightString = rowHeights
-    .filter((height) => height !== undefined)
+    .filter((height) => height !== undefined && height !== null)
     .map((height, index) => `R${index + 1}: ${height}mm`)
     .join(", ");
 
-  return [
-    `${totalWidth}mm x ${totalHeight}mm x ${totalDepth}mm, Depth: ${totalDepth}mm`,
-    `Column Width: From left (${columnWidthString})`,
-    `Row Height: From bottom (${rowHeightString})`,
-  ].join("\n");
+  return {
+    totalDimensions: `${totalWidth}mm x ${totalHeight}mm x ${totalDepth}mm`,
+    columnWidths: `From left (${columnWidthString})`,
+    rowHeights: `From bottom (${rowHeightString})`,
+    unitDepth: `${totalDepth}mm`,
+  };
 };
 
 const SubmitFormModal = observer(({ open, onClose }) => {
@@ -90,6 +112,8 @@ const SubmitFormModal = observer(({ open, onClose }) => {
   const { submitFormStore, configValuesStore } = useStores();
   const [loading, setLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const { totalDimensions, columnWidths, rowHeights, unitDepth } =
+    getUnitDimensions(configValuesStore);
 
   const onFinish = async (values) => {
     submitFormStore.setFields(values);
@@ -121,8 +145,20 @@ const SubmitFormModal = observer(({ open, onClose }) => {
               ),
             },
             {
-              key: "Unit Dimensions",
-              value: getUnitDimensions(configValuesStore),
+              key: "Total Dimensions(WxHxD)",
+              value: totalDimensions,
+            },
+            {
+              key: "Column Width",
+              value: columnWidths,
+            },
+            {
+              key: "Row Height",
+              value: rowHeights,
+            },
+            {
+              key: "Unit Depth",
+              value: unitDepth,
             },
             {
               key: "Panel Colour",
@@ -151,7 +187,7 @@ const SubmitFormModal = observer(({ open, onClose }) => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "Mugu-quote.pdf";
+    a.download = "Mugu-quote-" + values.name + ".pdf";
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -258,9 +294,9 @@ const SubmitFormModal = observer(({ open, onClose }) => {
           <Form.Item className="w-full pb-[32px]">
             <Button
               loading={loading}
-              disabled={
-                Object.values(configValuesStore.getAllImagesUrl)[2] === null
-              }
+              disabled={Object.values(configValuesStore.getAllImagesUrl).some(
+                (image) => image === null
+              )}
               type="default"
               htmlType="submit"
               className="w-full"

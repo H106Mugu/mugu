@@ -23,6 +23,9 @@ const CuboidRenderer = observer(({ cuboidData }) => {
   const [isVisiblePanelTop, setIsVisiblePanelTop] = useState(false);
   const [isVisiblePanelBottom, setIsVisiblePanelBottom] = useState(false);
 
+  // Local state to store previous shelfType
+  // const [prevShelfType, setPrevShelfType] = useState(null);
+
   useEffect(() => {
     const checkVisible =
       configValuesStore.selectedCuboid.rawIndex === raw_index &&
@@ -59,6 +62,16 @@ const CuboidRenderer = observer(({ cuboidData }) => {
   }, [configValuesStore.selectionType]);
 
   const handleCubeSelect = (rawIndex, colIndex) => {
+    // const currentShelfType = configValuesStore.getAllConfigValues.shelfType;
+
+    // // Compare previous shelfType with current shelfType
+    // if (prevShelfType && prevShelfType !== currentShelfType) {
+    //   alert("Prev shelfType changes");
+    // }
+
+    // // Update the previous shelfType
+    // setPrevShelfType(currentShelfType);
+
     configValuesStore.setSelectedCuboid(rawIndex, colIndex);
     configValuesStore.setSelectedPanel(null);
     // if (configValuesStore.selectionType === "element") {
