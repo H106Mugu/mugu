@@ -3,6 +3,8 @@ import { Radio } from "antd";
 import colorCheckMark from "../assets/icons/color-check.svg";
 import useBreakpoints from "../hooks/useBreakpoints";
 
+const hexColorRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{8})$/;
+
 const CustomAntdRadioGroup = ({
   value = null, // Default value is null
   options = [], // Array of radio options
@@ -34,9 +36,9 @@ const CustomAntdRadioGroup = ({
     onChange(e); // Call the onChange handler
   };
 
-  const isColorOption = options
-    ?.map((option) => option.value)
-    .includes("#f7531d");
+  const isColorOption = options?.some((option) =>
+    hexColorRegex.test(option.value)
+  );
 
   const getButtonWidth = () => {
     // Calculate the width based on the number of options

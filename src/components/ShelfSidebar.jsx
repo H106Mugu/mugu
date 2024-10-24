@@ -290,11 +290,25 @@ const ShelfSidebar = observer(() => {
           newDepthOptions = [{ label: "313", value: "313" }];
           handleChangeOnce(newDepthOptions[0].value, "depth", "6");
 
-          newHeightOptions = ["121", "313", "483", "603"].map((h) => ({
-            label: h,
-            value: h,
-          }));
-          handleChangeOnce(newHeightOptions[0].value, "height", "7");
+          if (selectedStructureElement === "all") {
+            newHeightOptions = ["313"].map((h) => ({
+              label: h,
+              value: h,
+            })); //reducing height options to only 313 for structure all
+          }
+
+          if (selectedStructureElement === "withoutBack") {
+            newHeightOptions = ["121", "313", "483", "603"].map((h) => ({
+              label: h,
+              value: h,
+            }));
+          }
+
+          handleChangeOnce(
+            newHeightOptions[selectedStructureElement === "all" ? 0 : 1].value,
+            "height",
+            "7"
+          );
         } else if (selectedWidth?.toString() === "313") {
           newDepthOptions = ["121", "313", "483", "603"].map((d) => ({
             label: d,
@@ -325,11 +339,31 @@ const ShelfSidebar = observer(() => {
           newDepthOptions = [{ label: "313", value: "313" }];
           handleChangeOnce(newDepthOptions[0].value, "depth", "12");
 
-          newHeightOptions = ["121", "313", "483", "603"].map((h) => ({
-            label: h,
-            value: h,
-          }));
-          handleChangeOnce(newHeightOptions[0].value, "height", "13");
+          // newHeightOptions = ["313"].map((h) => ({
+          //   label: h,
+          //   value: h,
+          // })); //reducing height options to only 313
+          // handleChangeOnce(newHeightOptions[0].value, "height", "13");
+
+          if (selectedStructureElement === "all") {
+            newHeightOptions = ["313"].map((h) => ({
+              label: h,
+              value: h,
+            })); //reducing height options to only 313 for structure all
+          }
+
+          if (selectedStructureElement === "withoutBack") {
+            newHeightOptions = ["121", "313", "483", "603"].map((h) => ({
+              label: h,
+              value: h,
+            }));
+          }
+
+          handleChangeOnce(
+            newHeightOptions[selectedStructureElement === "all" ? 0 : 1].value,
+            "height",
+            "13"
+          );
         }
       } else if (selectedStructureElement === "withTopAndBottomOnly") {
         if (

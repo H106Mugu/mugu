@@ -18,6 +18,8 @@ import { fitCameraToReset } from "../Canvas-3d/Utils/CameraUtils";
 import Loader from "../components/Loader";
 import Tour from "reactour";
 
+let wasCubeSelectedBeforeTour = false;
+
 const ShelfConfigurator = observer(() => {
   // const steps = [
   //   {
@@ -240,9 +242,42 @@ const ShelfConfigurator = observer(() => {
   };
 
   useEffect(() => {
-    if (isTourOpen) return;
-    setTourCurrentStep(1);
+    let isCuboidNotSelected =
+      configValuesStore.getSelectedCuboidIndex.colIndex === null &&
+      configValuesStore.getSelectedCuboidIndex.rawIndex === null;
+
+    if (isTourOpen) {
+      if (isCuboidNotSelected) {
+        wasCubeSelectedBeforeTour = false;
+        configValuesStore.setSelectedCuboid(0, 0);
+      } else {
+        wasCubeSelectedBeforeTour = true;
+      }
+    } else {
+      setTourCurrentStep(1);
+      if (!wasCubeSelectedBeforeTour) {
+        configValuesStore.setSelectedCuboid(null, null);
+      }
+    }
   }, [isTourOpen]);
+
+  useEffect(() => {
+    if (isMobile) {
+      switch (tourCurrentStep) {
+        case 1:
+          configValuesStore.setCurrentConfigType("type");
+          break;
+        case 2:
+          configValuesStore.setCurrentConfigType("structure");
+          break;
+        case 4:
+          configValuesStore.setCurrentConfigType("color");
+          break;
+        default:
+          break;
+      }
+    }
+  }, [tourCurrentStep]);
 
   return (
     <>
@@ -414,7 +449,7 @@ const ShelfConfigurator = observer(() => {
         showButtons={false}
         maskSpace={5}
         rounded={
-          isMobile && [1, 2, 4, 5].includes(tourCurrentStep)
+          isMobile && [1, 2, 4].includes(tourCurrentStep)
             ? 20
             : [3].includes(tourCurrentStep)
             ? 30

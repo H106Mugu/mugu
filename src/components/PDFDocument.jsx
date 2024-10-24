@@ -20,7 +20,6 @@ import instagramIcon from "../assets/icons/instagramIcon.png";
 // Import font files directly
 import InterRegular from "../assets/fonts/Inter/static/Inter_18pt-Regular.ttf";
 import InterBold from "../assets/fonts/Inter/static/Inter_18pt-Bold.ttf";
-import configValuesStore from "../mobx/stores/configValuesStore";
 
 // Register the Inter font from local files
 Font.register({
@@ -88,7 +87,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     width: "100%",
-    height: "45px",
+    height: "40px",
     borderBottom: "1px solid #DFDCDC",
   },
   tableCell: {
@@ -134,13 +133,43 @@ const styles = StyleSheet.create({
     color: "#000000", // Standard color for links in PDFs
     textDecoration: "none", // Remove underline from links
   },
+  threeDImage: {
+    flex: 1, // This will take up all the remaining space
+    justifyContent: "center", // Center content vertically
+    alignItems: "center", // Center content horizontally
+    backgroundColor: "#DFDCDC", // Example background color
+    marginBottom: 16,
+  },
+  frontAndSideImage: {
+    display: "flex",
+    gap: 16,
+    flexDirection: "row",
+    flex: 1, // This will take up all the remaining space
+    justifyContent: "center", // Center content vertically
+    alignItems: "center", // Center content horizontally
+  },
+  frontImage: {
+    width: "66%",
+    height: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#DFDCDC",
+  },
+  sideImage: {
+    width: "34%",
+    height: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#DFDCDC",
+  },
 });
 
 const PAGE_HEIGHT = 297; // A4 page height in mm
 
-// Heights for each section in percentage of the page height
 // const sectionHeights = [7.1, 12.1, 41.8, 22.8, 9, 7.1];
-const sectionHeights = [7.1, 12.1, 41.8, 28, 10, 7.1];
+const sectionHeights = [7.1, 12.1, 80.8, 7.1, 40, 9, 7.1]; // percentages of page height
 
 function formatDate(date) {
   const options = { day: "numeric", month: "long", year: "numeric" };
@@ -159,25 +188,6 @@ function formatDate(date) {
 
   return formattedDate.replace(/(\d+)/, `$&${suffix}`);
 }
-
-const tableData = [
-  {
-    key: "Base shelf type",
-    value: "Acrylic Panel",
-  },
-  {
-    key: "Structure element",
-    value: "With top and bottom only",
-  },
-  {
-    key: "Total Dimensions (W*H*D)",
-    value: "800mm x 600mm x 400mm",
-  },
-  {
-    key: "Panel Colour",
-    value: "Transparent Black(Panel 1,3), Transparent Orange(Panel 2)",
-  },
-];
 
 const PDFDocument = ({ data }) => (
   <Document>
@@ -228,125 +238,45 @@ const PDFDocument = ({ data }) => (
         style={{
           ...styles.section,
           height: `${(sectionHeights[2] * PAGE_HEIGHT) / 100}mm`,
+          padding: 20,
         }}
       >
-        <View
-          style={{
-            padding: 2,
-          }}
-        >
-          <Text style={styles.title}>Your configuration</Text>
-          <View style={{ ...styles.sectionFlexRow, gap: 14 }}>
-            <View
-              style={{
-                ...styles.leftColumn,
-                backgroundColor: "#DFDCDC",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                {/* <Text style={styles.title}>3D view</Text>
-                <Text style={styles.text}>
-                  This will showcase the how the configuration has been made for
-                  the customized unit.
-                </Text> */}
-                <Image
-                    src={data?.images?.isometric}
-                    style={{ height: 300 }} // Specify dimensions as numbers
-                    alt="isometric view"
-                  />
-              </View>
-            </View>
-            <View
-              style={{
-                ...styles.rightColumn,
-                padding: 0,
-                display: "flex",
-                flexDirection: "column",
-                gap: 14,
-              }}
-            >
-              <View
-                style={{
-                  width: "100%",
-                  flex: 1,
-                  backgroundColor: "#DFDCDC",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  padding: 2,
-                }}
-              >
-                <View
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  {/* <Text style={styles.title}>Front view</Text>
-                  <Text style={styles.text}>
-                    This will indicate the width of each column and height of
-                    the each row.
-                  </Text> */}
-                  <Image
-                    src={data?.images?.front}
-                    style={{ height: 300 }} // Specify dimensions as numbers
-                    alt="Front view"
-                  />
-                </View>
-              </View>
-              <View
-                style={{
-                  width: "100%",
-                  flex: 1,
-                  backgroundColor: "#DFDCDC",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  padding: 2,
-                }}
-              >
-                <View
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  {/* <Text style={styles.title}>Top view</Text>
-                  <Text style={styles.text}>
-                    This will indicate the depth of the unit.
-                  </Text> */}
-                  <Image
-                    src={data?.images?.top}
-                    style={{ height: 300 }} // Specify dimensions as numbers
-                    alt="Top view"
-                  />
-                </View>
-              </View>
-            </View>
+        <Text style={styles.title}>Your configuration</Text>
+        <View style={styles.threeDImage}>
+          <Text style={styles.text}>3D View</Text>
+        </View>
+        <View style={styles.frontAndSideImage}>
+          <View style={styles.frontImage}>
+            <Text style={styles.text}>Front View</Text>
+          </View>
+          <View style={styles.sideImage}>
+            <Text style={styles.text}>Side View</Text>
+          </View>
+        </View>
+      </View>
+    </Page>
+    <Page size="A4" style={styles.page}>
+      <View
+        style={{
+          ...styles.section,
+          height: `${(sectionHeights[3] * PAGE_HEIGHT) / 100}mm`,
+        }}
+      >
+        <View style={styles.sectionFlexRow}>
+          <View style={styles.leftColumn}>
+            <Image src={muguLogo} style={styles.logo} />
+          </View>
+          <View style={styles.rightColumn}>
+            <Text style={styles.section1Text}>
+              "Modular designs, unique utility in every grid."
+            </Text>
           </View>
         </View>
       </View>
       <View
         style={{
           ...styles.section,
-          height: `${(sectionHeights[3] * PAGE_HEIGHT) / 100}mm`,
+          height: `${(sectionHeights[4] * PAGE_HEIGHT) / 100}mm`,
         }}
       >
         <View
@@ -360,9 +290,7 @@ const PDFDocument = ({ data }) => (
               <View
                 style={[
                   styles.tableRow, // Default row style
-                  index === tableData.length - 1 && styles.lastRow, // Add lastRow style if it's the last row
-                  index === 2 && { height: "120px" }, // Apply a height of 45px for the row with index 2
-                  index === 3 && { height: "80px" }, // Apply a height of 45px for the row with index 2
+                  index === data?.materialInfo.length - 1 && styles.lastRow, // Add lastRow style if it's the last row
                 ]}
                 key={index}
               >
@@ -380,7 +308,7 @@ const PDFDocument = ({ data }) => (
       <View
         style={{
           ...styles.section,
-          height: `${(sectionHeights[4] * PAGE_HEIGHT) / 100}mm`,
+          height: `${(sectionHeights[5] * PAGE_HEIGHT) / 100}mm`,
         }}
       >
         <View
@@ -398,7 +326,7 @@ const PDFDocument = ({ data }) => (
       <View
         style={{
           ...styles.sectionWithoutBorder,
-          height: `${(sectionHeights[5] * PAGE_HEIGHT) / 100}mm`,
+          height: `${(sectionHeights[6] * PAGE_HEIGHT) / 100}mm`,
         }}
       >
         <View style={styles.rowContainer}>
