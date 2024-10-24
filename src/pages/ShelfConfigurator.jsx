@@ -65,7 +65,6 @@ const ShelfConfigurator = observer(() => {
     setChecked((prevChecked) => !prevChecked); // Toggle the checked state
     configValuesStore.setShowDimensions();
     console.log("inside shelf");
-
   };
 
   const onConfigTypeChange = (e) => {
@@ -408,14 +407,14 @@ const ShelfConfigurator = observer(() => {
               }}
               className="w-full"
             >
-              Start Tour
+              <span className="text-sm">Start Tour</span>
             </Button>
             <Button
               type="default"
               onClick={() => modalStore.setModalState(true)}
               className="w-full"
             >
-              Get Started
+              <span className="text-sm">Get Started</span>
             </Button>
           </div>
         }
