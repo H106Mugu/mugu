@@ -174,7 +174,7 @@ const SubmitFormModal = observer(({ open, onClose }) => {
           ],
           images: {
             front: configValuesStore.getAllImagesUrl.frontView,
-            top: configValuesStore.getAllImagesUrl.topView,
+            side: configValuesStore.getAllImagesUrl.sideView,
             isometric: configValuesStore.getAllImagesUrl.isometricView,
           },
           // configValues: submitFormStore.configValues,

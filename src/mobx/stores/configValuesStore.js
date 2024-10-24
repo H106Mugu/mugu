@@ -34,7 +34,7 @@ class ConfigValuesStore {
 
   imageUrl = {
     frontView: null,
-    topView: null,
+    sideView: null,
     isometricView: null,
   };
 

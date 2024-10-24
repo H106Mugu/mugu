@@ -10,29 +10,43 @@ export async function addImages() {
 
   const canvas = document.querySelector("#canvas");
   const parent = canvas.parentElement;
-  
+
   if (!canvas || !camera || !groupRef) {
     console.error("Canvas, camera, or groupRef not found");
     return;
   }
 
   // Step 1: Capture isometricView
-  await captureSingleView("isometricView", canvas, camera, groupRef, parent, 1.46);
+  await captureSingleView(
+    "isometricView",
+    canvas,
+    camera,
+    groupRef,
+    parent,
+    2.8
+  );
 
   configValuesStore.setIs2D(true);
   await wait(50);
 
   // Step 2: Capture frontView
-  await captureSingleView("frontView", canvas, camera, groupRef, parent, 0.96);
+  await captureSingleView("frontView", canvas, camera, groupRef, parent, 1.8);
 
-  // Step 3: Capture topView
-  await captureSingleView("topView", canvas, camera, groupRef, parent, 0.46);
+  // Step 3: Capture sideView
+  await captureSingleView("sideView", canvas, camera, groupRef, parent, 0.6);
 
   configValuesStore.setIs2D(false);
 }
 
 // New function that handles capturing a specific view
-async function captureSingleView(view, canvas, camera, groupRef, parent, aspectRatio) {
+async function captureSingleView(
+  view,
+  canvas,
+  camera,
+  groupRef,
+  parent,
+  aspectRatio
+) {
   const fitToOptions = {
     cover: false,
     paddingLeft: 10,
@@ -41,7 +55,7 @@ async function captureSingleView(view, canvas, camera, groupRef, parent, aspectR
     paddingTop: 5,
   };
 
-  const { width, height } = getCanvasSize(aspectRatio, canvas);  // Adjust aspect ratio for different views
+  const { width, height } = getCanvasSize(aspectRatio, canvas); // Adjust aspect ratio for different views
   parent.style.width = `${width}px`; // Add 'px' to width
   parent.style.height = `${height}px`; // Add 'px' to height
 
@@ -55,7 +69,7 @@ async function captureSingleView(view, canvas, camera, groupRef, parent, aspectR
       await camera.current.fitToBox(groupRef.current, true, fitToOptions); // Fit camera to front view
       // resolve();
       break;
-    case "topView":
+    case "sideView":
       await fitCameraToSideView(); // Adjust camera for top view
       break;
     default:
@@ -68,8 +82,8 @@ async function captureSingleView(view, canvas, camera, groupRef, parent, aspectR
   console.log(`Image captured for ${view}:`, configValuesStore.imageUrl[view]);
 
   // Reset parent size to full window after capturing
-  parent.style.width = '100%';
-  parent.style.height = '100%';
+  parent.style.width = "100%";
+  parent.style.height = "100%";
 
   await wait(100);
 }
@@ -109,7 +123,5 @@ function getCanvasSize(aspectRatio = 1.4) {
     return { width, height };
   }
 }
-
-
 
 window.getCanvasSize = getCanvasSize;

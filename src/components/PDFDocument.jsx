@@ -243,14 +243,32 @@ const PDFDocument = ({ data }) => (
       >
         <Text style={styles.title}>Your configuration</Text>
         <View style={styles.threeDImage}>
-          <Text style={styles.text}>3D View</Text>
+          <Image
+            src={data.images.isometric}
+            style={{
+              height: "100%",
+              objectFit: "contain",
+            }}
+          />
         </View>
         <View style={styles.frontAndSideImage}>
           <View style={styles.frontImage}>
-            <Text style={styles.text}>Front View</Text>
+            <Image
+              style={{
+                height: "100%",
+                objectFit: "contain",
+              }}
+              src={data.images.front}
+            />
           </View>
           <View style={styles.sideImage}>
-            <Text style={styles.text}>Side View</Text>
+            <Image
+              style={{
+                height: "100%",
+                objectFit: "contain",
+              }}
+              src={data.images.side}
+            />
           </View>
         </View>
       </View>
