@@ -42,6 +42,19 @@ class ConfigValuesStore {
     isometricView: null,
   };
 
+  // New property to store previous shelfType
+  previousShelfType = null;
+
+  // Getter for previousShelfType
+  get getPreviousShelfType() {
+    return this.previousShelfType;
+  }
+
+  // Set the previousShelfType manually (if needed)
+  setPreviousShelfType(value) {
+    this.previousShelfType = value;
+  }
+
   get getAllImagesUrl() {
     return { ...this.imageUrl };
   }
@@ -177,6 +190,12 @@ class ConfigValuesStore {
     let col_index = this.selectedCuboid.colIndex;
 
     if (key === "shelfType" || key === "structureElements" || key === "color") {
+      if (key === "shelfType") {
+        if (this.previousShelfType !== this.configValues.shelfType) {
+          this.previousShelfType = this.configValues.shelfType;
+        }
+      }
+
       if (key !== "color") {
         this.configValues[key] = value;
       }
@@ -272,6 +291,74 @@ class ConfigValuesStore {
         return;
       }
     }
+  }
+
+  setConfigDimensionAtPosition(key, value, raw_index, col_index) {
+    // Handle width: update the value in all rows of a particular column (colIndex)
+    if (key === "width") {
+      value = parseInt(value);
+      if (raw_index != null) {
+        const oldValue = this.configValues[raw_index][col_index][key];
+        if (this.totalLength.width + value - oldValue > 2500) {
+          return;
+        }
+        Object.keys(this.configValues).forEach((rowIndex) => {
+          if (typeof this.configValues[rowIndex] === "object") {
+            if (this.configValues[rowIndex][col_index]) {
+              this.configValues[rowIndex][col_index][key] = value; // Update width
+            }
+          }
+        });
+        this.recalculateStartWidthHeight(col_index, parseInt(value));
+        this.configValues = { ...this.configValues };
+        return;
+      }
+      // else {
+      //   alert("Please select a cuboid first");
+      // }
+    }
+
+    // Handle height: update the value in all columns of a particular row (raw_index)
+    if (key === "height") {
+      value = parseInt(value);
+      if (raw_index != null) {
+        const oldValue = this.configValues[raw_index][col_index][key];
+        if (this.totalLength.height + value - oldValue > 2500) {
+          return;
+        }
+      }
+      if (raw_index !== null) {
+        Object.keys(this.configValues[raw_index]).forEach((colIndex) => {
+          this.configValues[raw_index][colIndex][key] = value;
+        });
+        this.recalculateStartWidthHeight(col_index, parseInt(value));
+        this.configValues = { ...this.configValues };
+        return;
+      }
+    }
+
+    // Handle depth: update the value in all cells (all rows and columns)
+    if (key === "depth") {
+      value = parseInt(value);
+
+      if (raw_index != null) {
+        Object.keys(this.configValues).forEach((configKey) => {
+          const row = this.configValues[configKey];
+          if (row && typeof row === "object" && !Array.isArray(row)) {
+            Object.keys(row).forEach((colIndex) => {
+              const cuboid = row[colIndex];
+              if (cuboid && typeof cuboid === "object") {
+                cuboid[key] = value;
+              }
+            });
+          }
+        });
+        this.totalDepth = value + 30;
+        this.configValues = { ...this.configValues };
+        return;
+      }
+    }
+    // this.configValues = { ...this.configValues };
   }
 
   // Function to recalculate startWidth for all cuboids in the specified column
