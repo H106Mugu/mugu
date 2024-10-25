@@ -133,7 +133,7 @@ export const acrylicColorOptions = [
         </div>
       </div>
     ),
-    value: "#f7531d",
+    value: "#C36F0C",
   },
   {
     label: (
@@ -147,7 +147,7 @@ export const acrylicColorOptions = [
         </div>
       </div>
     ),
-    value: "#000000",
+    value: "#4D5461",
   },
   {
     label: (
@@ -192,7 +192,7 @@ export const stainlessColorOptions = [
         </div>
       </div>
     ),
-    value: "#EB5300",
+    value: "#CC4219",
   },
   {
     label: (
@@ -206,7 +206,7 @@ export const stainlessColorOptions = [
         </div>
       </div>
     ),
-    value: "#FFC525",
+    value: "#C9913A",
   },
   {
     label: (
@@ -248,7 +248,7 @@ export const stainlessColorOptions = [
         </div>
       </div>
     ),
-    value: "#F2D8D7",
+    value: "#D4ADA2",
   },
   {
     label: (
@@ -262,7 +262,7 @@ export const stainlessColorOptions = [
         </div>
       </div>
     ),
-    value: "#B0D0E7",
+    value: "#55707F",
   },
 ];
 
