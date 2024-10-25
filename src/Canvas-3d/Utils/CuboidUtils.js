@@ -26,7 +26,14 @@ export const getCuboidParameters = (configValues, raw_index, col_index) => {
           startWidth = configValues[0][col_index - 1].startWidth + (configValues[0][col_index - 1].width / 10);
         }     
       } else {
+    const rowData = configValues[raw_index]
+    const keys = Object.keys(rowData);
+    const rowFirstElement = rowData[keys[0]];
+    if (rowFirstElement) {
+      height = rowFirstElement.height;
+    }else {
         height = defaultCuboid.height;
+    }
         startWidth = defaultCuboid.startWidth;
       }
 
