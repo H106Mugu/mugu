@@ -68,7 +68,7 @@ async function captureSingleView(
     paddingLeft: 10,
     paddingRight: 10,
     paddingBottom: 5,
-    paddingTop: 5,
+    paddingTop: 20,
   };
 
   const { width, height } = getCanvasSize(aspectRatio, canvas); // Adjust aspect ratio for different views
