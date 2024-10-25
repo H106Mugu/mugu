@@ -46,7 +46,7 @@ export const getLegPipes = (corners) => {
         return false;
       }
       return !configValuesStore.hasCuboidAt(rawIndex + 1, colIndex) && 
-        !configValuesStore.hasCuboidAt(rawIndex, colIndex + 1);
+        (rawIndex !== 0 || !configValuesStore.hasCuboidAt(rawIndex, colIndex + 1));
     }
 
     return false;
