@@ -320,11 +320,32 @@ const ShelfSidebar = observer(() => {
             newHeightOptions = [{ label: "313", value: "313" }];
             handleChangeOnce(newHeightOptions[0].value, "height", "9");
           } else if (selectedDepth?.toString() === "313") {
-            newHeightOptions = ["121", "313", "483", "603"].map((h) => ({
-              label: h,
-              value: h,
-            }));
-            handleChangeOnce(newHeightOptions[1].value, "height", "10");
+            // newHeightOptions = ["121", "313", "483", "603"].map((h) => ({
+            //   label: h,
+            //   value: h,
+            // }));
+            // handleChangeOnce(newHeightOptions[1].value, "height", "10");
+
+            if (selectedStructureElement === "all") {
+              newHeightOptions = ["313"].map((h) => ({
+                label: h,
+                value: h,
+              })); //reducing height options to only 313 for structure all
+            }
+
+            if (selectedStructureElement === "withoutBack") {
+              newHeightOptions = ["121", "313", "483", "603"].map((h) => ({
+                label: h,
+                value: h,
+              }));
+            }
+
+            handleChangeOnce(
+              newHeightOptions[selectedStructureElement === "all" ? 0 : 1]
+                .value,
+              "height",
+              "10"
+            );
           } else if (
             selectedDepth?.toString() === "483" ||
             selectedDepth?.toString() === "603"
@@ -338,12 +359,6 @@ const ShelfSidebar = observer(() => {
         ) {
           newDepthOptions = [{ label: "313", value: "313" }];
           handleChangeOnce(newDepthOptions[0].value, "depth", "12");
-
-          // newHeightOptions = ["313"].map((h) => ({
-          //   label: h,
-          //   value: h,
-          // })); //reducing height options to only 313
-          // handleChangeOnce(newHeightOptions[0].value, "height", "13");
 
           if (selectedStructureElement === "all") {
             newHeightOptions = ["313"].map((h) => ({
@@ -753,15 +768,6 @@ const ShelfSidebar = observer(() => {
       tourClass: "tour-btn-color-desktop",
     },
   ];
-
-  // console.log(
-  //   "widthNew",
-  //   configValuesStore.getAllConfigValues[
-  //     parseInt(configValuesStore.getSelectedCuboidIndex.rawIndex) || 0
-  //   ][parseInt(configValuesStore.getSelectedCuboidIndex.colIndex) || 0][
-  //     "width"
-  //   ]?.toString()
-  // );
 
   return (
     <>
