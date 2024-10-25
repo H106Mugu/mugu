@@ -50,7 +50,7 @@ const Canvas_3d = observer(() => {
         {/* Scene contents */}
         <Plane />
         <Environment
-          files={"public/poly_haven_studio_1k.hdr"}
+          files={"/poly_haven_studio_1k.hdr"}
           intensity={0.5}
         />
         <Render />
