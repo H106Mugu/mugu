@@ -21,8 +21,8 @@ const Canvas_3d = observer(() => {
       <Canvas
         id="canvas"
         gl={(canvas) => ({
-          toneMapping: THREE.ACESFilmicToneMapping,
-          toneMappingExposure: 1.5,
+          toneMapping: THREE.LinearToneMapping,
+          toneMappingExposure: 1,
           outputColorSpace: THREE.sRGBEncoding,
           antialias: true,
         })}

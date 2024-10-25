@@ -60,8 +60,8 @@ class ConfigValuesStore {
   }
 
   colorRows = {
-    0: "#f7531d",
-    1: "#f7531d",
+    0: "#C36F0C",
+    1: "#C36F0C",
   };
 
   get getIs2d() {
@@ -455,7 +455,7 @@ class ConfigValuesStore {
     };
 
     if (!this.colorRows[raw_index + 1]) {
-      this.colorRows[raw_index + 1] = "#f7531d";
+      this.colorRows[raw_index + 1] = this.colorRows[raw_index];
     }
 
     this.configValues = { ...this.configValues };
