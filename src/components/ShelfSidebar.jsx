@@ -41,134 +41,11 @@ const ShelfSidebar = observer(() => {
     defaultStructureElements
   );
   const [changedKey, setChangedKey] = useState("0");
-  const { configValuesStore, submitFormStore } = useStores();
+  const { configValuesStore, submitFormStore, loadingStore } = useStores();
 
   const selectedCuboid = configValuesStore.getSelectedCuboid;
-  const selectedCuboidIndex = {
-    rowIndex: configValuesStore.getSelectedCuboid.rawIndex,
-    colIndex: configValuesStore.getSelectedCuboid.colIndex,
-  };
 
   const [messageApi, contextHolder] = message.useMessage();
-
-  // const getUpdatedOptions = (
-  //   shelfType,
-  //   selectedWidth,
-  //   selectedDepth,
-  //   selectedStructureElement
-  // ) => {
-  //   let newWidthOptions = [];
-  //   let newDepthOptions = [];
-  //   let newHeightOptions = [];
-  //   let newStructureElements = [];
-
-  //   if (shelfType === "acrylic") {
-  //     newWidthOptions = [
-  //       { label: "270", value: "270" },
-  //       { label: "370", value: "370" },
-  //     ];
-  //     newHeightOptions = [
-  //       { label: "121", value: "121" },
-  //       { label: "180", value: "180" },
-  //       { label: "200", value: "200" },
-  //       { label: "270", value: "270" },
-  //       { label: "313", value: "313" },
-  //       { label: "370", value: "370" },
-  //       { label: "483", value: "483" },
-  //       { label: "603", value: "603" },
-  //     ];
-  //     newDepthOptions = [...newWidthOptions];
-  //     newStructureElements = defaultStructureElements.filter((option) =>
-  //       ["withTopAndBottomOnly", "withoutShelves"].includes(option.value)
-  //     );
-  //   } else if (shelfType === "stainless") {
-  //     // Set structureElements for stainless
-  //     newStructureElements = defaultStructureElements.filter((option) =>
-  //       ["all", "withoutBack", "withTopAndBottomOnly"].includes(option.value)
-  //     );
-  //     // Common width options for "stainless"
-  //     newWidthOptions = [
-  //       { label: "121", value: "121" },
-  //       { label: "313", value: "313" },
-  //       { label: "483", value: "483" },
-  //       { label: "603", value: "603" },
-  //     ];
-
-  //     if (
-  //       selectedStructureElement === "all" ||
-  //       selectedStructureElement === "withoutBack"
-  //     ) {
-  //       if (selectedWidth === "121") {
-  //         newDepthOptions = [{ label: "313", value: "313" }];
-  //         newHeightOptions = ["121", "313", "483", "603"].map((h) => ({
-  //           label: h,
-  //           value: h,
-  //         }));
-  //       } else if (selectedWidth === "313") {
-  //         newDepthOptions = ["121", "313", "483", "603"].map((d) => ({
-  //           label: d,
-  //           value: d,
-  //         }));
-  //         if (selectedDepth === "121") {
-  //           newHeightOptions = [{ label: "313", value: "313" }];
-  //         } else if (selectedDepth === "313") {
-  //           newHeightOptions = ["121", "313", "483", "603"].map((h) => ({
-  //             label: h,
-  //             value: h,
-  //           }));
-  //         } else if (selectedDepth === "483" || selectedDepth === "603") {
-  //           newHeightOptions = [{ label: "313", value: "313" }];
-  //         }
-  //       } else if (selectedWidth === "483" || selectedWidth === "603") {
-  //         newDepthOptions = [{ label: "313", value: "313" }];
-  //         newHeightOptions = ["121", "313", "483", "603"].map((h) => ({
-  //           label: h,
-  //           value: h,
-  //         }));
-  //       }
-  //     } else if (selectedStructureElement === "withTopAndBottomOnly") {
-  //       if (
-  //         selectedWidth === "121" ||
-  //         selectedWidth === "483" ||
-  //         selectedWidth === "603"
-  //       ) {
-  //         newDepthOptions = [{ label: "313", value: "313" }];
-  //         newHeightOptions = [
-  //           "121",
-  //           "180",
-  //           "200",
-  //           "270",
-  //           "313",
-  //           "370",
-  //           "483",
-  //           "603",
-  //         ].map((h) => ({ label: h, value: h }));
-  //       } else if (selectedWidth === "313") {
-  //         newDepthOptions = ["121", "313", "483", "603"].map((d) => ({
-  //           label: d,
-  //           value: d,
-  //         }));
-  //         newHeightOptions = [
-  //           "121",
-  //           "180",
-  //           "200",
-  //           "270",
-  //           "313",
-  //           "370",
-  //           "483",
-  //           "603",
-  //         ].map((h) => ({ label: h, value: h }));
-  //       }
-  //     }
-  //   }
-
-  //   return {
-  //     widthOptions: newWidthOptions,
-  //     depthOptions: newDepthOptions,
-  //     heightOptions: newHeightOptions,
-  //     structureElements: newStructureElements,
-  //   };
-  // };
 
   const getUpdatedOptions = (
     shelfType,
@@ -820,8 +697,10 @@ const ShelfSidebar = observer(() => {
               size="large"
               type="default"
               className="w-full py-6 rounded-full"
-              onClick={() => {
-                addImages();
+              onClick={async () => {
+                loadingStore.setLoader(true, "Loading");
+                await addImages();
+                loadingStore.setLoader(false, "");
                 submitFormStore.setModalOpen(true);
               }}
             >

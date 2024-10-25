@@ -109,7 +109,7 @@ const getUnitDimensions = (configValuesStore) => {
 
 const SubmitFormModal = observer(({ open, onClose }) => {
   const [form] = Form.useForm();
-  const { submitFormStore, configValuesStore } = useStores();
+  const { submitFormStore, configValuesStore, loadingStore } = useStores();
   const [loading, setLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { totalDimensions, columnWidths, rowHeights, unitDepth } =
@@ -119,10 +119,6 @@ const SubmitFormModal = observer(({ open, onClose }) => {
     submitFormStore.setFields(values);
     setLoading(true);
 
-    // console.log(
-    //   "configValuesStore.getAllImagesUrl.frontView",
-    //   configValuesStore.getAllImagesUrl.frontView
-    // );
     // Create the PDF
     const doc = (
       <PDFDocument

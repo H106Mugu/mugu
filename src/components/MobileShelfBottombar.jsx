@@ -10,7 +10,7 @@ import { addImages } from "../Canvas-3d/Utils/ImageUtils";
 const MobileShelfBottombar = observer(({ sidebarOptionsData, changedKey }) => {
   const [isColorTabVisitedOnce, setIsColorTabVisitedOnce] = useState(false);
   const breakpoint = useBreakpoints();
-  const { submitFormStore, configValuesStore } = useStores();
+  const { submitFormStore, configValuesStore, loadingStore } = useStores();
   const [messageApi, contextHolder] = message.useMessage();
 
   // Filter sidebarOptionsData based on currentConfigType
@@ -89,8 +89,10 @@ const MobileShelfBottombar = observer(({ sidebarOptionsData, changedKey }) => {
             size="middle"
             type="default"
             className="ms-auto rounded-full border-theme-primary hover:!bg-[#d9d9d9]"
-            onClick={() => {
-              addImages();
+            onClick={async () => {
+              loadingStore.setLoader(true, "Loading");
+              await addImages();
+              loadingStore.setLoader(false, "");
               submitFormStore.setModalOpen(true);
             }}
           >
