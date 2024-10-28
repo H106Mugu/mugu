@@ -8,6 +8,7 @@ import { CubeComponent } from "../Models/CubeComponent";
 import configValuesStore from "../../mobx/stores/configValuesStore";
 import { observer } from "mobx-react-lite"; // Import observer from mobx-react-lite
 import useBreakpoints from "../../hooks/useBreakpoints";
+import { message } from "antd";
 
 const CuboidRenderer = observer(({ cuboidData }) => {
   const {
@@ -69,14 +70,20 @@ const CuboidRenderer = observer(({ cuboidData }) => {
   }, [configValuesStore.selectionType]);
 
   const handleCubeSelect = (rawIndex, colIndex) => {
+    if (
+      (breakpoint === "xs" || breakpoint === "sm") &&
+      (configValuesStore.getCurrentConfigType === "type" ||
+        configValuesStore.getCurrentConfigType === "color")
+    ) {
+      message.info({
+        content:
+          "To select an element or panel, please proceed to the next step!",
+        duration: 5, // duration in seconds (default is 3 seconds)
+      });
+    }
+
     const prevShelfType = configValuesStore.getPreviousShelfType;
     const currentShelfType = configValuesStore.getAllConfigValues.shelfType;
-
-    console.log(
-      "prevShelfType, currentShelfType",
-      prevShelfType,
-      currentShelfType
-    );
 
     // Compare previous shelfType with current shelfType
     if (prevShelfType && prevShelfType !== currentShelfType) {
@@ -143,8 +150,20 @@ const CuboidRenderer = observer(({ cuboidData }) => {
   };
 
   const handlePanelSelect = (rawIndex) => {
+    if (
+      (breakpoint === "xs" || breakpoint === "sm") &&
+      (configValuesStore.getCurrentConfigType === "type" ||
+        configValuesStore.getCurrentConfigType === "structure")
+    ) {
+      message.info({
+        content:
+          "To select an element or panel, please proceed to the next step!",
+        duration: 5, // duration in seconds (default is 3 seconds)
+      });
+    }
     configValuesStore.setSelectedPanel(rawIndex);
     configValuesStore.setSelectedCuboid(null, null);
+
     // if (configValuesStore.selectionType === "panel") {
     // } else {
     //   configValuesStore.setSelectedPanel(null);

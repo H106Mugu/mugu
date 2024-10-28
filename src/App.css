@@ -181,3 +181,11 @@
 .ant-tooltip-inner {
   height: 0px !important;
 }
+
+.ant-message-notice-content {
+  color: white;
+}
+
+.ant-message-info > .anticon {
+  color: white !important;
+}
