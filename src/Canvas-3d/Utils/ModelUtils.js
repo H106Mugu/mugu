@@ -14,6 +14,42 @@ export const cornerOffsets = [
   [0, 0, 1], [1, 0, 1], [1, 1, 1], [0, 1, 1]  // Front face
 ];
 
+export const getPlanes = (height, width, depth, planeRefsCube) => {
+  const planeDims = [
+  {
+    position: [0, height / 20, 0],
+    rotation: [-Math.PI / 2, 0, 0],
+    face: "top",
+    ref: planeRefsCube.current[0],
+  },
+  {
+    position: [0, -height / 20, 0],
+    rotation: [-Math.PI / 2, 0, 0],
+    face: "bottom",
+    ref: planeRefsCube.current[1],
+  },
+  {
+    position: [width / 20, 0, 0],
+    rotation: [0, Math.PI / 2, 0],
+    face: "right",
+    ref: planeRefsCube.current[2],
+  },
+  {
+    position: [-width / 20, 0, 0],
+    rotation: [0, Math.PI / 2, 0],
+    face: "left",
+    ref: planeRefsCube.current[3],
+  },
+  {
+    position: [0, 0, -depth / 20],
+    rotation: [0, Math.PI, 0],
+    face: "back",
+    ref: planeRefsCube.current[4],
+  },
+];
+  return planeDims
+};
+
 // Bottom corner indices
 export const bottomCornersIndices = [0, 1, 4, 5]; 
 

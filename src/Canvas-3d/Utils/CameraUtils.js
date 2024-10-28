@@ -4,6 +4,7 @@ import * as THREE from "three";
 export const fitCameraToReset = () => {
   return new Promise((resolve) => {
     const groupRef = configValuesStore.groupRef?.current;
+    const controlsRef = configValuesStore.controlRef?.current;
     if (!groupRef) {
       // console.error('groupRef not found');
       resolve();
@@ -18,9 +19,9 @@ export const fitCameraToReset = () => {
     const fov = 50 * (Math.PI / 180);
     const cameraDistance = maxDim / (1.5 * Math.tan(fov / 2));
 
-    if (configValuesStore.controlRef.current) {
-      configValuesStore.controlRef.current.setLookAt(
-        -88 - size.y * 0.2,
+    if (controlsRef) {
+      controlsRef.setLookAt(
+        88 + size.y * 0.2,
         45 + size.y * 0.5,
         135 + cameraDistance * 0.3,
         center.x,
@@ -28,6 +29,8 @@ export const fitCameraToReset = () => {
         center.z,
         true
       ).then(() => {
+        console.log("up", controlsRef);
+        // controlsRef.object.up.set(0, 1, 0);
         resolve();
       });
     } else {

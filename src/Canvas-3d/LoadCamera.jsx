@@ -11,7 +11,7 @@ import { observer } from "mobx-react-lite";
 
 const LoadCamera = observer(() => {
   // Start with the initial camera position
-  const [position, setPosition] = useState([-88, 45, 135]);
+  const [position, setPosition] = useState([88, 45, 135]);
   const cameraRef = useRef();
   const controlsRef = configValuesStore.controlRef;
   const [childCount, setChildCount] = useState(0);
@@ -98,7 +98,7 @@ const LoadCamera = observer(() => {
       {!configValuesStore.getIs2d ? (
         <>
           <PerspectiveCamera
-            position={[-88, 45, 135]}
+            position={[88, 45, 135]}
             fov={50}
             ref={cameraRef}
             makeDefault
@@ -116,7 +116,7 @@ const LoadCamera = observer(() => {
         </>
       ) : (
         <>
-          <OrthographicCamera position={[-88, 45, 135]} ref={cameraRef} makeDefault/>
+          <OrthographicCamera position={[88, 45, 135]} ref={cameraRef} makeDefault/>
           <CameraControls
             ref={controlsRef}
             minDistance={50}

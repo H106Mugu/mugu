@@ -11,6 +11,6 @@ export const Supporter = ({ position, uniqueKey }) => {
     const { adjustedPosition, rotation } = adjustPositionAndGetRotation(parseInt(uniqueKey), position);
 
     return (
-        <primitive object={clonedScene} position={adjustedPosition} scale={scale} rotation={rotation} />
+        <primitive object={clonedScene} position={adjustedPosition} scale={scale} rotation={rotation} castShadow receiveShadow/>
     );
 };

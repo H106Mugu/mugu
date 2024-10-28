@@ -19,6 +19,6 @@ export const LegScrew = ({ position, material }) => {
   modifiedPosition.y -= 0.5;
 
   return (
-    <primitive object={clonedScene} position={modifiedPosition} scale={scale} />
+    <primitive object={clonedScene} position={modifiedPosition} scale={scale} castShadow receiveShadow />
   );
 };

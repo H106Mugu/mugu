@@ -15,6 +15,6 @@ export const EdgeCylinder = ({ start, end, color, radius = 0.7 }) => {
     cylinderMesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), direction.clone().normalize()); // Align with direction
     cylinderMesh.name = "edge-cylinder";
 
-    return <primitive object={cylinderMesh} />;
+    return <primitive object={cylinderMesh} castShadow receiveShadow />;
 
 };

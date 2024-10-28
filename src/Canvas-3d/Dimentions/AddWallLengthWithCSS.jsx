@@ -6,26 +6,21 @@ import * as THREE from "three";
 
 const AddWallLengthWithCSS = ({
   position,
-  direction,
+  // direction,
   totalLength,
   innerLength,
-  normal,
-  normalZUp,
+  // normal,
+  // normalZUp,
   rotation = [0, 0, 0],
 }) => {
   const number = totalLength;
-  const [diRot, setDiRot] = useState([0, 0, 0]);
-  //   console.log("direction", direction);
-  //   console.log("normal", normal);
+  // const [diRot, setDiRot] = useState([0, 0, 0]);
 
-  const directionVector = new Vector3(...direction);
-  const angle = directionVector.angleTo(normal);
-  const temp = new THREE.Vector3(-1, 0, 0);
-  const diRot2 = temp.clone().normalize().multiplyScalar(angle);
-  // setDiRot(normal.clone().normalize().multiplyScalar(angle).toArray());
-  if (diRot == [0, 0, 0]) {
-    // setDiRot([-Math.PI / 2, 0, Math.PI / 2]);
-  }
+
+
+  // if (diRot == [0, 0, 0]) {
+  //   // setDiRot([-Math.PI / 2, 0, Math.PI / 2]);
+  // }
   //   if (normal.equals(new Vector3(0, 1, 0))) diRot.z = Math.PI/2;
   // console.log(diRot)
   //   if (normal.equals(new Vector3(0, 1, 0))) diRot.z = Math.PI / 2;
