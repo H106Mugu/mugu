@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
-import { Modal, Form, Input, Checkbox, Button } from "antd";
+import { Modal, Form, Input, Checkbox, Button, message } from "antd";
 import { useStores } from "../mobx/context/StoreContext";
 import ReCAPTCHA from "react-google-recaptcha";
 
@@ -11,6 +11,7 @@ import PDFDocument from "./PDFDocument";
 import { observer } from "mobx-react-lite";
 import { acrylicColorOptions, stainlessColorOptions } from "../data/optionData";
 import { set } from "mobx";
+import { IoCloseOutline } from "react-icons/io5";
 
 function toBase64(file) {
   return new Promise((resolve, reject) => {
@@ -129,6 +130,7 @@ const SubmitFormModal = observer(({ open, onClose }) => {
     getUnitDimensions(configValuesStore);
   const [captchaValue, setCaptchaValue] = useState(null); // Store captcha value
   const [captchaError, setCaptchaError] = useState(false); // Store captcha error
+  const [messageApi, contextHolder] = message.useMessage();
 
   const onFinish = async (values) => {
     if (!captchaValue) {
@@ -199,11 +201,9 @@ const SubmitFormModal = observer(({ open, onClose }) => {
     );
     const blob = await pdf(doc).toBlob();
 
-    // console.log("PDF Blob, base 64", blob, await toBase64(blob));
-
     // POst api at https://uoqvpuvzgbe4tmdfvd5emkf3de0ewgps.lambda-url.ap-south-1.on.aws/
 
-    const response = await fetch(
+    fetch(
       "https://uoqvpuvzgbe4tmdfvd5emkf3de0ewgps.lambda-url.ap-south-1.on.aws/",
       {
         method: "POST",
@@ -214,34 +214,57 @@ const SubmitFormModal = observer(({ open, onClose }) => {
           name: values.name,
           email: values.email,
           pdf: await toBase64(blob),
+          postcode: values.postcode,
+          requireShipping: values.requireShipping,
         }),
       }
-    );
-    console.log("Response", response);
-    setLoading(false);
-    setIsSubmitted(true);
-    form.resetFields();
+    )
+      .then((response) => {
+        if (response.ok) {
+          // message.success("Form submitted successfully");
+          console.log("Response", response);
+          setLoading(false);
+          setIsSubmitted(true);
+          form.resetFields();
+        }
+      })
+      .catch((error) => {
+        console.error("Error submitting form", error);
+        // message.error("Error submitting form");
 
-    return;
+        messageApi.open({
+          type: "error",
+          duration: 5,
+          content: (
+            <div className="bg-theme-primary text-white text-sm flex items-center">
+              Error submitting form
+              <IoCloseOutline
+                className="text-white text-lg ms-3 cursor-pointer"
+                onClick={() => messageApi.destroy()}
+              />
+            </div>
+          ),
+        });
+
+        setLoading(false);
+      });
 
     // Trigger download
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "Mugu-quote-" + values.name + ".pdf";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    // const url = URL.createObjectURL(blob);
+    // const a = document.createElement("a");
+    // a.href = url;
+    // a.download = "Mugu-quote-" + values.name + ".pdf";
+    // document.body.appendChild(a);
+    // a.click();
+    // document.body.removeChild(a);
+    // URL.revokeObjectURL(url);
 
-    setTimeout(() => {
-      setLoading(false);
-      setIsSubmitted(true);
-      form.resetFields();
-    }, 1800);
+    // setTimeout(() => {
+    //   setLoading(false);
+    //   setIsSubmitted(true);
+    //   form.resetFields();
+    // }, 1800);
   };
-
-  console.log("captchaValue", captchaValue);
 
   const handleCaptchaChange = (value) => {
     setCaptchaError(false); // Reset captcha error when it changes
@@ -249,20 +272,21 @@ const SubmitFormModal = observer(({ open, onClose }) => {
   };
 
   return (
-    <Modal
-      centered
-      width={330}
-      title="Submit your custom design"
-      open={open}
-      onCancel={onClose}
-      footer={null} // No default footer buttons
-    >
-      <div className="font-medium text-sm leading-4">
-        Thank you for customising your shelf design! Please provide your
-        information below, and one of our friendly team members will reach out
-        to you shortly with the quote.
-      </div>
-      {/* <button
+    <>
+      <Modal
+        centered
+        width={330}
+        title="Submit your custom design"
+        open={open}
+        onCancel={onClose}
+        footer={null} // No default footer buttons
+      >
+        <div className="font-medium text-sm leading-4">
+          Thank you for customising your shelf design! Please provide your
+          information below, and one of our friendly team members will reach out
+          to you shortly with the quote.
+        </div>
+        {/* <button
         className="border mt-4 rounded-md p-2 bg-theme-primary text-white"
         onClick={() =>
           form.setFieldsValue({
@@ -275,106 +299,111 @@ const SubmitFormModal = observer(({ open, onClose }) => {
       >
         Fill Form
       </button> */}
-      <p className="my-4 font-semibold">Your info</p>
-      <Form
-        disabled={isSubmitted}
-        form={form}
-        layout="vertical"
-        onFinish={onFinish}
-        onFinishFailed={(errorInfo) => {
-          if (!captchaValue) {
-            setCaptchaError(true);
-          }
-        }}
-        initialValues={{ requireShipping: false }}
-      >
-        <Form.Item
-          name="name"
-          rules={[{ required: true, message: "Please enter your name!" }]}
+        <p className="my-4 font-semibold">Your info</p>
+        <Form
+          disabled={isSubmitted}
+          form={form}
+          layout="vertical"
+          onFinish={onFinish}
+          onFinishFailed={(errorInfo) => {
+            if (!captchaValue) {
+              setCaptchaError(true);
+            }
+          }}
+          initialValues={{ requireShipping: false }}
         >
-          <Input
-            placeholder="Name*"
-            className="!p-[8px] rounded-none border-[#BCBCBC]"
-          />
-        </Form.Item>
-
-        <Form.Item
-          name="email"
-          rules={[
-            {
-              required: true,
-              type: "email",
-              message: "Please enter a valid email!",
-            },
-          ]}
-        >
-          <Input
-            placeholder="Email*"
-            className="!p-[8px] rounded-none border-[#BCBCBC]"
-          />
-        </Form.Item>
-
-        <Form.Item
-          name="postcode"
-          rules={[
-            { required: true, message: "Please enter your postcode!" },
-            {
-              pattern: /^[0-9]{4}$/, // Regular expression for Australian postcodes
-              message: "Please enter a valid Australian postcode!",
-            },
-          ]}
-        >
-          <Input
-            placeholder="Postcode*"
-            className="!p-[8px] rounded-none border-[#BCBCBC]"
-          />
-        </Form.Item>
-
-        <Form.Item
-          name="requireShipping"
-          valuePropName="checked"
-          className="-mt-1"
-        >
-          <Checkbox>Require Shipping</Checkbox>
-        </Form.Item>
-
-        {/* Add reCAPTCHA component */}
-        <Form.Item>
-          <ReCAPTCHA
-            className={`${
-              captchaError ? "border" : "border-none"
-            } border-[#ff4d4f] rounded w-[100.5%] h-[78px]`}
-            sitekey={SITE_KEY}
-            onChange={handleCaptchaChange}
-          />
-          {/* Display error message if reCAPTCHA is not completed */}
-          {captchaError && (
-            <div className="text-[#ff4d4f]">Please complete the reCAPTCHA!</div>
-          )}
-        </Form.Item>
-
-        {isSubmitted ? (
-          <div className="leading-5 pb-7">
-            <div className="text-green-600">Submission Successful!</div>
-            <div>Thank you! We'll in touch soon with your quote.</div>
-          </div>
-        ) : (
-          <Form.Item className="w-full pb-[32px]">
-            <Button
-              loading={loading}
-              disabled={
-                configValuesStore.getAllImagesUrl.isometricView === null
-              }
-              type="default"
-              htmlType="submit"
-              className="w-full"
-            >
-              <span className="text-sm">Submit</span>
-            </Button>
+          <Form.Item
+            name="name"
+            rules={[{ required: true, message: "Please enter your name!" }]}
+          >
+            <Input
+              placeholder="Name*"
+              className="!p-[8px] rounded-none border-[#BCBCBC]"
+            />
           </Form.Item>
-        )}
-      </Form>
-    </Modal>
+
+          <Form.Item
+            name="email"
+            rules={[
+              {
+                required: true,
+                type: "email",
+                message: "Please enter a valid email!",
+              },
+            ]}
+          >
+            <Input
+              placeholder="Email*"
+              className="!p-[8px] rounded-none border-[#BCBCBC]"
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="postcode"
+            rules={[
+              { required: true, message: "Please enter your postcode!" },
+              {
+                pattern: /^[0-9]{4}$/, // Regular expression for Australian postcodes
+                message: "Please enter a valid Australian postcode!",
+              },
+            ]}
+          >
+            <Input
+              placeholder="Postcode*"
+              className="!p-[8px] rounded-none border-[#BCBCBC]"
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="requireShipping"
+            valuePropName="checked"
+            className="-mt-1"
+          >
+            <Checkbox>Require Shipping</Checkbox>
+          </Form.Item>
+
+          {/* Add reCAPTCHA component */}
+          <Form.Item>
+            <ReCAPTCHA
+              disabled={isSubmitted}
+              className={`${
+                captchaError ? "border" : "border-none"
+              } border-[#ff4d4f] rounded w-[100.5%] h-[78px]`}
+              sitekey={SITE_KEY}
+              onChange={handleCaptchaChange}
+            />
+            {/* Display error message if reCAPTCHA is not completed */}
+            {captchaError && (
+              <div className="text-[#ff4d4f]">
+                Please complete the reCAPTCHA!
+              </div>
+            )}
+          </Form.Item>
+
+          {isSubmitted ? (
+            <div className="leading-5 pb-7">
+              <div className="text-green-600">Submission Successful!</div>
+              <div>Thank you! We'll in touch soon with your quote.</div>
+            </div>
+          ) : (
+            <Form.Item className="w-full pb-[32px]">
+              <Button
+                loading={loading}
+                disabled={
+                  configValuesStore.getAllImagesUrl.isometricView === null
+                }
+                type="default"
+                htmlType="submit"
+                className="w-full"
+              >
+                <span className="text-sm">Submit</span>
+              </Button>
+            </Form.Item>
+          )}
+        </Form>
+      </Modal>
+      {contextHolder}
+    </>
   );
 });
 

@@ -57,7 +57,7 @@ const CustomAntdRadioGroup = ({
       optionType={optionType}
       size={"middle"}
       {...restProps}
-      className={`flex gap-0 w-full ${
+      className={`flex gap-0 w-full overflow-x-auto overflow-y-hidden ${
         isVisible ? "opacity-100" : "opacity-0"
       } ${typeof options[0]?.label === "string" ? "gap-3" : "gap-0"}`}
       style={{
