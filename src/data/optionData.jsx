@@ -206,7 +206,7 @@ export const stainlessColorOptions = [
         </div>
       </div>
     ),
-    value: "#C9913A",
+    value: "#BB7E13",
   },
   {
     label: (

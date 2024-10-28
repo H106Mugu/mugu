@@ -19,6 +19,8 @@ export const Connector = ({ position, uniqueKey, raw_index, col_index }) => {
       position={position}
       scale={scale}
       rotation={rotation}
+      castShadow
+      receiveShadow
     />
   );
 };

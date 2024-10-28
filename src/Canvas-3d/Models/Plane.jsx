@@ -10,15 +10,19 @@ export const Plane = () => {
   };
   return (
     <>
-      <mesh rotation={[0, 0, 0]} position={[0, 0, -5]} onDoubleClick={handleDoubleClick}>
+      <mesh rotation={[0, 0, 0]} position={[0, 0, -5]} onDoubleClick={handleDoubleClick} castShadow receiveShadow>
         <planeGeometry args={args} />
         <meshBasicMaterial color={new THREE.Color("#F5F1EB")}  />
       </mesh>
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -25, 0]} onDoubleClick={handleDoubleClick}>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -25, 0]} onDoubleClick={handleDoubleClick} castShadow receiveShadow>
         <planeGeometry args={args} />
         <meshBasicMaterial color={new THREE.Color("#EBE3D7")}  />
       </mesh>
-      <mesh rotation={[0, Math.PI / 2, 0]} position={[-1000, 0, 0]} onDoubleClick={handleDoubleClick}>
+      <mesh rotation={[0, Math.PI / 2, 0]} position={[-1000, 0, 0]} onDoubleClick={handleDoubleClick} castShadow receiveShadow>
+        <planeGeometry args={args} />
+        <meshBasicMaterial color={new THREE.Color("#EBE3D7")}  />
+      </mesh>
+      <mesh rotation={[0, -Math.PI / 2, 0]} position={[1000, 0, 0]} onDoubleClick={handleDoubleClick} castShadow receiveShadow>
         <planeGeometry args={args} />
         <meshBasicMaterial color={new THREE.Color("#EBE3D7")}  />
       </mesh>
