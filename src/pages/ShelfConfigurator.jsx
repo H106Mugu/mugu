@@ -323,11 +323,12 @@ const ShelfConfigurator = observer(() => {
 
           <div className="absolute bottom-4 md:bottom-6 left-4 md:left-8 flex items-center gap-2 z-30 transition-all duration-300">
             <Button
+              type="primary"
               onClick={() => {
                 openTour();
               }}
             >
-              Tour
+              <span className="pt-1">Tour</span>
             </Button>
           </div>
           {/* <div className="absolute top-[5px] lg:top-[75px] right-4 flex flex-col lg:flex-row items-center gap-0 z-30 transition-top duration-200 pointer-events-none opacity-0 md:opacity-100 md:pointer-events-auto">

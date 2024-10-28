@@ -3,12 +3,23 @@
 import React, { useState } from "react";
 import { Modal, Form, Input, Checkbox, Button } from "antd";
 import { useStores } from "../mobx/context/StoreContext";
+import ReCAPTCHA from "react-google-recaptcha";
 
 import { pdf } from "@react-pdf/renderer";
 import PDFDocument from "./PDFDocument";
 
 import { observer } from "mobx-react-lite";
 import { acrylicColorOptions, stainlessColorOptions } from "../data/optionData";
+import { set } from "mobx";
+
+function toBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result.split(",")[1]); // Removing Data URI prefix
+    reader.onerror = (error) => reject(error);
+  });
+}
 
 function convertToSentenceCase(str) {
   // Insert a space before all capital letters and convert the string to lowercase
@@ -107,6 +118,8 @@ const getUnitDimensions = (configValuesStore) => {
   };
 };
 
+const SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
+
 const SubmitFormModal = observer(({ open, onClose }) => {
   const [form] = Form.useForm();
   const { submitFormStore, configValuesStore, loadingStore } = useStores();
@@ -114,8 +127,15 @@ const SubmitFormModal = observer(({ open, onClose }) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { totalDimensions, columnWidths, rowHeights, unitDepth } =
     getUnitDimensions(configValuesStore);
+  const [captchaValue, setCaptchaValue] = useState(null); // Store captcha value
+  const [captchaError, setCaptchaError] = useState(false); // Store captcha error
 
   const onFinish = async (values) => {
+    if (!captchaValue) {
+      setCaptchaError(true);
+      return;
+    }
+
     submitFormStore.setFields(values);
     setLoading(true);
 
@@ -179,6 +199,31 @@ const SubmitFormModal = observer(({ open, onClose }) => {
     );
     const blob = await pdf(doc).toBlob();
 
+    // console.log("PDF Blob, base 64", blob, await toBase64(blob));
+
+    // POst api at https://uoqvpuvzgbe4tmdfvd5emkf3de0ewgps.lambda-url.ap-south-1.on.aws/
+
+    const response = await fetch(
+      "https://uoqvpuvzgbe4tmdfvd5emkf3de0ewgps.lambda-url.ap-south-1.on.aws/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: values.name,
+          email: values.email,
+          pdf: await toBase64(blob),
+        }),
+      }
+    );
+    console.log("Response", response);
+    setLoading(false);
+    setIsSubmitted(true);
+    form.resetFields();
+
+    return;
+
     // Trigger download
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -194,6 +239,13 @@ const SubmitFormModal = observer(({ open, onClose }) => {
       setIsSubmitted(true);
       form.resetFields();
     }, 1800);
+  };
+
+  console.log("captchaValue", captchaValue);
+
+  const handleCaptchaChange = (value) => {
+    setCaptchaError(false); // Reset captcha error when it changes
+    setCaptchaValue(value); // Update captcha value when it changes
   };
 
   return (
@@ -229,6 +281,11 @@ const SubmitFormModal = observer(({ open, onClose }) => {
         form={form}
         layout="vertical"
         onFinish={onFinish}
+        onFinishFailed={(errorInfo) => {
+          if (!captchaValue) {
+            setCaptchaError(true);
+          }
+        }}
         initialValues={{ requireShipping: false }}
       >
         <Form.Item
@@ -279,6 +336,21 @@ const SubmitFormModal = observer(({ open, onClose }) => {
           className="-mt-1"
         >
           <Checkbox>Require Shipping</Checkbox>
+        </Form.Item>
+
+        {/* Add reCAPTCHA component */}
+        <Form.Item>
+          <ReCAPTCHA
+            className={`${
+              captchaError ? "border" : "border-none"
+            } border-[#ff4d4f] rounded w-[100.5%] h-[78px]`}
+            sitekey={SITE_KEY}
+            onChange={handleCaptchaChange}
+          />
+          {/* Display error message if reCAPTCHA is not completed */}
+          {captchaError && (
+            <div className="text-[#ff4d4f]">Please complete the reCAPTCHA!</div>
+          )}
         </Form.Item>
 
         {isSubmitted ? (

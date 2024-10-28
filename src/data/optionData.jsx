@@ -192,7 +192,7 @@ export const stainlessColorOptions = [
         </div>
       </div>
     ),
-    value: "#CC4219",
+    value: "#EB5300",
   },
   {
     label: (
@@ -206,7 +206,7 @@ export const stainlessColorOptions = [
         </div>
       </div>
     ),
-    value: "#C9913A",
+    value: "#FFC525",
   },
   {
     label: (
@@ -248,7 +248,7 @@ export const stainlessColorOptions = [
         </div>
       </div>
     ),
-    value: "#D4ADA2",
+    value: "#F2D8D7",
   },
   {
     label: (
@@ -262,7 +262,7 @@ export const stainlessColorOptions = [
         </div>
       </div>
     ),
-    value: "#55707F",
+    value: "#B0D0E7",
   },
 ];
 

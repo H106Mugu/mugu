@@ -221,7 +221,8 @@ const PDFDocument = ({ data }) => (
             <Text style={styles.text}>{data.basicInfo.name}</Text>
             <Text style={styles.text}>{data.basicInfo.email}</Text>
             <Text style={styles.text}>
-              Postal Code: {data.basicInfo.postcode}
+              Postcode: {data.basicInfo.postcode}, Require Shipping:{" "}
+              {data.basicInfo.requireShipping ? "Yes" : "No"}
             </Text>
           </View>
           <View style={styles.rightColumn}>
