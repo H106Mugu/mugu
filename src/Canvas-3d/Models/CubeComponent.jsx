@@ -7,6 +7,8 @@ import { EdgeCylinder } from "./EdgeCylinder";
 import * as THREE from "three";
 import configValuesStore from "../../mobx/stores/configValuesStore";
 import { observer } from "mobx-react-lite";
+import { getPlanes } from "../Utils/ModelUtils";
+import useBreakpoints from "../../hooks/useBreakpoints";
 
 export const CubeComponent = observer(
   ({
@@ -26,6 +28,8 @@ export const CubeComponent = observer(
     const { raycaster, scene, camera } = useThree();
     const [displayEdgesElement, setDisplayEdgesElement] = useState(false);
     const [displayEdgesPanel, setDisplayEdgesPanel] = useState([]);
+    const breakpoint = useBreakpoints();
+
 
     const handleClick = (event, type) => {
       event.stopPropagation();
@@ -61,38 +65,7 @@ export const CubeComponent = observer(
       Array.from({ length: 6 }, () => React.createRef())
     );
 
-    const planes = [
-      {
-        position: [0, height / 20, 0],
-        rotation: [-Math.PI / 2, 0, 0],
-        face: "top",
-        ref: planeRefsCube.current[0],
-      },
-      {
-        position: [0, -height / 20, 0],
-        rotation: [-Math.PI / 2, 0, 0],
-        face: "bottom",
-        ref: planeRefsCube.current[1],
-      },
-      {
-        position: [width / 20, 0, 0],
-        rotation: [0, Math.PI / 2, 0],
-        face: "right",
-        ref: planeRefsCube.current[2],
-      },
-      {
-        position: [-width / 20, 0, 0],
-        rotation: [0, Math.PI / 2, 0],
-        face: "left",
-        ref: planeRefsCube.current[3],
-      },
-      {
-        position: [0, 0, -depth / 20],
-        rotation: [0, Math.PI, 0],
-        face: "back",
-        ref: planeRefsCube.current[4],
-      },
-    ];
+    const planes = getPlanes(height, width, depth, planeRefsCube);
 
     const edgePosition = [
       position[0] - width / 20,
@@ -156,6 +129,8 @@ export const CubeComponent = observer(
           <Plane
             ref={planeProps.ref}
             key={index}
+            castShadow
+            receiveShadow
             position={[
               position[0] + planeProps.position[0],
               position[1] + planeProps.position[1],
@@ -175,11 +150,6 @@ export const CubeComponent = observer(
                     ? configValuesStore.configValues.color
                     : "black",
                 transparent: true,
-                // opacity:
-                //   configValuesStore.configValues.shelfType === "acrylic" &&
-                //   configValuesStore.colorRows[rawIndex + 1] != "#ffffff"
-                //     ? 0.5
-                //     : 1,
                 ...(configValuesStore.configValues.shelfType === "acrylic" &&
                 configValuesStore.colorRows[rawIndex + 1] != "#ffffff"
                   ? {
@@ -215,6 +185,8 @@ export const CubeComponent = observer(
             {planes.slice(1, 2).map((planeProps, index) => (
               <Plane
                 ref={planeProps.ref}
+                castShadow
+                receiveShadow
                 key={index}
                 position={[
                   position[0] + planeProps.position[0],
@@ -236,25 +208,19 @@ export const CubeComponent = observer(
                         ? configValuesStore.configValues.color
                         : "black",
                     transparent: true,
-                    // opacity:
-                    //   configValuesStore.configValues.shelfType === "acrylic" &&
-                    //   configValuesStore.colorRows[rawIndex] != "#ffffff"
-                    //     ? 0.5
-                    //     : 1,
                     ...(configValuesStore.configValues.shelfType ===
                       "acrylic" &&
                     configValuesStore.colorRows[rawIndex] != "#ffffff"
                       ? {
-                        roughness: 0.1,
-                        metalness: 0,
-                        reflectivity: 1,
-                        transmission: 0.8,
-                        thickness: 0.1,
-                        ior: 1.2,
-                        specularIntensity: 0.1,
-                        clearcoat: 0,
-                        transparent: true,
-                        
+                          roughness: 0.1,
+                          metalness: 0,
+                          reflectivity: 1,
+                          transmission: 0.8,
+                          thickness: 0.1,
+                          ior: 1.2,
+                          specularIntensity: 0.1,
+                          clearcoat: 0,
+                          transparent: true,
                         }
                       : {
                           roughness: 0.6,
@@ -279,6 +245,8 @@ export const CubeComponent = observer(
           <Plane
             ref={planeProps.ref}
             key={index}
+            castShadow
+            receiveShadow
             position={[
               position[0] + planeProps.position[0],
               position[1] + planeProps.position[1],
@@ -309,6 +277,8 @@ export const CubeComponent = observer(
           <Plane
             ref={planeProps.ref}
             key={index}
+            castShadow
+            receiveShadow
             position={[
               position[0] + planeProps.position[0],
               position[1] + planeProps.position[1],
@@ -346,7 +316,8 @@ export const CubeComponent = observer(
           </>
         )}
 
-        {displayEdgesElement && configValuesStore.getShowHoveredEdges && (
+        {displayEdgesElement && configValuesStore.getShowHoveredEdges && ((breakpoint !== "xs" && breakpoint !== "sm") ||
+        configValuesStore.currentConfigType === "structure") && (
           <>
             {edges.slice(0, 12).map((edge, index) => (
               <EdgeCylinder
@@ -364,7 +335,8 @@ export const CubeComponent = observer(
           configValuesStore.configValues.shelfType === "acrylic" &&
           configValuesStore.getAllConfigValues.structureElements !==
             "withoutShelves" &&
-          configValuesStore.getShowHoveredEdges && ( // Corrected single & to &&
+          configValuesStore.getShowHoveredEdges &&  ((breakpoint !== "xs" && breakpoint !== "sm") ||
+          configValuesStore.currentConfigType === "color") && (
             <>
               {displayEdgesPanel.map(({ indices, color }) =>
                 indices.map((edgeIndex) => (

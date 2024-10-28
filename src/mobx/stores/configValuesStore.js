@@ -81,7 +81,7 @@ class ConfigValuesStore {
     {
       shelfType: "acrylic",
       structureElements: "withTopAndBottomOnly",
-      color: "#EB5300",
+      color: "#CC4219",
       0: {
         // Row 0
         0: {
@@ -211,7 +211,7 @@ class ConfigValuesStore {
         // reset all the colorRows
         Object.keys(this.colorRows).forEach((key) => {
           if (this.colorRows[key] === "") {
-            this.colorRows[key] = "#f7531d";
+            this.colorRows[key] = "#C36F0C";
           }
         });
       }

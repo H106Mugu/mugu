@@ -20,13 +20,13 @@ const Canvas_3d = observer(() => {
     <>
       <Canvas
         id="canvas"
+        shadows={{ enabled: true, type: THREE.PCFSoftShadowMap }}
         gl={(canvas) => ({
           toneMapping: THREE.LinearToneMapping,
           toneMappingExposure: 1,
           outputColorSpace: THREE.sRGBEncoding,
           antialias: true,
         })}
-        shadows
         dpr={[1, 2]}
       >
         <ambientLight intensity={0.2} color={"white"} />
@@ -42,7 +42,12 @@ const Canvas_3d = observer(() => {
           intensity={0.4}
           color={"white"}
           distance={500}
+          shadow-bias={-0.009}
+          // shadow-normalBias={0.05}
           decay={0.01}
+          castShadow
+          // shadow-mapSize={[4096, 4096]}
+          // shadow-radius={20}
         />
 
         <color attach="background" args={["#f0f0f0"]} />
@@ -52,6 +57,7 @@ const Canvas_3d = observer(() => {
         <Environment
           files={"/poly_haven_studio_1k.hdr"}
           intensity={0.5}
+          castShadow
         />
         <Render />
         <LoadCamera />

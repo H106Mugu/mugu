@@ -66,7 +66,7 @@ function getPanelColors(colorRows, type) {
 const getUnitDimensions = (configValuesStore) => {
   const totalWidth = configValuesStore.totalLength.width;
   const totalHeight = configValuesStore.totalLength.height;
-  const totalDepth = configValuesStore.getAllConfigValues[0][0].depth;
+  const totalDepth = configValuesStore.totalDepth;
 
   // Get unique column widths (assumes all rows have the same number of columns)
   const columnWidths = Object.keys(configValuesStore.getAllConfigValues[0]).map(
@@ -111,11 +111,13 @@ const getUnitDimensions = (configValuesStore) => {
     .map((height, index) => `R${index + 1}: ${height}mm`)
     .join(", ");
 
+    const unitDepth = configValuesStore.getAllConfigValues[0][0]?.depth;
+
   return {
     totalDimensions: `${totalWidth}mm x ${totalHeight}mm x ${totalDepth}mm`,
     columnWidths: `From left (${columnWidthString})`,
     rowHeights: `From bottom (${rowHeightString})`,
-    unitDepth: `${totalDepth}mm`,
+    unitDepth: `${unitDepth}mm`,
   };
 };
 

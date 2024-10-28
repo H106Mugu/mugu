@@ -29,6 +29,9 @@ const Model = ({
   if (texture) {
     material.roughnessMap = texture;
     material.needsUpdate = true;
+    material.metalness = 0.8;
+    material.roughness = 0.2;
+    material.color = new THREE.Color("#C0C0C0");
   }
 
   const corners = getCorners(width, height, depth, startWidth, startHeight);

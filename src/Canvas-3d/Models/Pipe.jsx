@@ -21,7 +21,7 @@ export const Pipe = ({ start, end, radius = 0.75, material }) => {
     }, [start, end, radius]);
   
     return (
-      <mesh ref={pipeRef} name ="pipe">
+      <mesh ref={pipeRef} name ="pipe" castShadow receiveShadow>
         <cylinderGeometry args={[radius, radius, 1, 16]} />
         <meshStandardMaterial {...material} />
       </mesh>
