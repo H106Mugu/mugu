@@ -81,7 +81,7 @@ class ConfigValuesStore {
     {
       shelfType: "acrylic",
       structureElements: "withTopAndBottomOnly",
-      color: "#CC4219",
+      color: "#EB5300",
       0: {
         // Row 0
         0: {
