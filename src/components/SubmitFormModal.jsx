@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Form, Input, Checkbox, Button, message } from "antd";
 import { useStores } from "../mobx/context/StoreContext";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -111,7 +111,7 @@ const getUnitDimensions = (configValuesStore) => {
     .map((height, index) => `R${index + 1}: ${height}mm`)
     .join(", ");
 
-    const unitDepth = configValuesStore.getAllConfigValues[0][0]?.depth;
+  const unitDepth = configValuesStore.getAllConfigValues[0][0]?.depth;
 
   return {
     totalDimensions: `${totalWidth}mm x ${totalHeight}mm x ${totalDepth}mm`,
@@ -272,6 +272,14 @@ const SubmitFormModal = observer(({ open, onClose }) => {
     setCaptchaError(false); // Reset captcha error when it changes
     setCaptchaValue(value); // Update captcha value when it changes
   };
+
+  useEffect(() => {
+    if (open) {
+      setIsSubmitted(false);
+      setLoading(false);
+      form.resetFields();
+    }
+  }, [open]);
 
   return (
     <>

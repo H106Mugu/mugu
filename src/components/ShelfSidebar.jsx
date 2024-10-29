@@ -167,6 +167,13 @@ const ShelfSidebar = observer(() => {
           newDepthOptions = [{ label: "313", value: "313" }];
           handleChangeOnce(newDepthOptions[0].value, "depth", "6");
 
+          if (
+            selectedWidth?.toString() === "121" &&
+            selectedDepth?.toString() !== "313"
+          ) {
+            handleSidebarOptionsChange("313", "depth", "41");
+          } // empty depth bug fix
+
           if (selectedStructureElement === "all") {
             newHeightOptions = ["313"].map((h) => ({
               label: h,
@@ -192,6 +199,16 @@ const ShelfSidebar = observer(() => {
             value: d,
           }));
           handleChangeOnce(newDepthOptions[1].value, "depth", "8");
+
+          if (
+            selectedStructureElement === "withoutBack" &&
+            selectedWidth?.toString() === "313" &&
+            (selectedDepth?.toString() === "121" ||
+              selectedDepth?.toString() === "483" ||
+              selectedDepth?.toString() === "603")
+          ) {
+            handleSidebarOptionsChange("313", "height", "84");
+          } // empty height bug fix
 
           if (selectedDepth?.toString() === "121") {
             newHeightOptions = [{ label: "313", value: "313" }];
