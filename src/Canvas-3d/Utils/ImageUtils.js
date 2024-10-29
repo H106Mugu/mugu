@@ -21,9 +21,8 @@ export async function addImages() {
     colIndex: null,
   };
 
-  configValuesStore.setShowDimensions();
-
   configValuesStore.setShowHoveredEdges();
+  configValuesStore.selectedPanel.rawIndex = null;
 
   // Step 1: Capture isometricView
   await captureSingleView(
@@ -34,8 +33,6 @@ export async function addImages() {
     parent,
     0.92
   );
-
-  configValuesStore.setShowDimensions();
 
   configValuesStore.setShowHoveredEdges();
 
