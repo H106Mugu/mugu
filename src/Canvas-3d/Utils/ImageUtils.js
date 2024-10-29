@@ -72,8 +72,8 @@ async function captureSingleView(
   };
 
   const { width, height } = getCanvasSize(aspectRatio, canvas); // Adjust aspect ratio for different views
-  parent.style.width = `${width}px`; // Add 'px' to width
-  parent.style.height = `${height}px`; // Add 'px' to height
+  parent.style.width = `${width * 2}px`; // Add 'px' to width
+  parent.style.height = `${height * 2}px`; // Add 'px' to height
 
   await wait(100);
 
@@ -92,6 +92,8 @@ async function captureSingleView(
       // console.error("Invalid view type");
       return;
   }
+
+  await new Promise((resolve) => requestAnimationFrame(resolve));
 
   const img = await getBlobURL(canvas);
   configValuesStore.imageUrl[view] = img;
