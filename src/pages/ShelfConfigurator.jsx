@@ -68,7 +68,6 @@ const ShelfConfigurator = observer(() => {
     } else {
       configValuesStore.setShowDimensions(true);
     }
-    // console.log("inside shelf");
   };
 
   const onConfigTypeChange = (e) => {

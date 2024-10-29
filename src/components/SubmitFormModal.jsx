@@ -224,7 +224,6 @@ const SubmitFormModal = observer(({ open, onClose }) => {
       .then((response) => {
         if (response.ok) {
           // message.success("Form submitted successfully");
-          console.log("Response", response);
           setLoading(false);
           setIsSubmitted(true);
           form.resetFields();
