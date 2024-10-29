@@ -21,7 +21,7 @@ export const fitCameraToReset = () => {
 
     if (controlsRef) {
       controlsRef.setLookAt(
-        88 + size.y * 0.2,
+        88 + size.x * 1.2,
         45 + size.y,
         135 + cameraDistance * 0.3,
         center.x,
@@ -29,8 +29,6 @@ export const fitCameraToReset = () => {
         center.z,
         true
       ).then(() => {
-        console.log("up", controlsRef);
-        // controlsRef.object.up.set(0, 1, 0);
         resolve();
       });
     } else {
