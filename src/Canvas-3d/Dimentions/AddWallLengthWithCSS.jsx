@@ -51,6 +51,7 @@ const AddWallLengthWithCSS = ({
           scale={10}
           transform
           rotation={rotation}
+          zIndexRange={[10, 0]}
           //   rotation={rotation.toArray()}
           //   rotation={[
           //     (euler.x * Math.PI) / 2,
