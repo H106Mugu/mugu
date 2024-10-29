@@ -57,7 +57,7 @@ export function getLastCuboidInTallestColumn(configValues) {
 
   const lastRow = rows[rows.length - 1];
   const lastCol = Object.keys(configValues[lastRow])[0]
-  return [configValues[lastRow][lastCol], lastRow];
+  return [configValues[lastRow][lastCol], parseInt(lastRow)];
 
 }
 

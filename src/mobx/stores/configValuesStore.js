@@ -436,12 +436,16 @@ class ConfigValuesStore {
       raw_index,
       col_index
     );
-    if (startHeight * 10 + 250 + height > 2500) {
-      return;
-    }
-    if (startWidth * 10 + 200 + width > 2500) {
-      return;
-    }
+    // if ((startHeight + 25) * 10 +
+    // height -
+    // 10 +
+    // 15 * (raw_index + 2) > 2500) {
+    //   return;
+    // }
+    // console.log("inside addCuboidAtPosition");
+    // if (startWidth * 10 + 200 + width > 2500) {
+    //   return;
+    // }
 
     // Insert the new cuboid into the configValues store
     this.configValues[raw_index][col_index] = {
