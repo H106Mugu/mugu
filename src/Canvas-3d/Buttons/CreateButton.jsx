@@ -5,7 +5,7 @@ import { getCuboidParameters } from "../Utils/CuboidUtils";
 import { IoMdInformation } from "react-icons/io";
 import { IoCloseOutline } from "react-icons/io5";
 
-const CreateButton = ({ position, raw_index, col_index, onRight = true }) => {
+const CreateButton = ({ position, raw_index, col_index, direction }) => {
   const { configValuesStore } = useStores();
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -30,26 +30,34 @@ const CreateButton = ({ position, raw_index, col_index, onRight = true }) => {
     });
 
   const handleAddCuboid = (width, height, startWidth, startHeight) => {
-    const exceedsLimit = onRight
-      ? (startWidth + 20) * 10 + width + 15 * (col_index + 2) > 2500
-      : (startHeight + 25) * 10 + height - 10 + 15 * (raw_index + 2) > 2500;
+    let exceedsLimit;
+
+    if (direction === "right") {
+      exceedsLimit = (startWidth + 20) * 10 + width + 15 * (col_index + 2) > 2500;
+    } else if (direction === "top") {
+      exceedsLimit = (startHeight + 25) * 10 + height - 10 + 15 * (raw_index + 2) > 2500;
+    }
 
     if (exceedsLimit) {
       openMessage();
       return;
     }
 
-    const [newRawIndex, newColIndex] = onRight
-      ? [raw_index, col_index + 1]
-      : [raw_index + 1, col_index];
+    const [newRawIndex, newColIndex] = direction === "right"
+    ? [raw_index, col_index + 1]
+    : direction === "top"
+      ? [raw_index + 1, col_index]
+      : direction === "left"
+        ? [raw_index, col_index - 1]
+        : [raw_index, col_index]; // Default case, should not happen
     configValuesStore.addCuboidAtPosition(newRawIndex, newColIndex);
   };
 
   const onClick = () => {
     const params = getCuboidParameters(
       configValuesStore.getAllConfigValues,
-      onRight ? raw_index : raw_index + 1,
-      onRight ? col_index + 1 : col_index
+      direction === "top" ? raw_index + 1 : raw_index,
+      direction === "right" ? col_index + 1 : (direction === "left" ? col_index - 1 : col_index)
     );
 
     handleAddCuboid(

@@ -19,6 +19,17 @@ export function isOnRight(raw_index, col_index) {
     return false;
   }
 
+  export function isOnLeft(raw_index, col_index) {
+    const { configValuesStore } = useStores();
+    // Case 1: First row, check if the previous column is empty
+    if (raw_index !== 0 && col_index !== 0 && !configValuesStore.hasCuboidAt(raw_index, col_index - 1) && configValuesStore.hasCuboidAt(raw_index - 1, col_index - 1)) {
+      return true;
+    }
+
+    // Return false if neither condition is met
+    return false;
+  }
+
 export function isOnTop(raw_index, col_index) {
     const { configValuesStore } = useStores();
     return !configValuesStore.hasCuboidAt(raw_index + 1, col_index);
