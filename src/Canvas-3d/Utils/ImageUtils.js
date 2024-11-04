@@ -11,6 +11,8 @@ export async function addImages() {
   const canvas = document.querySelector("#canvas");
   const parent = canvas.parentElement;
 
+  const dimensionState = configValuesStore.getShowDimensions;
+
   if (!canvas || !camera || !groupRef) {
     // console.error("Canvas, camera, or groupRef not found");
     return;
@@ -21,9 +23,13 @@ export async function addImages() {
     colIndex: null,
   };
 
-  configValuesStore.setShowDimensions();
-
   configValuesStore.setShowHoveredEdges();
+  configValuesStore.selectedPanel.rawIndex = null;
+  
+  console.log("dimensionState: ", dimensionState);
+  if (dimensionState) {
+    configValuesStore.setShowDimensions(false);    
+  }
 
   // Step 1: Capture isometricView
   await captureSingleView(
@@ -35,9 +41,12 @@ export async function addImages() {
     0.92
   );
 
-  configValuesStore.setShowDimensions();
 
   configValuesStore.setShowHoveredEdges();
+  console.log("dimensionState: ", dimensionState);
+  if (dimensionState) {
+    configValuesStore.setShowDimensions(true);    
+  }
 
   // 2.8 for 3 images
   // 0.92 for 1 image

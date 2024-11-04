@@ -12,7 +12,9 @@ const CreateButton = ({ position, raw_index, col_index, onRight = true }) => {
   const openMessage = () =>
     messageApi.open({
       type: "info",
-      icon: <IoMdInformation className="text-black bg-white text-xs me-3 rounded-full" />,
+      icon: (
+        <IoMdInformation className="text-black bg-white text-xs me-3 rounded-full" />
+      ),
       duration: 5,
       content: (
         <div className="bg-theme-primary text-white text-sm flex items-center">
@@ -29,15 +31,17 @@ const CreateButton = ({ position, raw_index, col_index, onRight = true }) => {
 
   const handleAddCuboid = (width, height, startWidth, startHeight) => {
     const exceedsLimit = onRight
-      ? startWidth * 10 + 200 + width > 2500
-      : startHeight * 10 + 250 + height > 2500;
+      ? (startWidth + 20) * 10 + width + 15 * (col_index + 2) > 2500
+      : (startHeight + 25) * 10 + height - 10 + 15 * (raw_index + 2) > 2500;
 
     if (exceedsLimit) {
       openMessage();
       return;
     }
 
-    const [newRawIndex, newColIndex] = onRight ? [raw_index, col_index + 1] : [raw_index + 1, col_index];
+    const [newRawIndex, newColIndex] = onRight
+      ? [raw_index, col_index + 1]
+      : [raw_index + 1, col_index];
     configValuesStore.addCuboidAtPosition(newRawIndex, newColIndex);
   };
 
@@ -48,11 +52,22 @@ const CreateButton = ({ position, raw_index, col_index, onRight = true }) => {
       onRight ? col_index + 1 : col_index
     );
 
-    handleAddCuboid(params.width, params.height, params.startWidth, params.startHeight);
+    handleAddCuboid(
+      params.width,
+      params.height,
+      params.startWidth,
+      params.startHeight
+    );
   };
 
   return (
-    <Html position={position} scale={3.5} center zIndexRange={[0, 0]} name="Button">
+    <Html
+      position={position}
+      scale={3.5}
+      center
+      zIndexRange={[0, 0]}
+      name="Button"
+    >
       <div
         className="add-icon-container tour-btn-add-cuboid"
         onClick={onClick}

@@ -38,7 +38,7 @@ const LoadCamera = observer(() => {
     const newPosition = [
       center.x,
       center.y,
-      center.z + cameraDistance * 1.5 + size.z,
+      center.z + cameraDistance * 1.5 + size.z + size.y * 0.2,
     ];
 
     setPosition(newPosition);
