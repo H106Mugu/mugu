@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Model from "../Models/Model";
 import CreateButton from "../Buttons/CreateButton";
-import { isOnRight, isOnTop, handleAddCuboid } from "../Utils/PositionsUtils";
+import { isOnRight, isOnTop, handleAddCuboid, isOnLeft } from "../Utils/PositionsUtils";
 import { CubeComponent } from "../Models/CubeComponent";
 import configValuesStore from "../../mobx/stores/configValuesStore";
 import { observer } from "mobx-react-lite"; // Import observer from mobx-react-lite
@@ -188,7 +188,7 @@ const CuboidRenderer = observer(({ cuboidData }) => {
           raw_index={raw_index}
           col_index={col_index}
           onClick={() => handleAddCuboid(raw_index, col_index + 1)}
-          onRight={true}
+          direction="right"
         />
       )}
 
@@ -203,7 +203,21 @@ const CuboidRenderer = observer(({ cuboidData }) => {
           raw_index={raw_index}
           col_index={col_index}
           onClick={() => handleAddCuboid(raw_index + 1, col_index)}
-          onRight={false}
+          direction="top"
+        />
+      )}
+
+      {isVisible && isOnLeft(raw_index, col_index) && (
+        <CreateButton
+          position={[
+            startWidth,
+            startHeight + height / 20,
+            depth / 20,
+          ]}
+          raw_index={raw_index}
+          col_index={col_index}
+          onClick={() => handleAddCuboid(raw_index + 1, col_index)}
+          direction="left"
         />
       )}
     </React.Fragment>
