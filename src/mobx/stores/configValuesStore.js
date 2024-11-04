@@ -302,16 +302,28 @@ class ConfigValuesStore {
         if (this.totalLength.width + value - oldValue > 2500) {
           return;
         }
+
+        // apply width to all rows and columns in the grid
         Object.keys(this.configValues).forEach((rowIndex) => {
           if (typeof this.configValues[rowIndex] === "object") {
-            if (this.configValues[rowIndex][col_index]) {
-              //appy width to all columns
-              Object.keys(this.configValues[rowIndex]).forEach((colIndex) => {
-                this.configValues[rowIndex][colIndex][key] = value;
-              });
-            }
+            console.log("yftgftuftff", this.configValues[rowIndex][col_index]);
+            //appy width to all columns
+            Object.keys(this.configValues[rowIndex]).forEach((colIndex) => {
+              this.configValues[rowIndex][colIndex][key] = value;
+            });
           }
         });
+
+        // Object.keys(this.configValues).forEach((rowIndex) => {
+        //   if (typeof this.configValues[rowIndex] === "object") {
+        //     if (this.configValues[rowIndex][col_index]) {
+        //       //appy width to all columns
+        //       Object.keys(this.configValues[rowIndex]).forEach((colIndex) => {
+        //         this.configValues[rowIndex][colIndex][key] = value;
+        //       });
+        //     }
+        //   }
+        // });
         this.recalculateStartWidthHeight(col_index, parseInt(value));
         this.configValues = { ...this.configValues };
         return;
@@ -338,11 +350,9 @@ class ConfigValuesStore {
         // apply height to all rows and columns in the grid
         Object.keys(this.configValues).forEach((rowIndex) => {
           if (typeof this.configValues[rowIndex] === "object") {
-            if (this.configValues[rowIndex][col_index]) {
-              Object.keys(this.configValues[rowIndex]).forEach((colIndex) => {
-                this.configValues[rowIndex][colIndex][key] = value;
-              });
-            }
+            Object.keys(this.configValues[rowIndex]).forEach((colIndex) => {
+              this.configValues[rowIndex][colIndex][key] = value;
+            });
           }
         });
 
