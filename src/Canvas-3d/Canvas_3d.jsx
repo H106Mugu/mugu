@@ -5,7 +5,7 @@ import { Canvas, useThree } from "@react-three/fiber";
 import { CameraControls, Environment } from "@react-three/drei";
 import Render from "./Render";
 import { Plane } from "./Models/Plane";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import configValuesStore from "../mobx/stores/configValuesStore";
 import LoadCamera from "./LoadCamera";
 import AllDimensionLines from "./Dimentions/AllDimensionLines";
@@ -15,17 +15,24 @@ import * as THREE from "three";
 const Canvas_3d = observer(() => {
   configValuesStore.setgroupRef(useRef());
   configValuesStore.setControlRef(useRef());
+  const canvasRef = useRef();
+
+  useEffect(() => {
+    if (!canvasRef.current) return;
+    canvasRef.current.id = 'canvas'; // Assign your desired ID here
+}, []);
 
   return (
     <>
       <Canvas
-        id="canvas"
+      ref={canvasRef}
         shadows={{ enabled: true, type: THREE.PCFSoftShadowMap }}
         gl={(canvas) => ({
           toneMapping: THREE.LinearToneMapping,
           toneMappingExposure: 1,
           outputColorSpace: THREE.sRGBEncoding,
           antialias: true,
+          preserveDrawingBuffer: true,
         })}
         dpr={[1, 2]}
       >

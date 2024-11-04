@@ -1,6 +1,5 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-async-promise-executor */
-import domtoimage from "dom-to-image";
 import configValuesStore from "../../mobx/stores/configValuesStore";
 import { fitCameraToReset, fitCameraToSideView } from "./CameraUtils";
 
@@ -8,7 +7,7 @@ export async function addImages() {
   const camera = configValuesStore.controlRef;
   const groupRef = configValuesStore.groupRef;
 
-  const canvas = document.querySelector("#canvas");
+  const canvas = document.getElementById("canvas");
   const parent = canvas.parentElement;
 
   const dimensionState = configValuesStore.getShowDimensions;
@@ -25,10 +24,10 @@ export async function addImages() {
 
   configValuesStore.setShowHoveredEdges();
   configValuesStore.selectedPanel.rawIndex = null;
-  
-  console.log("dimensionState: ", dimensionState);
+
+  // console.log("dimensionState: ", dimensionState);
   if (dimensionState) {
-    configValuesStore.setShowDimensions(false);    
+    configValuesStore.setShowDimensions(false);
   }
 
   // Step 1: Capture isometricView
@@ -43,9 +42,8 @@ export async function addImages() {
 
 
   configValuesStore.setShowHoveredEdges();
-  console.log("dimensionState: ", dimensionState);
   if (dimensionState) {
-    configValuesStore.setShowDimensions(true);    
+    configValuesStore.setShowDimensions(true);
   }
 
   // 2.8 for 3 images
@@ -64,14 +62,7 @@ export async function addImages() {
 }
 
 // New function that handles capturing a specific view
-async function captureSingleView(
-  view,
-  canvas,
-  camera,
-  groupRef,
-  parent,
-  aspectRatio
-) {
+async function captureSingleView(view, canvas, camera, groupRef, parent) {
   const fitToOptions = {
     cover: false,
     paddingLeft: 10,
@@ -80,9 +71,9 @@ async function captureSingleView(
     paddingTop: 20,
   };
 
-  const { width, height } = getCanvasSize(aspectRatio, canvas); // Adjust aspect ratio for different views
-  parent.style.width = `${width * 2}px`; // Add 'px' to width
-  parent.style.height = `${height * 2}px`; // Add 'px' to height
+  // const { width, height } = getCanvasSize(aspectRatio, canvas); // Adjust aspect ratio for different views
+  parent.style.width = "920px"; // Add 'px' to width
+  parent.style.height = "1000px"; // Add 'px' to height
 
   await wait(100);
 
@@ -117,7 +108,7 @@ async function captureSingleView(
 
 function getBlobURL(inNode) {
   return new Promise((resolve) => {
-    domtoimage.toBlob(inNode).then((data) => {
+    inNode.toBlob((data) => {
       const dataUrl = URL.createObjectURL(data);
       resolve(dataUrl); // Resolve the promise with the Blob URL
     });
