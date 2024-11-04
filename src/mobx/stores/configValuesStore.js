@@ -305,7 +305,10 @@ class ConfigValuesStore {
         Object.keys(this.configValues).forEach((rowIndex) => {
           if (typeof this.configValues[rowIndex] === "object") {
             if (this.configValues[rowIndex][col_index]) {
-              this.configValues[rowIndex][col_index][key] = value; // Update width
+              //appy width to all columns
+              Object.keys(this.configValues[rowIndex]).forEach((colIndex) => {
+                this.configValues[rowIndex][colIndex][key] = value;
+              });
             }
           }
         });
@@ -331,6 +334,18 @@ class ConfigValuesStore {
         Object.keys(this.configValues[raw_index]).forEach((colIndex) => {
           this.configValues[raw_index][colIndex][key] = value;
         });
+
+        // apply height to all rows and columns in the grid
+        Object.keys(this.configValues).forEach((rowIndex) => {
+          if (typeof this.configValues[rowIndex] === "object") {
+            if (this.configValues[rowIndex][col_index]) {
+              Object.keys(this.configValues[rowIndex]).forEach((colIndex) => {
+                this.configValues[rowIndex][colIndex][key] = value;
+              });
+            }
+          }
+        });
+
         this.recalculateStartWidthHeight(col_index, parseInt(value));
         this.configValues = { ...this.configValues };
         return;
