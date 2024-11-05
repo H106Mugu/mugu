@@ -508,6 +508,10 @@ class ConfigValuesStore {
         return; // Exit without deleting
       }
       delete this.configValues[raw_index][col_index];
+      const noOfData = Object.keys(this.configValues[raw_index]).length;
+      if (noOfData === 0) {
+        delete this.colorRows[raw_index + 1];
+      }
       this.selectedCuboid.rawIndex = null;
       this.selectedCuboid.colIndex = null;
       this.configValues = { ...this.configValues };

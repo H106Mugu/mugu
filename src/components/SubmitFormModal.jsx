@@ -184,8 +184,11 @@ const SubmitFormModal = observer(({ open, onClose }) => {
               key: "Panel Colour",
               value:
                 configValuesStore.getAllConfigValues.shelfType === "acrylic"
-                  ? "From bottom: " +
-                    getPanelColors(configValuesStore.getColorRows, "acrylic")
+                  ? configValuesStore.configValues.structureElements ===
+                    "withTopAndBottomOnly"
+                    ? "From bottom: " +
+                      getPanelColors(configValuesStore.getColorRows, "acrylic")
+                    : "No Panels"
                   : getColorNameFromHex(
                       configValuesStore.getAllConfigValues.color,
                       "stainless"
