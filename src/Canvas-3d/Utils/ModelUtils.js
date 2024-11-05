@@ -73,17 +73,26 @@ export const getLegPipes = (corners) => {
 };
 
   // Function to check if the remove button should be displayed
-  export const shouldDisplayRemoveButton = () => {
+  export const shouldDisplayRemoveButton = (breakpoint) => {
     const { rawIndex, colIndex } = configValuesStore.selectedCuboid;
-
+  
     // Check if a cuboid is selected and if the cuboid above the current one exists
     if (rawIndex !== null && colIndex !== null) {
       if (rawIndex === 0 && colIndex === 0) {
         return false;
       }
-      return !configValuesStore.hasCuboidAt(rawIndex + 1, colIndex) && 
+  
+      const canDisplayButton =
+        !configValuesStore.hasCuboidAt(rawIndex + 1, colIndex) &&
         (rawIndex !== 0 || !configValuesStore.hasCuboidAt(rawIndex, colIndex + 1));
+  
+      // Additional condition for breakpoint and config type
+      const additionalConditionMobile =
+        (breakpoint !== "xs" && breakpoint !== "sm") ||
+        configValuesStore.currentConfigType === "structure";
+  
+      return canDisplayButton && additionalConditionMobile;
     }
-
+  
     return false;
   };

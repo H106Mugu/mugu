@@ -347,7 +347,7 @@ const ShelfConfigurator = observer(() => {
           </div> */}
 
           <div className="absolute bottom-4 md:bottom-6 right-4 md:right-8 flex items-center gap-2 z-30">
-            {shouldDisplayRemoveButton() && (
+            {shouldDisplayRemoveButton(breakpoint) && (
               <Button onClick={handleRemoveCuboid}>
                 <RiDeleteBinLine className="text-theme-primary" />
                 Remove selected element{" "}

@@ -111,7 +111,7 @@ const getUnitDimensions = (configValuesStore) => {
     .map((height, index) => `R${index + 1}: ${height}mm`)
     .join(", ");
 
-    const unitDepth = configValuesStore.getAllConfigValues[0][0]?.depth;
+  const unitDepth = configValuesStore.getAllConfigValues[0][0]?.depth;
 
   return {
     totalDimensions: `${totalWidth}mm x ${totalHeight}mm x ${totalDepth}mm`,
@@ -184,8 +184,11 @@ const SubmitFormModal = observer(({ open, onClose }) => {
               key: "Panel Colour",
               value:
                 configValuesStore.getAllConfigValues.shelfType === "acrylic"
-                  ? "From bottom: " +
-                    getPanelColors(configValuesStore.getColorRows, "acrylic")
+                  ? configValuesStore.configValues.structureElements ===
+                    "withTopAndBottomOnly"
+                    ? "From bottom: " +
+                      getPanelColors(configValuesStore.getColorRows, "acrylic")
+                    : "No Panels"
                   : getColorNameFromHex(
                       configValuesStore.getAllConfigValues.color,
                       "stainless"
