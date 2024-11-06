@@ -13,6 +13,8 @@ import { acrylicColorOptions, stainlessColorOptions } from "../data/optionData";
 import { set } from "mobx";
 import { IoCloseOutline } from "react-icons/io5";
 
+const { TextArea } = Input;
+
 function toBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -221,6 +223,7 @@ const SubmitFormModal = observer(({ open, onClose }) => {
           pdf: await toBase64(blob),
           postcode: values.postcode,
           requireShipping: values.requireShipping,
+          additionalRequirements: values.additionalRequirements,
         }),
       }
     )
@@ -362,6 +365,14 @@ const SubmitFormModal = observer(({ open, onClose }) => {
           >
             <Input
               placeholder="Postcode*"
+              className="!p-[8px] rounded-none border-[#BCBCBC]"
+            />
+          </Form.Item>
+
+          <Form.Item name="additionalRequirements">
+            <TextArea
+              rows={3}
+              placeholder="Additional requirements"
               className="!p-[8px] rounded-none border-[#BCBCBC]"
             />
           </Form.Item>

@@ -290,7 +290,7 @@ const ShelfConfigurator = observer(() => {
         }}
       />
       <div className="flex flex-col md:flex-row h-[100dvh] relative">
-        <div className="relative bg-gray-100 w-full md:w-[66%] h-[75%] md:h-full flex justify-center items-center">
+        <div className="relative bg-gray-100 w-full md:w-[66%] flex-1 md:h-full flex justify-center items-center">
           <div className="absolute top-3 left-2 flex items-center z-30">
             <Button
               type="link"
@@ -330,20 +330,6 @@ const ShelfConfigurator = observer(() => {
               <span className="pt-1">Tour</span>
             </Button>
           </div>
-          {/* <div className="absolute top-[5px] lg:top-[75px] right-4 flex flex-col lg:flex-row items-center gap-0 z-30 transition-top duration-200 pointer-events-none opacity-0 md:opacity-100 md:pointer-events-auto">
-            <div className="me-4">Options:</div>
-            <Radio.Group
-              value={configValuesStore.selectionType}
-              onChange={(e) =>
-                configValuesStore.setSelectionType(e.target.value)
-              }
-              optionType="default"
-              className="flex flex-row justify-center items-start  gap-1"
-            >
-              <Radio.Button value="element">Element</Radio.Button>
-              <Radio.Button value="panel">Panel</Radio.Button>
-            </Radio.Group>
-          </div> */}
 
           <div className="absolute bottom-4 md:bottom-6 right-4 md:right-8 flex items-center gap-2 z-30">
             {shouldDisplayRemoveButton(breakpoint) && (
@@ -383,7 +369,7 @@ const ShelfConfigurator = observer(() => {
           </div>
           <Canvas_3d />
         </div>
-        <div className="w-full md:w-[34%] h-[240px] md:h-full md:min-w-[450px] p-0 md:py-6 bg-[#fbfbfc] overflow-auto select-none">
+        <div className="w-full md:w-[34%] h-[217px] md:h-full md:min-w-[450px] p-0 md:py-6 bg-[#fbfbfc] overflow-auto select-none">
           <ShelfSidebar />
         </div>
         <div

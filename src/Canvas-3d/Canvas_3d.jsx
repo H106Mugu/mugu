@@ -19,13 +19,14 @@ const Canvas_3d = observer(() => {
 
   useEffect(() => {
     if (!canvasRef.current) return;
-    canvasRef.current.id = 'canvas'; // Assign your desired ID here
-}, []);
+    canvasRef.current.id = "canvas"; // Assign your desired ID here
+  }, []);
 
   return (
     <>
       <Canvas
-      ref={canvasRef}
+        className="mugu-3d-canvas"
+        ref={canvasRef}
         shadows={{ enabled: true, type: THREE.PCFSoftShadowMap }}
         gl={(canvas) => ({
           toneMapping: THREE.LinearToneMapping,
