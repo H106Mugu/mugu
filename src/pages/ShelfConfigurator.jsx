@@ -322,11 +322,11 @@ const ShelfConfigurator = observer(() => {
 
           <div className="select-none absolute w-[140px] md:w-[200px] -left-[60px] md:-left-[85px] top-1/2 transform -translate-y-1/2 -rotate-90 origin-center flex justify-center items-center gap-2 z-30 transition-all duration-300">
             <span className="text-gray-500 text-[8px] md:text-xs">
-              © 2024 Mugu. All rights reserved.
+              © Mugu. All rights reserved.
             </span>
           </div>
 
-          <div className="absolute bottom-4 md:bottom-6 left-4 md:left-8 flex items-center gap-2 z-30 transition-all duration-300">
+          <div className="absolute bottom-4 md:bottom-6 left-4 flex items-center gap-2 z-30 transition-all duration-300">
             <Button
               type="primary"
               onClick={() => {
@@ -337,7 +337,7 @@ const ShelfConfigurator = observer(() => {
             </Button>
           </div>
 
-          <div className="absolute bottom-4 md:bottom-6 right-4 md:right-8 flex items-center gap-2 z-30">
+          <div className="absolute bottom-4 md:bottom-6 right-4 flex items-center gap-2 z-30">
             {shouldDisplayRemoveButton(breakpoint) && (
               <Button onClick={handleRemoveCuboid}>
                 <RiDeleteBinLine className="text-theme-primary" />
