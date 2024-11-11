@@ -69,54 +69,54 @@ const CuboidRenderer = observer(({ cuboidData }) => {
   }, [configValuesStore.selectionType]);
 
   const handleCubeSelect = (rawIndex, colIndex) => {
-    const prevShelfType = configValuesStore.getPreviousShelfType;
-    const currentShelfType = configValuesStore.getAllConfigValues.shelfType;
+    // const prevShelfType = configValuesStore.getPreviousShelfType;
+    // const currentShelfType = configValuesStore.getAllConfigValues.shelfType;
 
     // Compare previous shelfType with current shelfType
-    if (prevShelfType && prevShelfType !== currentShelfType) {
-      configValuesStore.setPreviousShelfType(
-        configValuesStore.getAllConfigValues.shelfType
-      );
-      if (configValuesStore.getAllConfigValues.shelfType === "stainless") {
-        configValuesStore.setConfigDimensionAtPosition(
-          "width",
-          313,
-          rawIndex,
-          colIndex
-        );
-        configValuesStore.setConfigDimensionAtPosition(
-          "depth",
-          313,
-          rawIndex,
-          colIndex
-        );
-        configValuesStore.setConfigDimensionAtPosition(
-          "height",
-          313,
-          rawIndex,
-          colIndex
-        );
-      } else if (configValuesStore.getAllConfigValues.shelfType === "acrylic") {
-        configValuesStore.setConfigDimensionAtPosition(
-          "width",
-          270,
-          rawIndex,
-          colIndex
-        );
-        configValuesStore.setConfigDimensionAtPosition(
-          "depth",
-          270,
-          rawIndex,
-          colIndex
-        );
-        configValuesStore.setConfigDimensionAtPosition(
-          "height",
-          270,
-          rawIndex,
-          colIndex
-        );
-      }
-    }
+    // if (prevShelfType && prevShelfType !== currentShelfType) {
+    //   configValuesStore.setPreviousShelfType(
+    //     configValuesStore.getAllConfigValues.shelfType
+    //   );
+    //   if (configValuesStore.getAllConfigValues.shelfType === "stainless") {
+    //     configValuesStore.setConfigDimensionAtPosition(
+    //       "width",
+    //       313,
+    //       rawIndex,
+    //       colIndex
+    //     );
+    //     configValuesStore.setConfigDimensionAtPosition(
+    //       "depth",
+    //       313,
+    //       rawIndex,
+    //       colIndex
+    //     );
+    //     configValuesStore.setConfigDimensionAtPosition(
+    //       "height",
+    //       313,
+    //       rawIndex,
+    //       colIndex
+    //     );
+    //   } else if (configValuesStore.getAllConfigValues.shelfType === "acrylic") {
+    //     configValuesStore.setConfigDimensionAtPosition(
+    //       "width",
+    //       270,
+    //       rawIndex,
+    //       colIndex
+    //     );
+    //     configValuesStore.setConfigDimensionAtPosition(
+    //       "depth",
+    //       270,
+    //       rawIndex,
+    //       colIndex
+    //     );
+    //     configValuesStore.setConfigDimensionAtPosition(
+    //       "height",
+    //       270,
+    //       rawIndex,
+    //       colIndex
+    //     );
+    //   }
+    // }
 
     if (
       configValuesStore.selectedCuboid.rawIndex === rawIndex &&

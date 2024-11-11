@@ -218,7 +218,7 @@ export function getNumberOfPanels() {
   const shelfType = configValuesStore.configValues.shelfType;
   // console.log("shelfType", shelfType);
   if (shelfType === "acrylic") {
-    return getNumberOfPanelsAcrylic();
+    return configValuesStore.configValues.structureElements === "withTopAndBottomOnly" ? getNumberOfPanelsAcrylic() : "Not Applicable";
   } else if (shelfType === "stainless") {
     return getNumberOfPanelsStainless();    
   }

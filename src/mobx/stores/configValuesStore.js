@@ -4,6 +4,9 @@ import {
   getCuboidParameters,
   getLastCuboidInTallestColumn,
   getLastCuboidOfFirstRow,
+  getNumberOfPanels,
+  getNumberOfPanelsAcrylic,
+  getNumberOfPanelsStainless,
 } from "../../Canvas-3d/Utils/CuboidUtils";
 
 class ConfigValuesStore {
@@ -194,6 +197,20 @@ class ConfigValuesStore {
         if (this.previousShelfType !== this.configValues.shelfType) {
           this.previousShelfType = this.configValues.shelfType;
         }
+        Object.keys(this.configValues).forEach((configKey) => {
+          const row = this.configValues[configKey];
+          if (row && typeof row === "object" && !Array.isArray(row)) {
+            Object.keys(row).forEach((colIndex) => {
+              const cuboid = row[colIndex];
+              if (cuboid && typeof cuboid === "object") {
+                cuboid["width"] = value === "acrylic" ? 270 : 313;
+                cuboid["height"] = value === "acrylic" ? 270 : 313;
+                cuboid["depth"] = value === "acrylic" ? 270 : 313;
+              }
+            });
+          }
+        });
+
       }
 
       if (key !== "color") {
@@ -229,6 +246,7 @@ class ConfigValuesStore {
 
     // Handle width: update the value in all rows of a particular column (colIndex)
     if (key === "width") {
+      console.log(getNumberOfPanels());
       value = parseInt(value);
       if (raw_index != null) {
         const oldValue = this.configValues[raw_index][col_index][key];
