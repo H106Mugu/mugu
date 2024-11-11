@@ -1,3 +1,6 @@
+import { getColorNameFromHex } from "../../components/SubmitFormModal";
+import configValuesStore from "../../mobx/stores/configValuesStore";
+
 export const getCuboidParameters = (configValues, raw_index, col_index) => {
   const defaultCuboid = configValues[0][0]; // Default cuboid at [0,0]
 
@@ -79,3 +82,144 @@ export function getLastCuboidOfFirstRow(configValues) {
   const lastCuboid = row[lastColumnIndex];
   return [lastCuboid, lastColumnIndex]; // Return the cuboid in the last column
 }
+
+export function getNumberofFrames() {
+  const configValues = configValuesStore.configValues;
+  let Frames = {};
+  
+  Object.keys(configValues).forEach((rowIndex) => {
+    const row = configValues[rowIndex];
+    if (row && typeof row === "object" && !Array.isArray(row)) {
+      Object.keys(row).forEach((colIndex) => {
+        const cuboid = row[colIndex];
+        if (cuboid && typeof cuboid === "object") {
+          const width = cuboid["width"];
+          const height = cuboid["height"];
+          const depth = cuboid["depth"];
+
+          if (width != null) {
+            const incrementValue = rowIndex === "0" ? 4 : 2;
+            Frames[`${width} mm`] = (Frames[`${width} mm`] || 0) + incrementValue;
+          }
+          
+          if (height != null) {
+            let incrementValue;
+            if (rowIndex !== "0" && colIndex !== "0") {
+              if (!configValuesStore.hasCuboidAt(rowIndex, colIndex - 1)) {
+                incrementValue = 4;
+              } else {
+                incrementValue = 2;
+              }
+            } else {
+              incrementValue = colIndex === "0" ? 4 : 2;
+            }
+            Frames[`${height} mm`] = (Frames[`${height} mm`] || 0) + incrementValue;
+          }
+          
+          if (depth != null) {
+            let incrementValue;
+            if (rowIndex === "0" && colIndex === "0") {
+              incrementValue = 4;
+            } else if ((rowIndex === "0" && colIndex !== "0") || (rowIndex !== "0" && colIndex === "0")) {
+              incrementValue = 2;
+            } else {
+              incrementValue = configValuesStore.hasCuboidAt(rowIndex, colIndex - 1) ? 1 : 2;
+            }
+            Frames[`${depth} mm`] = (Frames[`${depth} mm`] || 0) + incrementValue;
+          }
+        }
+      });
+    }
+  });
+
+  // Convert Frames object to the desired string format
+  const resultString = Object.entries(Frames)
+    .map(([key, value]) => `${key} : ${value}`)
+    .join(", ");
+
+  return resultString;
+}
+
+
+export function getNumberOfPanelsAcrylic() {
+  // console.log("inside")
+  const configValues = configValuesStore.configValues;
+  const colorRows = configValuesStore.colorRows;
+  let Panles = {};
+
+  Object.keys(colorRows).forEach((rowIndex) => {
+    const color = colorRows[rowIndex];
+    const colorName = getColorNameFromHex(color, "acrylic");
+    const row = rowIndex === "0" ? configValues[rowIndex] : configValues[rowIndex - 1];
+    
+    if (colorName && row && typeof row === "object") {
+      // Count the total number of columns in the current row
+      const columnCount = Object.keys(row).length;
+      
+      // Increment the count for the colorName in Panles by the column count
+      Panles[colorName] = (Panles[colorName] || 0) + columnCount;
+    }
+  });
+
+  const resultString = Object.entries(Panles)
+    .map(([key, value]) => `${key} : ${value}`)
+    .join(", ");
+
+  return resultString; 
+}
+
+export function getNumberOfPanelsStainless() {
+  const configValues = configValuesStore.configValues;
+  const color = configValuesStore.configValues.color;
+  const colorName = getColorNameFromHex(color, "stainless");
+
+  // console.log("inside")
+  let count = 0;
+  let Panles = {};
+  Object.keys(configValues).forEach((rowIndex) => {
+    const row = configValues[rowIndex];
+    if (row && typeof row === "object") {
+      const columnCount = Object.keys(row).length;
+      if (rowIndex === "0") {
+        if (configValuesStore.configValues.structureElements === "withTopAndBottomOnly") {
+          count += (columnCount * 2);          
+        }
+        else if (configValuesStore.configValues.structureElements === "withoutBack") {
+          count += (columnCount * 3) + 1;          
+        }
+        else if (configValuesStore.configValues.structureElements === "all") {
+          count += (columnCount * 4) + 1; 
+        }
+      }
+      else {
+        if (configValuesStore.configValues.structureElements === "withTopAndBottomOnly") {
+          count += (columnCount);          
+        }
+        else if (configValuesStore.configValues.structureElements === "withoutBack") {
+          count += (columnCount * 2) + 1;          
+        }
+        else if (configValuesStore.configValues.structureElements === "all") {
+          count += (columnCount * 3) + 1; 
+        }
+      }
+    }
+  });
+  Panles[colorName] = count;
+
+  // Convert Panles object to desired string format
+  const resultString = Object.entries(Panles)
+    .map(([key, value]) => `${key} : ${value}`)
+    .join(", ");
+
+  return resultString;
+}
+
+export function getNumberOfPanels() {
+  const shelfType = configValuesStore.configValues.shelfType;
+  // console.log("shelfType", shelfType);
+  if (shelfType === "acrylic") {
+    return getNumberOfPanelsAcrylic();
+  } else if (shelfType === "stainless") {
+    return getNumberOfPanelsStainless();    
+  }
+};

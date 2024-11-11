@@ -12,6 +12,7 @@ import { observer } from "mobx-react-lite";
 import { acrylicColorOptions, stainlessColorOptions } from "../data/optionData";
 import { set } from "mobx";
 import { IoCloseOutline } from "react-icons/io5";
+import { getNumberofFrames, getNumberOfPanels } from "../Canvas-3d/Utils/CuboidUtils";
 
 const { TextArea } = Input;
 
@@ -34,7 +35,7 @@ function convertToSentenceCase(str) {
   return result;
 }
 
-function getColorNameFromHex(hex, type) {
+export function getColorNameFromHex(hex, type) {
   if (type === "acrylic") {
     return acrylicColorOptions.find((option) => option.value === hex).label
       .props.children[1].props.children;
@@ -195,6 +196,14 @@ const SubmitFormModal = observer(({ open, onClose }) => {
                       configValuesStore.getAllConfigValues.color,
                       "stainless"
                     ),
+            },
+            {
+              key: "Frame Quantity",
+              value: getNumberofFrames()
+            },
+            {
+              key: "Panel Quantity",
+              value: getNumberOfPanels()
             },
           ],
           images: {

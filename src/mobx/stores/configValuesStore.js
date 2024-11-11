@@ -306,7 +306,7 @@ class ConfigValuesStore {
         // apply width to all rows and columns in the grid
         Object.keys(this.configValues).forEach((rowIndex) => {
           if (typeof this.configValues[rowIndex] === "object") {
-            console.log("yftgftuftff", this.configValues[rowIndex][col_index]);
+            // console.log("yftgftuftff", this.configValues[rowIndex][col_index]);
             //appy width to all columns
             Object.keys(this.configValues[rowIndex]).forEach((colIndex) => {
               this.configValues[rowIndex][colIndex][key] = value;
