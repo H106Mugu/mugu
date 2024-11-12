@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { autorun, makeAutoObservable, observable } from "mobx";
 import {
+  checkForLimits,
   getCuboidParameters,
   getLastCuboidInTallestColumn,
   getLastCuboidOfFirstRow,
@@ -211,6 +212,7 @@ class ConfigValuesStore {
             });
           }
         });
+        checkForLimits(this.configValues);
 
       }
 

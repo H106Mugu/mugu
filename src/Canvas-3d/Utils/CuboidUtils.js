@@ -46,13 +46,13 @@ export const getCuboidParameters = (configValues, raw_index, col_index) => {
     startWidth = defaultCuboid.startWidth;
   }
   const rowData = configValues[raw_index];
-    const keys = Object.keys(rowData);
-    const rowFirstElement = rowData[keys[0]];
-    if (rowFirstElement) {
-      height = rowFirstElement.height;
-    } else {
-      height = defaultCuboid.height;
-    }
+  const keys = Object.keys(rowData);
+  const rowFirstElement = rowData[keys[0]];
+  if (rowFirstElement) {
+    height = rowFirstElement.height;
+  } else {
+    height = defaultCuboid.height;
+  }
 
   return { width, height, startWidth, startHeight };
 };
@@ -86,7 +86,7 @@ export function getLastCuboidOfFirstRow(configValues) {
 export function getNumberofFrames() {
   const configValues = configValuesStore.configValues;
   let Frames = {};
-  
+
   Object.keys(configValues).forEach((rowIndex) => {
     const row = configValues[rowIndex];
     if (row && typeof row === "object" && !Array.isArray(row)) {
@@ -101,7 +101,7 @@ export function getNumberofFrames() {
             const incrementValue = rowIndex === "0" ? 4 : 2;
             Frames[`${width} mm`] = (Frames[`${width} mm`] || 0) + incrementValue;
           }
-          
+
           if (height != null) {
             let incrementValue;
             if (rowIndex !== "0" && colIndex !== "0") {
@@ -115,7 +115,7 @@ export function getNumberofFrames() {
             }
             Frames[`${height} mm`] = (Frames[`${height} mm`] || 0) + incrementValue;
           }
-          
+
           if (depth != null) {
             let incrementValue;
             if (rowIndex === "0" && colIndex === "0") {
@@ -151,11 +151,11 @@ export function getNumberOfPanelsAcrylic() {
     const color = colorRows[rowIndex];
     const colorName = getColorNameFromHex(color, "acrylic");
     const row = rowIndex === "0" ? configValues[rowIndex] : configValues[rowIndex - 1];
-    
+
     if (colorName && row && typeof row === "object") {
       // Count the total number of columns in the current row
       const columnCount = Object.keys(row).length;
-      
+
       // Increment the count for the colorName in Panles by the column count
       Panles[colorName] = (Panles[colorName] || 0) + columnCount;
     }
@@ -165,7 +165,7 @@ export function getNumberOfPanelsAcrylic() {
     .map(([key, value]) => `${key} : ${value}`)
     .join(", ");
 
-  return resultString; 
+  return resultString;
 }
 
 export function getNumberOfPanelsStainless() {
@@ -178,7 +178,7 @@ export function getNumberOfPanelsStainless() {
   let Panles = {};
   Object.keys(configValues).forEach((rowIndex) => {
     let row = configValues[rowIndex];
-   
+
     if (row && typeof row === "object"  && !Array.isArray(row)) {
       const columnCount = Object.keys(row).length;
       if (columnCount > 0) {
@@ -223,7 +223,7 @@ export function getNumberOfPanels() {
   if (shelfType === "acrylic") {
     return configValuesStore.configValues.structureElements === "withTopAndBottomOnly" ? getNumberOfPanelsAcrylic() : "Not Applicable";
   } else if (shelfType === "stainless") {
-    return getNumberOfPanelsStainless();    
+    return getNumberOfPanelsStainless();
   }
 };
 
@@ -250,4 +250,47 @@ export function dimensionLimit(value, type) {
   }
 
   return false; // Return true if the new value is within the limit
+}
+
+export function checkForLimits(configValues) {
+  const shelfType = configValuesStore.configValues.shelfType;
+  
+  const row0 = configValues[0];
+  const [cuboid, rowIndex] = getLastCuboidInTallestColumn(configValues);
+  configValuesStore.setSelectedCuboid(0, 0);
+
+  const columnLimit = shelfType === "acrylic" ? 7 : 8;
+  const rowLimit = shelfType === "acrylic" ? 6 : 7; // Limit for the number of rows
+
+  // Check if row 0 has more columns than the column limit
+  if (row0 && typeof row0 === "object" && Object.keys(row0).length > columnLimit) {
+    // Get keys sorted numerically to safely remove columns above the limit
+    const columnKeys = Object.keys(row0)
+      .map(Number) // Convert to numbers if keys are strings
+      .sort((a, b) => a - b);
+
+    // Remove columns beyond the set column limit across all rows
+    columnKeys.slice(columnLimit).forEach((colIndex) => {
+      Object.keys(configValues).forEach((rowKey) => {
+        const row = configValues[rowKey];
+        // Only attempt to delete if the row is an object and contains the column index
+        if (row && typeof row === "object" && row[colIndex] !== undefined) {
+          delete row[colIndex];
+        }
+      });
+    });
+  }
+
+  // Check if the number of rows exceeds the row limit
+  if (rowIndex > rowLimit) {
+    // Get row keys sorted numerically and delete rows above the limit
+    const rowKeys = Object.keys(configValues)
+      .map(Number) // Convert to numbers if keys are strings
+      .sort((a, b) => a - b);
+
+    // Remove rows beyond the set row limit
+    rowKeys.slice(rowLimit).forEach((rowKey) => {
+      delete configValues[rowKey];
+    });
+  }
 }
