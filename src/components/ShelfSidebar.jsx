@@ -20,6 +20,7 @@ import { IoCloseOutline } from "react-icons/io5";
 import withTopAndBottomOnly from "../assets/images/structure/withTopAndBottomOnly.png";
 import withTopAndBottomOnlyAcrylic from "../assets/images/structure/withTopAndBottomOnlyAcrylic.png";
 import { addImages } from "../Canvas-3d/Utils/ImageUtils";
+import { isDepthOptionEnabled } from "../Canvas-3d/Utils/ModelUtils";
 
 // Set to track called changes
 const calledChanges = new Set();
@@ -197,6 +198,7 @@ const ShelfSidebar = observer(() => {
           newDepthOptions = ["121", "313", "483", "603"].map((d) => ({
             label: d,
             value: d,
+            isDisableOption : d === "313" ? false : isDepthOptionEnabled(),
           }));
           handleChangeOnce(newDepthOptions[1].value, "depth", "8");
 

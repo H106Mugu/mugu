@@ -177,29 +177,32 @@ export function getNumberOfPanelsStainless() {
   let count = 0;
   let Panles = {};
   Object.keys(configValues).forEach((rowIndex) => {
-    const row = configValues[rowIndex];
-    if (row && typeof row === "object") {
+    let row = configValues[rowIndex];
+   
+    if (row && typeof row === "object"  && !Array.isArray(row)) {
       const columnCount = Object.keys(row).length;
-      if (rowIndex === "0") {
-        if (configValuesStore.configValues.structureElements === "withTopAndBottomOnly") {
-          count += (columnCount * 2);          
+      if (columnCount > 0) {
+        if (rowIndex === "0") {
+          if (configValuesStore.configValues.structureElements === "withTopAndBottomOnly") {
+            count += (columnCount * 2);          
+          }
+          else if (configValuesStore.configValues.structureElements === "withoutBack") {
+            count += (columnCount * 3) + 1;          
+          }
+          else if (configValuesStore.configValues.structureElements === "all") {
+            count += (columnCount * 4) + 1; 
+          }
         }
-        else if (configValuesStore.configValues.structureElements === "withoutBack") {
-          count += (columnCount * 3) + 1;          
-        }
-        else if (configValuesStore.configValues.structureElements === "all") {
-          count += (columnCount * 4) + 1; 
-        }
-      }
-      else {
-        if (configValuesStore.configValues.structureElements === "withTopAndBottomOnly") {
-          count += (columnCount);          
-        }
-        else if (configValuesStore.configValues.structureElements === "withoutBack") {
-          count += (columnCount * 2) + 1;          
-        }
-        else if (configValuesStore.configValues.structureElements === "all") {
-          count += (columnCount * 3) + 1; 
+        else {
+          if (configValuesStore.configValues.structureElements === "withTopAndBottomOnly") {
+            count += (columnCount);          
+          }
+          else if (configValuesStore.configValues.structureElements === "withoutBack") {
+            count += (columnCount * 2) + 1;          
+          }
+          else if (configValuesStore.configValues.structureElements === "all") {
+            count += (columnCount * 3) + 1; 
+          }
         }
       }
     }

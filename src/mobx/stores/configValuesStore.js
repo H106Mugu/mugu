@@ -207,6 +207,7 @@ class ConfigValuesStore {
                 cuboid["height"] = value === "acrylic" ? 270 : 313;
                 cuboid["depth"] = value === "acrylic" ? 270 : 313;
               }
+              this.recalculateStartWidthHeight();
             });
           }
         });
@@ -246,7 +247,7 @@ class ConfigValuesStore {
 
     // Handle width: update the value in all rows of a particular column (colIndex)
     if (key === "width") {
-      console.log(getNumberOfPanels());
+      // console.log(getNumberOfPanels());
       value = parseInt(value);
       if (raw_index != null) {
         const oldValue = this.configValues[raw_index][col_index][key];
@@ -342,7 +343,7 @@ class ConfigValuesStore {
         //     }
         //   }
         // });
-        this.recalculateStartWidthHeight(col_index, parseInt(value));
+        this.recalculateStartWidthHeight();
         this.configValues = { ...this.configValues };
         return;
       }
@@ -374,7 +375,7 @@ class ConfigValuesStore {
           }
         });
 
-        this.recalculateStartWidthHeight(col_index, parseInt(value));
+        this.recalculateStartWidthHeight();
         this.configValues = { ...this.configValues };
         return;
       }

@@ -69,7 +69,7 @@ const CustomAntdRadioGroup = ({
         <Radio
           key={index}
           value={option.value}
-          disabled={disabled}
+          disabled={disabled ? true : option.isDisableOption ?? false}
           className={`text-center ${
             !isSmallScreen ? "transition-all duration-200 ease-in-out" : ""
           } ${

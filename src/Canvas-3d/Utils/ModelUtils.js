@@ -16,42 +16,42 @@ export const cornerOffsets = [
 
 export const getPlanes = (height, width, depth, planeRefsCube) => {
   const planeDims = [
-  {
-    position: [0, height / 20, 0],
-    rotation: [-Math.PI / 2, 0, 0],
-    face: "top",
-    ref: planeRefsCube.current[0],
-  },
-  {
-    position: [0, -height / 20, 0],
-    rotation: [-Math.PI / 2, 0, 0],
-    face: "bottom",
-    ref: planeRefsCube.current[1],
-  },
-  {
-    position: [width / 20, 0, 0],
-    rotation: [0, Math.PI / 2, 0],
-    face: "right",
-    ref: planeRefsCube.current[2],
-  },
-  {
-    position: [-width / 20, 0, 0],
-    rotation: [0, Math.PI / 2, 0],
-    face: "left",
-    ref: planeRefsCube.current[3],
-  },
-  {
-    position: [0, 0, -depth / 20],
-    rotation: [0, Math.PI, 0],
-    face: "back",
-    ref: planeRefsCube.current[4],
-  },
-];
+    {
+      position: [0, height / 20, 0],
+      rotation: [-Math.PI / 2, 0, 0],
+      face: "top",
+      ref: planeRefsCube.current[0],
+    },
+    {
+      position: [0, -height / 20, 0],
+      rotation: [-Math.PI / 2, 0, 0],
+      face: "bottom",
+      ref: planeRefsCube.current[1],
+    },
+    {
+      position: [width / 20, 0, 0],
+      rotation: [0, Math.PI / 2, 0],
+      face: "right",
+      ref: planeRefsCube.current[2],
+    },
+    {
+      position: [-width / 20, 0, 0],
+      rotation: [0, Math.PI / 2, 0],
+      face: "left",
+      ref: planeRefsCube.current[3],
+    },
+    {
+      position: [0, 0, -depth / 20],
+      rotation: [0, Math.PI, 0],
+      face: "back",
+      ref: planeRefsCube.current[4],
+    },
+  ];
   return planeDims
 };
 
 // Bottom corner indices
-export const bottomCornersIndices = [0, 1, 4, 5]; 
+export const bottomCornersIndices = [0, 1, 4, 5];
 
 export const getCorners = (width, height, depth, startWidth, startHeight) => {
   return cornerOffsets.map(
@@ -72,27 +72,52 @@ export const getLegPipes = (corners) => {
   });
 };
 
-  // Function to check if the remove button should be displayed
-  export const shouldDisplayRemoveButton = (breakpoint) => {
-    const { rawIndex, colIndex } = configValuesStore.selectedCuboid;
-  
-    // Check if a cuboid is selected and if the cuboid above the current one exists
-    if (rawIndex !== null && colIndex !== null) {
-      if (rawIndex === 0 && colIndex === 0) {
-        return false;
-      }
-  
-      const canDisplayButton =
-        !configValuesStore.hasCuboidAt(rawIndex + 1, colIndex) &&
-        (rawIndex !== 0 || !configValuesStore.hasCuboidAt(rawIndex, colIndex + 1));
-  
-      // Additional condition for breakpoint and config type
-      const additionalConditionMobile =
-        (breakpoint !== "xs" && breakpoint !== "sm") ||
-        configValuesStore.currentConfigType === "structure";
-  
-      return canDisplayButton && additionalConditionMobile;
+// Function to check if the remove button should be displayed
+export const shouldDisplayRemoveButton = (breakpoint) => {
+  const { rawIndex, colIndex } = configValuesStore.selectedCuboid;
+
+  // Check if a cuboid is selected and if the cuboid above the current one exists
+  if (rawIndex !== null && colIndex !== null) {
+    if (rawIndex === 0 && colIndex === 0) {
+      return false;
     }
+
+    const canDisplayButton =
+      !configValuesStore.hasCuboidAt(rawIndex + 1, colIndex) &&
+        (rawIndex !== 0 || !configValuesStore.hasCuboidAt(rawIndex, colIndex + 1));
+
+    // Additional condition for breakpoint and config type
+    const additionalConditionMobile =
+      (breakpoint !== "xs" && breakpoint !== "sm") ||
+      configValuesStore.currentConfigType === "structure";
+
+    return canDisplayButton && additionalConditionMobile;
+  }
+
+  return false;
+};
+
+
+export const isDepthOptionEnabled = () => {
+  const configValues = configValuesStore.configValues;
+  const shelfType = configValues.shelfType;
   
+  if (shelfType === "acrylic") {
     return false;
-  };
+  }
+
+  for (const configKey of Object.keys(configValues)) {
+    const row = configValues[configKey];
+    if (row && typeof row === "object" && !Array.isArray(row)) {
+      for (const colIndex of Object.keys(row)) {
+        const cuboid = row[colIndex];
+        if (cuboid && typeof cuboid === "object" && cuboid["width"] !== 313) {
+          return true;  // Exit the function immediately if a non-matching width is found
+        }
+      }
+    }
+  }
+
+  return false;  // Return true only if all cuboids have width equal to 313
+};
+
