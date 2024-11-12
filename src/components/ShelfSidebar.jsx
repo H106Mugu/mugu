@@ -21,6 +21,7 @@ import withTopAndBottomOnly from "../assets/images/structure/withTopAndBottomOnl
 import withTopAndBottomOnlyAcrylic from "../assets/images/structure/withTopAndBottomOnlyAcrylic.png";
 import { addImages } from "../Canvas-3d/Utils/ImageUtils";
 import { isDepthOptionEnabled } from "../Canvas-3d/Utils/ModelUtils";
+import { dimensionLimit } from "../Canvas-3d/Utils/CuboidUtils";
 
 // Set to track called changes
 const calledChanges = new Set();
@@ -47,6 +48,26 @@ const ShelfSidebar = observer(() => {
   const selectedCuboid = configValuesStore.getSelectedCuboid;
 
   const [messageApi, contextHolder] = message.useMessage();
+
+  const openMessage = () =>
+    messageApi.open({
+      type: "info",
+      icon: (
+        <IoMdInformation className="text-black bg-white text-xs me-3 rounded-full" />
+      ),
+      duration: 5,
+      content: (
+        <div className="bg-theme-primary text-white text-sm flex items-center">
+          {
+            "Please note, the total height and width of the shelf unit should not exceed 2.5 meters. Kindly adjust your configuration to stay within these limits."
+          }
+          <IoCloseOutline
+            className="text-white text-lg ms-3 cursor-pointer"
+            onClick={() => messageApi.destroy()}
+          />
+        </div>
+      ),
+    });
 
   const getUpdatedOptions = (
     shelfType,
@@ -356,13 +377,13 @@ const ShelfSidebar = observer(() => {
         setStructureElement(value); // Set structure element
         break;
       case "width":
-        setWidth(value);
+        dimensionLimit(value, type) === false ? setWidth(value) : openMessage();
         break;
       case "depth":
         setDepth(value);
         break;
       case "height":
-        setHeight(value);
+        dimensionLimit(value, type) === false ? setHeight(value) : openMessage();
         break;
       default:
         break;

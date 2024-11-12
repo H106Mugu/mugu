@@ -226,3 +226,28 @@ export function getNumberOfPanels() {
     return getNumberOfPanelsStainless();    
   }
 };
+
+export function dimensionLimit(value, type) {
+  const selectedRawIndex = configValuesStore.selectedCuboid?.rawIndex;
+  const selectedColIndex = configValuesStore.selectedCuboid?.colIndex;
+  if (selectedRawIndex === null || selectedColIndex === null) {
+    return false;
+  }
+  const oldValue = configValuesStore.configValues[selectedRawIndex]?.[selectedColIndex]?.[type];
+
+  const totalLengthWidth = configValuesStore.totalLength?.width ?? 0;
+  const totalLengthHeight = configValuesStore.totalLength?.height ?? 0;
+  const newValue = parseInt(value);
+
+  if (type === "width") {
+    if (totalLengthWidth + newValue - oldValue > 2500) {
+      return true; // Exceeds width limit
+    }
+  } else if (type === "height") {
+    if (totalLengthHeight + newValue - oldValue > 2500) {
+      return true; // Exceeds height limit
+    }
+  }
+
+  return false; // Return true if the new value is within the limit
+}
