@@ -3,14 +3,14 @@ import { useEffect, useState } from "react";
 const breakpoints = {
   xs: "0px", // Extra small devices (phones)
   sm: "576px", // Small devices (tablets)
-  md: "768px", // Medium devices (desktops)
+  md: "769px", // Medium devices (desktops)
   lg: "992px", // Large devices (desktops)
   xl: "1200px", // Extra large devices (large desktops)
   "2xl": "1536px", // 2x large devices (larger desktops)
 };
 
 const useBreakpoints = () => {
-  const [breakpoint, setBreakpoint] = useState("xs");
+  const [breakpoint, setBreakpoint] = useState("md");
 
   const getBreakpoint = (width) => {
     if (width < parseInt(breakpoints.sm)) return "xs";

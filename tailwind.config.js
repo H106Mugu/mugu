@@ -18,6 +18,9 @@ export default {
       boxShadow: {
         "tour-helper-shadow": "0px 2px 4px 0px #00000040",
       },
+      screens: {
+        md: "769px", // Override the default md breakpoint to start at 744px
+      },
     },
   },
   plugins: [],
