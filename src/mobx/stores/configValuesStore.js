@@ -213,7 +213,6 @@ class ConfigValuesStore {
           }
         });
         checkForLimits(this.configValues);
-
       }
 
       if (key !== "color") {
@@ -234,6 +233,42 @@ class ConfigValuesStore {
             this.colorRows[key] = "#C36F0C";
           }
         });
+      }
+
+      if (key === "structureElements" && value === "withoutBack") {
+        // Iterate through all rows and columns
+        Object.keys(this.configValues).forEach((rowKey) => {
+          const row = this.configValues[rowKey];
+          if (row && typeof row === "object" && !Array.isArray(row)) {
+            Object.keys(row).forEach((columnKey) => {
+              const column = row[columnKey];
+              if (
+                column &&
+                typeof column === "object" &&
+                ![121, 313, 483, 603].includes(column.height)
+              ) {
+                column.height = 313; // Set height to 313 if not in the allowed list
+              }
+            });
+          }
+        });
+        this.recalculateStartWidthHeight();
+      }
+
+      if (key === "structureElements" && value === "all") {
+        // Iterate through all rows and columns
+        Object.keys(this.configValues).forEach((rowKey) => {
+          const row = this.configValues[rowKey];
+          if (row && typeof row === "object" && !Array.isArray(row)) {
+            Object.keys(row).forEach((columnKey) => {
+              const column = row[columnKey];
+              if (column && typeof column === "object") {
+                column.height = 313; // Set height to 313 if not in the allowed list
+              }
+            });
+          }
+        });
+        this.recalculateStartWidthHeight();
       }
 
       if (key === "color") {
