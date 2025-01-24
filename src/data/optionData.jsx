@@ -264,6 +264,20 @@ export const stainlessColorOptions = [
     ),
     value: "#B0D0E7",
   },
+  {
+    label: (
+      <div className="w-full h-[70px] flex flex-col justify-start items-center">
+        <div
+          style={{ backgroundColor: "#6C7E41" }}
+          className="w-8 h-8 rounded-full border mt-1 hover:border-theme-primary transition-all duration-300 ease-in-out"
+        />
+        <div className="text-[12px] text-center font-normal leading-3 mt-1">
+          Matt Olive
+        </div>
+      </div>
+    ),
+    value: "#6C7E41",
+  },
 ];
 
 export const widthOptions = [
