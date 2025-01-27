@@ -17,6 +17,12 @@ import { shouldDisplayRemoveButton } from "../Canvas-3d/Utils/ModelUtils";
 import { fitCameraToReset } from "../Canvas-3d/Utils/CameraUtils";
 import Loader from "../components/Loader";
 import Tour from "reactour";
+import {
+  getNumberOfConnectors,
+  getNumberofFrames,
+  getNumberOfPanels,
+} from "../Canvas-3d/Utils/CuboidUtils";
+import { get } from "mobx";
 
 let wasCubeSelectedBeforeTour = false;
 
@@ -52,6 +58,9 @@ const ShelfConfigurator = observer(() => {
   const breakpoint = useBreakpoints();
   const [isMobile, setIsMobile] = useState(false);
   const [checked, setChecked] = useState(false);
+  const [quantityPanel, setQuantityPanel] = useState("");
+  const [quantityConnector, setQuantityConnector] = useState("");
+  const [quantityFrame, setQuantityFrame] = useState("");
 
   const [isTourOpen, setTourOpen] = useState(false);
   const [tourCurrentStep, setTourCurrentStep] = useState(1);
@@ -88,6 +97,13 @@ const ShelfConfigurator = observer(() => {
   const handleFitCamera = () => {
     fitCameraToReset();
   };
+
+  const showQuantity = () => {
+    setQuantityPanel(getNumberOfPanels());
+    setQuantityConnector(getNumberOfConnectors());
+    setQuantityFrame(getNumberofFrames());
+  };
+
   useEffect(() => {
     loadingStore.setLoader(true, "Loading");
 
@@ -318,6 +334,13 @@ const ShelfConfigurator = observer(() => {
               <TbCube3dSphere className="text-theme-primary" />
               Reset cam
             </Button>
+            <Button onClick={showQuantity}>Update Quantity</Button>
+          </div>
+
+          <div className="absolute top-[90px] right-4 z-30 text-xs font-medium text-theme-primary">
+            <div>Frame Qunantity: {quantityFrame}</div>
+            <div>Panel Quantity: {quantityPanel}</div>
+            <div>Connector Quantity: {quantityConnector}</div>
           </div>
 
           <div className="select-none absolute w-[140px] md:w-[200px] -left-[60px] md:-left-[85px] top-1/2 transform -translate-y-1/2 -rotate-90 origin-center flex justify-center items-center gap-2 z-30 transition-all duration-300">

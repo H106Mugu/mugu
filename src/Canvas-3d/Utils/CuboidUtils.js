@@ -99,7 +99,8 @@ export function getNumberofFrames() {
 
           if (width != null) {
             const incrementValue = rowIndex === "0" ? 4 : 2;
-            Frames[`${width} mm`] = (Frames[`${width} mm`] || 0) + incrementValue;
+            Frames[`${width} mm`] =
+              (Frames[`${width} mm`] || 0) + incrementValue;
           }
 
           if (height != null) {
@@ -113,19 +114,29 @@ export function getNumberofFrames() {
             } else {
               incrementValue = colIndex === "0" ? 4 : 2;
             }
-            Frames[`${height} mm`] = (Frames[`${height} mm`] || 0) + incrementValue;
+            Frames[`${height} mm`] =
+              (Frames[`${height} mm`] || 0) + incrementValue;
           }
 
           if (depth != null) {
             let incrementValue;
             if (rowIndex === "0" && colIndex === "0") {
               incrementValue = 4;
-            } else if ((rowIndex === "0" && colIndex !== "0") || (rowIndex !== "0" && colIndex === "0")) {
+            } else if (
+              (rowIndex === "0" && colIndex !== "0") ||
+              (rowIndex !== "0" && colIndex === "0")
+            ) {
               incrementValue = 2;
             } else {
-              incrementValue = configValuesStore.hasCuboidAt(rowIndex, colIndex - 1) ? 1 : 2;
+              incrementValue = configValuesStore.hasCuboidAt(
+                rowIndex,
+                colIndex - 1
+              )
+                ? 1
+                : 2;
             }
-            Frames[`${depth} mm`] = (Frames[`${depth} mm`] || 0) + incrementValue;
+            Frames[`${depth} mm`] =
+              (Frames[`${depth} mm`] || 0) + incrementValue;
           }
         }
       });
@@ -139,7 +150,6 @@ export function getNumberofFrames() {
 
   return resultString;
 }
-
 
 export function getNumberOfPanelsAcrylic() {
   const configValues = configValuesStore.configValues;
@@ -170,11 +180,12 @@ export function getNumberOfPanelsAcrylic() {
 
   // Convert panels data to a formatted string
   const resultString = Object.entries(panels)
-    .map(([colorName, sizes]) => {
+    .map(([colorName, sizes], index, array) => {
       const sizeDetails = Object.entries(sizes)
         .map(([size, count]) => `${size} : ${count}`)
         .join(", ");
-      return `${colorName} : [ ${sizeDetails} ]`;
+      const entry = `${colorName} : [ ${sizeDetails} ]`;
+      return index === array.length - 1 ? entry : `${entry},`;
     })
     .join("\n");
 
@@ -285,7 +296,7 @@ export function getNumberOfPanels() {
   } else if (shelfType === "stainless") {
     return getNumberOfPanelsStainless();
   }
-};
+}
 
 export function dimensionLimit(value, type) {
   const selectedRawIndex = configValuesStore.selectedCuboid?.rawIndex;
@@ -293,7 +304,10 @@ export function dimensionLimit(value, type) {
   if (selectedRawIndex === null || selectedColIndex === null) {
     return false;
   }
-  const oldValue = configValuesStore.configValues[selectedRawIndex]?.[selectedColIndex]?.[type];
+  const oldValue =
+    configValuesStore.configValues[selectedRawIndex]?.[selectedColIndex]?.[
+      type
+    ];
 
   const totalLengthWidth = configValuesStore.totalLength?.width ?? 0;
   const totalLengthHeight = configValuesStore.totalLength?.height ?? 0;
@@ -314,7 +328,7 @@ export function dimensionLimit(value, type) {
 
 export function checkForLimits(configValues) {
   const shelfType = configValuesStore.configValues.shelfType;
-  
+
   const row0 = configValues[0];
   const [cuboid, rowIndex] = getLastCuboidInTallestColumn(configValues);
   configValuesStore.setSelectedCuboid(0, 0);
@@ -323,7 +337,11 @@ export function checkForLimits(configValues) {
   const rowLimit = shelfType === "acrylic" ? 6 : 7; // Limit for the number of rows
 
   // Check if row 0 has more columns than the column limit
-  if (row0 && typeof row0 === "object" && Object.keys(row0).length > columnLimit) {
+  if (
+    row0 &&
+    typeof row0 === "object" &&
+    Object.keys(row0).length > columnLimit
+  ) {
     // Get keys sorted numerically to safely remove columns above the limit
     const columnKeys = Object.keys(row0)
       .map(Number) // Convert to numbers if keys are strings
@@ -450,5 +468,16 @@ export function getNumberOfConnectors() {
     }
   });
 
-  return connectors;
+  const convertConnectorsToString = (connectors) => {
+    const resultString = Object.entries(connectors)
+      .map(([connectorType, count], index, array) => {
+        const entry = `${connectorType} : ${count}`;
+        return index === array.length - 1 ? entry : `${entry},`;
+      })
+      .join("\n");
+
+    return resultString;
+  };
+
+  return convertConnectorsToString(connectors);
 }
