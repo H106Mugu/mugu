@@ -334,14 +334,14 @@ const ShelfConfigurator = observer(() => {
               <TbCube3dSphere className="text-theme-primary" />
               Reset cam
             </Button>
-            <Button onClick={showQuantity}>Update Quantity</Button>
+            {/* <Button onClick={showQuantity}>Update Quantity</Button> */}
           </div>
 
-          <div className="absolute top-[90px] right-4 z-30 text-xs font-medium text-theme-primary">
+          {/* <div className="absolute top-[90px] right-4 z-30 text-xs font-medium text-theme-primary">
             <div>Frame Qunantity: {quantityFrame}</div>
             <div>Panel Quantity: {quantityPanel}</div>
             <div>Connector Quantity: {quantityConnector}</div>
-          </div>
+          </div> */}
 
           <div className="select-none absolute w-[140px] md:w-[200px] -left-[60px] md:-left-[85px] top-1/2 transform -translate-y-1/2 -rotate-90 origin-center flex justify-center items-center gap-2 z-30 transition-all duration-300">
             <span className="text-gray-500 text-[8px] md:text-xs">
