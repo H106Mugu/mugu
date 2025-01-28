@@ -87,7 +87,8 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     width: "100%",
-    height: "40px",
+    // height: "80px",
+    minHeight: "40px",
     borderBottom: "1px solid #DFDCDC",
   },
   tableCell: {
@@ -169,7 +170,7 @@ const styles = StyleSheet.create({
 const PAGE_HEIGHT = 297; // A4 page height in mm
 
 // const sectionHeights = [7.1, 12.1, 41.8, 22.8, 9, 7.1];
-const sectionHeights = [7.1, 12.1, 80.8, 7.1, 40, 9, 7.1]; // percentages of page height
+const sectionHeights = [7.1, 12.1, 80.8, 7.1, 75, 9, 7.1]; // percentages of page height
 
 function formatDate(date) {
   const options = { day: "numeric", month: "long", year: "numeric" };

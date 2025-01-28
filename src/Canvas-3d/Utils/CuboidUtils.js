@@ -185,9 +185,9 @@ export function getNumberOfPanelsAcrylic() {
         .map(([size, count]) => `${size} : ${count}`)
         .join(", ");
       const entry = `${colorName} : [ ${sizeDetails} ]`;
-      return index === array.length - 1 ? entry : `${entry},`;
+      return index === array.length - 1 ? entry : `${entry}`;
     })
-    .join("\n");
+    .join(", ");
 
   return resultString;
 }
@@ -270,7 +270,7 @@ export function getNumberOfPanelsStainless() {
         .join(", ");
       return `${colorName} : [ ${sizeDetails} ]`;
     })
-    .join("\n");
+    .join(", ");
 
   return resultString;
 }

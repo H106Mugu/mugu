@@ -147,7 +147,7 @@ const SubmitFormModal = observer(({ open, onClose }) => {
     setLoading(true);
 
     // Create the PDF
-    const doc = (
+    const docCustomer = (
       <PDFDocument
         data={{
           basicInfo: values,
@@ -219,7 +219,83 @@ const SubmitFormModal = observer(({ open, onClose }) => {
         }}
       />
     );
-    const blob = await pdf(doc).toBlob();
+
+
+    const docAdmin = (
+      <PDFDocument
+        data={{
+          basicInfo: values,
+          materialInfo: [
+            {
+              key: "Base shelf type",
+              value:
+                configValuesStore.getAllConfigValues.shelfType
+                  .charAt(0)
+                  .toUpperCase() +
+                configValuesStore.getAllConfigValues.shelfType.slice(1) +
+                " Panel",
+            },
+            {
+              key: "Structure element",
+              value: convertToSentenceCase(
+                configValuesStore.getAllConfigValues.structureElements
+              ),
+            },
+            {
+              key: "Total Dimensions(WxHxD)",
+              value: totalDimensions,
+            },
+            {
+              key: "Column Width",
+              value: columnWidths,
+            },
+            {
+              key: "Row Height",
+              value: rowHeights,
+            },
+            {
+              key: "Unit Depth",
+              value: unitDepth,
+            },
+            {
+              key: "Panel Colour",
+              value:
+                configValuesStore.getAllConfigValues.shelfType === "acrylic"
+                  ? configValuesStore.configValues.structureElements ===
+                    "withTopAndBottomOnly"
+                    ? "From bottom: " +
+                      getPanelColors(configValuesStore.getColorRows, "acrylic")
+                    : "No Panels"
+                  : getColorNameFromHex(
+                      configValuesStore.getAllConfigValues.color,
+                      "stainless"
+                    ),
+            },
+            {
+              key: "Frame Quantity",
+              value: getNumberofFrames()
+            },
+            {
+              key: "Panel Quantity",
+              value: getNumberOfPanels()
+            },
+            {
+              key: "Connector Quantity",
+              value: getNumberOfConnectors()
+            },
+          ],
+          images: {
+            front: configValuesStore.getAllImagesUrl.frontView,
+            side: configValuesStore.getAllImagesUrl.sideView,
+            isometric: configValuesStore.getAllImagesUrl.isometricView,
+          },
+          // configValues: submitFormStore.configValues,
+        }}
+      />
+    );
+    const blobCustomer = await pdf(docCustomer).toBlob();
+
+    const blobAdmin = await pdf(docAdmin).toBlob();
 
     // POst api at https://uoqvpuvzgbe4tmdfvd5emkf3de0ewgps.lambda-url.ap-south-1.on.aws/
 
@@ -233,7 +309,8 @@ const SubmitFormModal = observer(({ open, onClose }) => {
         body: JSON.stringify({
           name: values.name,
           email: values.email,
-          pdf: await toBase64(blob),
+          pdfCustomer: await toBase64(blobCustomer),
+          pdfAdmin: await toBase64(blobAdmin),
           postcode: values.postcode,
           requireShipping: values.requireShipping,
           additionalRequirements: values.additionalRequirements,
