@@ -12,7 +12,7 @@ import { observer } from "mobx-react-lite";
 import { acrylicColorOptions, stainlessColorOptions } from "../data/optionData";
 import { set } from "mobx";
 import { IoCloseOutline } from "react-icons/io5";
-import { getNumberofFrames, getNumberOfPanels } from "../Canvas-3d/Utils/CuboidUtils";
+import { getNumberOfConnectors, getNumberofFrames, getNumberOfPanels } from "../Canvas-3d/Utils/CuboidUtils";
 
 const { TextArea } = Input;
 
@@ -197,14 +197,18 @@ const SubmitFormModal = observer(({ open, onClose }) => {
                       "stainless"
                     ),
             },
-            {
-              key: "Frame Quantity",
-              value: getNumberofFrames()
-            },
-            {
-              key: "Panel Quantity",
-              value: getNumberOfPanels()
-            },
+            // {
+            //   key: "Frame Quantity",
+            //   value: getNumberofFrames()
+            // },
+            // {
+            //   key: "Panel Quantity",
+            //   value: getNumberOfPanels()
+            // },
+            // {
+            //   key: "Connector Quantity",
+            //   value: getNumberOfConnectors()
+            // },
           ],
           images: {
             front: configValuesStore.getAllImagesUrl.frontView,
@@ -233,6 +237,9 @@ const SubmitFormModal = observer(({ open, onClose }) => {
           postcode: values.postcode,
           requireShipping: values.requireShipping,
           additionalRequirements: values.additionalRequirements,
+          FrameQuantity: getNumberofFrames(),
+          PanelQuantity: getNumberOfPanels(),
+          ConnectorQuantity: getNumberOfConnectors(),
         }),
       }
     )

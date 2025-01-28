@@ -360,8 +360,8 @@ const PDFDocument = ({ data }) => (
           {/* Second Column: Email Icon and Email Address */}
           <View style={styles.rowColumn}>
             <Image src={emailIcon} style={styles.icon} />
-            <Link src="mailto:info@mugu.com.au" style={styles.linkText}>
-              info@mugu.com.au
+            <Link src="mailto:custom@mugu.com.au" style={styles.linkText}>
+              custom@mugu.com.au
             </Link>
           </View>
 

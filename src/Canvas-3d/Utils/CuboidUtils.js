@@ -472,9 +472,9 @@ export function getNumberOfConnectors() {
     const resultString = Object.entries(connectors)
       .map(([connectorType, count], index, array) => {
         const entry = `${connectorType} : ${count}`;
-        return index === array.length - 1 ? entry : `${entry},`;
+        return index === array.length - 1 ? entry : `${entry}`;
       })
-      .join("\n");
+      .join(", ");
 
     return resultString;
   };
