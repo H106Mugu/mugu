@@ -21,9 +21,9 @@ export const fitCameraToReset = () => {
 
     if (controlsRef) {
       controlsRef.setLookAt(
-        88 + size.x * 1.2,
-        45 + size.y,
-        135 + cameraDistance * 0.3,
+        88 + size.x * 0.7,
+        45 + size.y * 0.4,
+        135 + cameraDistance * 0.5,
         center.x,
         center.y,
         center.z,
