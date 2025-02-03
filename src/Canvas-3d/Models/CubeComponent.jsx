@@ -164,8 +164,9 @@ export const CubeComponent = observer(
                       transparent: true,
                     }
                   : {
-                      roughness: 0.6,
-                      metalness: 0.1,
+                      ...(configValuesStore.configValues.color === "#6C7E41"
+                        ? {}
+                        : { roughness: 0.1, metalness: 0.1 }),
                       clearcoat: 1,
                       clearcoatRoughness: 0.2,
                     }),
@@ -223,8 +224,9 @@ export const CubeComponent = observer(
                           transparent: true,
                         }
                       : {
-                          roughness: 0.6,
-                          metalness: 0.1,
+                          ...(configValuesStore.configValues.color === "#6C7E41"
+                            ? {}
+                            : { roughness: 0.1, metalness: 0.1 }),
                           clearcoat: 1,
                           clearcoatRoughness: 0.2,
                         }),
@@ -260,8 +262,9 @@ export const CubeComponent = observer(
               new THREE.MeshPhysicalMaterial({
                 side: THREE.DoubleSide,
                 color: configValuesStore.configValues.color,
-                roughness: 0.6,
-                metalness: 0.1,
+                ...(configValuesStore.configValues.color === "#6C7E41"
+                  ? {}
+                  : { roughness: 0.1, metalness: 0.1 }),
                 clearcoat: 1,
                 clearcoatRoughness: 0.2,
               })
@@ -292,8 +295,9 @@ export const CubeComponent = observer(
               new THREE.MeshPhysicalMaterial({
                 side: THREE.DoubleSide,
                 color: configValuesStore.configValues.color,
-                roughness: 0.6,
-                metalness: 0.1,
+                ...(configValuesStore.configValues.color === "#6C7E41"
+                  ? {}
+                  : { roughness: 0.1, metalness: 0.1 }),
                 clearcoat: 1,
                 clearcoatRoughness: 0.2,
               })
