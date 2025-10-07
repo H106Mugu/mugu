@@ -305,8 +305,8 @@ const ShelfConfigurator = observer(() => {
           message: loadingStore.getLoader.message,
         }}
       />
-      <div className="flex flex-col md:flex-row h-[100svh] max-h-[100svh] relative">
-        <div className="relative bg-gray-100 w-full md:w-[66%] flex-1 md:h-full flex justify-center items-center">
+      <div className="flex flex-col md:flex-row w-screen h-[100svh] max-h-[100svh] relative">
+        <div className="relative bg-gray-100 w-full md:w-[66%] h-[calc(100svh-217px)] md:h-full flex justify-center items-center">
           <div className="absolute top-3 left-2 flex items-center z-30">
             <Button
               type="link"
