@@ -493,7 +493,7 @@ const ShelfConfigurator = observer(() => {
         </div>
         <div
           className={`absolute top-3 ${
-            isMobile ? "opacity-100 right-3" : "right-0 opacity-0"
+            isMobile ? "opacity-100 max-[365px]:right-2 right-3 " : "right-0 opacity-0"
           } `}
         >
           <StructureOrColorRadioGroup
