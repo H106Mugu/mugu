@@ -66,6 +66,22 @@ const ShelfConfigurator = observer(() => {
   const [tourCurrentStep, setTourCurrentStep] = useState(1);
   const accentColor = "#000000";
 
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState("Studio-Built");
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   useEffect(() => {
     setIsMobile(breakpoint === "xs" || breakpoint === "sm");
   }, [breakpoint]);
@@ -323,18 +339,75 @@ const ShelfConfigurator = observer(() => {
           </div>
           <div className="absolute top-[53px] left-0 right-0 flex items-center z-30 w-full h-px bg-theme-primary md:hidden" />
 
-          <div className="absolute top-[70px] md:top-[50px] left-4 flex items-center gap-2 z-30 transition-all duration-300">
-            <CustomCheckbox
-              checked={checked}
-              onChange={handleCheckboxChange}
-              label="Dimensions"
-              icon={<RxRulerHorizontal />}
-            />
-            <Button onClick={handleFitCamera}>
-              <TbCube3dSphere className="text-theme-primary" />
-              Reset cam
-            </Button>
-            {/* <Button onClick={showQuantity}>Update Quantity</Button> */}
+          <div className="absolute top-[70px] md:top-[50px] max-[360px]:left-2 left-4 max-[360px]:right-2 right-[17px] flex items-center gap-y-2 flex-wrap  justify-between z-30 transition-all duration-300">
+            <div className="flex items-center max-[375px]:gap-1 gap-2">
+              <CustomCheckbox
+                checked={checked}
+                onChange={handleCheckboxChange}
+                label="Dimensions"
+                icon={<RxRulerHorizontal />}
+              />
+              <Button onClick={handleFitCamera}>
+                <TbCube3dSphere className="text-theme-primary" />
+                Reset cam
+              </Button>
+              {/* <Button onClick={showQuantity}>Update Quantity</Button> */}
+            </div>
+
+            {/* Custom Dropdown */}
+            <div ref={dropdownRef} className="relative select-none max-[375px]:w-[120px] w-[125px] md:w-[130px]">
+              {/* Trigger Button */}
+              <button
+                type="button"
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className={`flex items-center justify-between w-full py-[9px] max-[375px]:px-1 px-2 bg-white transition-all duration-300 focus:outline-none shadow-sm cursor-pointer ${
+                  dropdownOpen ? "rounded-b-none border-b-transparent" : ""
+                }`}
+              >
+                <span className="text-xs font-medium leading-none text-gray-700">
+                  Studio-Built
+                </span>
+                <svg
+                  className={`w-2 h-2 fill-current text-black transition-transform duration-200 ${
+                    dropdownOpen ? "rotate-180" : ""
+                  }`}
+                  viewBox="0 0 10 6"
+                >
+                  <path d="M0 0h10L5 6z" />
+                </svg>
+              </button>
+
+              {/* Dropdown Options Overlay */}
+              {dropdownOpen && (
+                <div className="absolute right-0 left-0 top-[31px] border-t-1 border-[#DEDEDE] bg-white shadow-md flex flex-col z-50">
+                  {/* Option 1: Studio-Built */}
+                  <div
+                    onClick={() => {
+                      setSelectedOption("Studio-Built");
+                      setDropdownOpen(false);
+                    }}
+                    className="flex items-center py-[9px] max-[375px]:px-1 px-2 cursor-pointer hover:bg-gray-50"
+                  >
+                    <span className="text-xs font-bold text-gray-800">
+                      Studio-Built
+                    </span>
+                  </div>
+
+                  {/* Horizontal Divider */}
+                  <div className="h-px bg-[#DEDEDE] max-[375px]:mx-1 mx-2" />
+
+                  {/* Option 2: DIY kits (disabled) */}
+                  <div className="flex items-center py-[9px] justify-between max-[375px]:px-1 px-2 gap-1 md:gap-[6px] cursor-not-allowed">
+                    <span className="text-xs font-medium text-[#999999] whitespace-nowrap">
+                      DIY kits
+                    </span>
+                    <span className="bg-[#f0ede0] text-black text-[9px] font-bold px-1 py-0.5 rounded-full select-none whitespace-nowrap">
+                      Coming soon
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* <div className="absolute top-[90px] right-4 z-30 text-xs font-medium text-theme-primary">
