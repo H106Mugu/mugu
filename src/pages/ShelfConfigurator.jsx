@@ -368,11 +368,11 @@ const ShelfConfigurator = observer(() => {
                   dropdownOpen ? "rounded-b-none border-b-transparent" : ""
                 }`}
               >
-                <span className="text-xs font-medium leading-none text-primary">
+                <span className="text-xs font-medium leading-none text-theme-primary">
                   {selectedOption}
                 </span>
                 <svg
-                  className={`w-2 h-2 fill-current text-primary transition-transform duration-200 ${
+                  className={`w-2 h-2 fill-current text-theme-primary transition-transform duration-200 ${
                     dropdownOpen ? "rotate-180" : ""
                   }`}
                   viewBox="0 0 10 6"
@@ -396,7 +396,7 @@ const ShelfConfigurator = observer(() => {
                             {option.label}
                           </span>
                           {option.badge && (
-                            <span className="bg-[#f0ede0] text-primary text-[9px] font-bold px-1 py-0.5 rounded-full select-none whitespace-nowrap">
+                            <span className="bg-[#f0ede0] text-theme-primary text-[9px] font-bold px-1 py-0.5 rounded-full select-none whitespace-nowrap">
                               {option.badge}
                             </span>
                           )}
