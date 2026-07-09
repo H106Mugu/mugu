@@ -344,7 +344,7 @@ const ShelfConfigurator = observer(() => {
           </div>
           <div className="absolute top-[53px] left-0 right-0 flex items-center z-30 w-full h-px bg-theme-primary md:hidden" />
 
-          <div className="absolute top-[70px] md:top-[50px] max-[365px]:left-2 left-4 flex items-center gap-y-2 flex-wrap gap-x-2 z-30 transition-all duration-300 max-w-[calc(100%-135px)]">
+          <div className="absolute top-[70px] md:top-[50px] max-[365px]:left-2 left-4 flex items-center gap-y-2 flex-wrap gap-x-2 z-30 transition-all duration-300 max-w-[calc(100%-140px)] md:max-w-[calc(100%-200px)]">
             <CustomCheckbox
               checked={checked}
               onChange={handleCheckboxChange}
@@ -357,7 +357,7 @@ const ShelfConfigurator = observer(() => {
             </Button>
           </div>
           {/* <Button onClick={showQuantity}>Update Quantity</Button> */}
-          <div className="absolute top-[70px] md:top-[50px] max-[350px]:top-[110px] max-[350px]:left-2 max-[350px]:right-auto max-[365px]:right-2 right-[17px] flex items-center gap-y-2 flex-wrap gap-x-2 z-30 transition-all duration-300">
+          <div className="absolute top-[70px] md:top-[50px] max-[350px]:right-2 max-[350px]:left-auto max-[365px]:right-2 right-[17px] flex items-center gap-y-2 flex-wrap gap-x-2 z-30 transition-all duration-300">
             {/* Custom Dropdown */}
             <div ref={dropdownRef} className="relative select-none max-[375px]:w-[120px] w-[125px] md:w-[130px]">
               {/* Trigger Button */}
