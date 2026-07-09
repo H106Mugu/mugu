@@ -73,9 +73,9 @@ const MobileShelfBottombar = observer(({ sidebarOptionsData, changedKey }) => {
   return (
     <>
       <div>
-        <Tabs defaultActiveKey="1" items={tabItems} className="h-[177px]" />
+        <Tabs defaultActiveKey="1" items={tabItems} className="min-h-[177px] h-[177px] max-h-[177px]" />
         <div
-          className={`fixed right-0 left-0 py-1 px-3 flex items-center bg-white shadow-xl transition-all duration-1000 ease-in-out tour-btn-submit ${
+          className={`py-1 px-3 flex items-center bg-white shadow-xl transition-all duration-1000 ease-in-out tour-btn-submit ${
             breakpoint === "xs" || breakpoint === "sm"
               ? "bottom-0 opacity-100"
               : "-bottom-3 opacity-0"
