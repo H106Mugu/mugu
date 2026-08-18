@@ -300,7 +300,7 @@ const SubmitFormModal = observer(({ open, onClose }) => {
     // POst api at https://uoqvpuvzgbe4tmdfvd5emkf3de0ewgps.lambda-url.ap-south-1.on.aws/
 
     fetch(
-      "https://qlrbm5eobuggfdvm23atgaezx40nleqa.lambda-url.ap-south-1.on.aws/",
+      "https://uoqvpuvzgbe4tmdfvd5emkf3de0ewgps.lambda-url.ap-south-1.on.aws/",
       {
         method: "POST",
         headers: {
